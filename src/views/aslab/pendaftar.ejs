@@ -1,59 +1,528 @@
-<h1 class="text-3xl font-bold text-gray-800 mb-6">Pendaftar</h1>
+<%# src/views/aslab/pendaftar.ejs %>
 
-<div class="bg-white p-6 rounded-lg shadow-md">
-    <div class="flex justify-between items-center mb-4">
-        <div class="flex items-center">
-            <span class="mr-2 text-gray-700">show</span>
-            <select class="border rounded px-2 py-1">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-            </select>
-            <span class="ml-2 text-gray-700">entries</span>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeeAnjayy - Pendaftar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #4CAF50 0%, #2E7D32 100%);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h3 {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding-left: 25px;
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-right: 3px solid white;
+        }
+
+        .menu-item i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .content-area {
+            padding: 30px;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .data-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 20px 25px;
+            border: none;
+        }
+
+        .card-header-custom h6 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .entries-control {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .entries-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+        }
+
+        .entries-select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 8px 35px 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .table-container {
+            padding: 0;
+        }
+
+        .custom-table {
+            margin: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .custom-table thead th {
+            background: #f8f9fa;
+            border: none;
+            border-bottom: 2px solid #e9ecef;
+            padding: 15px;
+            font-weight: 600;
+            color: #333;
+            text-align: left;
+        }
+
+        .custom-table tbody td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+
+        .custom-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #138496;
+            transform: translateY(-1px);
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-edit:hover {
+            background: #e0a800;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .pagination-container {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pagination-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .page-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .no-data i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .entries-control {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-graduation-cap"></i> LeeAnjayy</h3>
         </div>
-        <div class="relative">
-            <input type="text" placeholder="Search......" class="border rounded px-4 py-2 pl-10 w-64">
-            <i class='bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400'></i>
-        </div>
-    </div>
-
-    <div class="overflow-x-auto">
-        <table class="w-full text-left">
-            <thead class="bg-gray-50 border-b">
-                <tr>
-                    <th class="p-3">NIM <i class='bx bx-sort-alt-2 align-middle'></i></th>
-                    <th class="p-3">Nama <i class='bx bx-sort-alt-2 align-middle'></i></th>
-                    <th class="p-3">No HP <i class='bx bx-sort-alt-2 align-middle'></i></th>
-                    <th class="p-3">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (pendaftar && pendaftar.length > 0) { %>
-                    <% pendaftar.forEach(p => { %>
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="p-3"><%= p.nim %></td>
-                            <td class="p-3"><%= p.nama %></td>
-                            <td class="p-3"><%= p.no_hp %></td>
-                            <td class="p-3">
-                                <button class="text-red-500 hover:text-red-700 mr-2"><i class='bx bxs-trash-alt'></i></button>
-                                <button class="text-yellow-500 hover:text-yellow-700"><i class='bx bxs-edit'></i></button>
-                            </td>
-                        </tr>
-                    <% }) %>
-                <% } else { %>
-                     <tr>
-                        <td colspan="4" class="p-3 text-center text-gray-500">Data tidak ditemukan.</td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="flex justify-end mt-4">
-        <nav class="flex items-center">
-            <a href="#" class="px-3 py-1 border rounded-l-md hover:bg-gray-200">previous</a>
-            <a href="#" class="px-3 py-1 border-t border-b bg-green-500 text-white">1</a>
-            <a href="#" class="px-3 py-1 border rounded-r-md hover:bg-gray-200">next</a>
+        <nav class="sidebar-menu">
+            <a href="/aslab/dashboard" class="menu-item">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/aslab/verifikasi" class="menu-item">
+                <i class="fas fa-check-circle"></i> Verifikasi
+            </a>
+            <a href="/aslab/wawancara" class="menu-item">
+                <i class="fas fa-comments"></i> Wawancara
+            </a>
+            <a href="/aslab/absensi" class="menu-item">
+                <i class="fas fa-calendar-check"></i> Absensi
+            </a>
+            <a href="/aslab/penilaian" class="menu-item">
+                <i class="fas fa-star"></i> Penilaian
+            </a>
+            <a href="/aslab/ranking" class="menu-item">
+                <i class="fas fa-trophy"></i> Ranking
+            </a>
+            <a href="/aslab/pengumuman" class="menu-item">
+                <i class="fas fa-bullhorn"></i> Pengumuman
+            </a>
+            <a href="/aslab/rekap" class="menu-item">
+                <i class="fas fa-chart-bar"></i> Rekap
+            </a>
+            <a href="/aslab/rekap/pendaftar" class="menu-item active">
+                <i class="fas fa-users"></i> Pendaftar
+            </a>
         </nav>
     </div>
-</div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div></div>
+            <div class="user-info">
+                <span>Rafi</span>
+                <div class="user-avatar">R</div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Pendaftar</h1>
+            </div>
+
+            <!-- Success Message -->
+            <% if(success_msg && success_msg.length > 0) { %>
+                <div class="alert-success">
+                    <i class="fas fa-check-circle"></i> <%= success_msg %>
+                </div>
+            <% } %>
+
+            <!-- Data Card -->
+            <div class="data-card">
+                <div class="card-header-custom">
+                    <h6>Data Semua Pendaftar</h6>
+                </div>
+
+                <!-- Entries Control -->
+                <div class="entries-control">
+                    <div class="entries-info">
+                        <span>Show</span>
+                        <select class="entries-select">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                        <span>entries</span>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="Search...">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table Container -->
+                <div class="table-container">
+                    <% if (pendaftar && pendaftar.length > 0) { %>
+                        <table class="custom-table" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>NIM</th>
+                                    <th>Nama</th>
+                                    <th>No HP</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% pendaftar.forEach(p => { %>
+                                    <tr>
+                                        <td><%= p.nim %></td>
+                                        <td><%= p.nama %></td>
+                                        <td><%= p.no_hp %></td>
+                                        <td>
+                                            <button class="btn-action btn-view" title="Lihat Detail" onclick="location.href='/aslab/rekap/pendaftar/detail/<%= p.id %>'">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-action btn-edit" title="Edit Data">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-action btn-delete" title="Hapus Data" onclick="if(confirm('PERINGATAN: Menghapus data ini tidak dapat dibatalkan. Lanjutkan?')) location.href='/aslab/rekap/pendaftar/delete/<%= p.id %>'">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <div class="no-data">
+                            <i class="fas fa-users"></i>
+                            <h5>Tidak ada data pendaftar</h5>
+                            <p>Belum ada data pendaftar yang tersedia saat ini.</p>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Pagination -->
+                <% if (pendaftar && pendaftar.length > 0) { %>
+                    <div class="pagination-container">
+                        <div class="pagination-info">
+                            Menampilkan 1 sampai <%= pendaftar.length %> dari <%= pendaftar.length %> data
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="page-btn">Previous</button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">Next</button>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('.custom-table tbody tr');
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Entries per page functionality
+        document.querySelector('.entries-select').addEventListener('change', function() {
+            const entriesPerPage = parseInt(this.value);
+            const tableRows = document.querySelectorAll('.custom-table tbody tr');
+            
+            tableRows.forEach((row, index) => {
+                row.style.display = index < entriesPerPage ? '' : 'none';
+            });
+        });
+
+        // Mobile sidebar toggle (if needed)
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0px)';
+        }
+    </script>
+</body>
+</html>

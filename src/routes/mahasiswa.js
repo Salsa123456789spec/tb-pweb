@@ -15,7 +15,7 @@ router.get('/dashboard', ensureAuthenticated, ensureRole('mahasiswa'), async (re
   res.render('mahasiswa/dashboard', {
     layout: 'mahasiswa/layout/main',
     title: 'Dashboard Mahasiswa',
-     user: req.session.user,
+      user: req.session.user,
     pendaftaran: pendaftaran,
     activePage: 'dashboard',
   });
@@ -27,20 +27,12 @@ router.get('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa'),
     layout: 'mahasiswa/layout/main',
     title: 'Formulir Pendaftaran',
     user: req.session.user,
-     activePage: 'formulirPendaftaran'
+      activePage: 'formulirPendaftaran'
   });
 });
 
-router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa'), (req, res) => {
-  // ambil data dari req.body
-  const { nama } = req.body;
 
-  // simpan ke database atau lakukan validasi
-
-  req.flash('success_msg', 'Formulir berhasil dikirim');
-  res.redirect('/mahasiswa/formulirPendaftaran');
-});
-
+// Blok router.post('/formulirPendaftaran',...) sudah dihapus dari sini
 
 
 export default router;

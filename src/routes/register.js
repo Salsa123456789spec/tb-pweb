@@ -10,9 +10,8 @@ const router = express.Router();
 const layoutData = {
     title: 'Registrasi Akun',
     activePage: 'register',
-    layout: 'mahasiswa/layout/main'
+    layout: false // <-- MENJADI SEPERTI INI
 };
-
 // GET Register Page
 router.get('/', (req, res) => {
     res.render('register', {

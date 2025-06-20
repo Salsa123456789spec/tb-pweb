@@ -10,7 +10,7 @@ datasource db {
 enum Role {
   mahasiswa
   admin
-  asisten_lab
+  aslab
 }
 
 enum StatusPendaftaran {

@@ -9,7 +9,7 @@ const router = express.Router();
 const layoutData = {
     title: 'Login Akun',
     activePage: 'login',
-    layout: 'mahasiswa/layout/main'
+    layout: false // <-- MENJADI SEPERTI INI
 };
 
 // GET Halaman Login
@@ -77,7 +77,7 @@ router.post('/', async (req, res) => {
         // Redirect sesuai role
         if (user.role === 'mahasiswa') {
             return res.redirect('/mahasiswa/dashboard');
-        } else if (user.role === 'asisten_lab') {
+        } else if (user.role === 'aslab') {
             return res.redirect('/aslab/dashboard');
         } else if (user.role === 'admin') {
             return res.redirect('/superadmin/dashboard');

@@ -1,122 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aslab Dashboard - <%= title %></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- optional -->
     <style>
-        /* Custom styles jika diperlukan */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+        }
+        
         .sidebar {
-            background-color: #4CAF50; /* Warna hijau dari gambar */
+            width: 200px;
+            height: 100vh;
+            background: #22c55e;
+            color: white;
+            padding: 20px;
+            float: left;
         }
-        .sidebar a {
-            transition: background-color 0.2s;
+        
+        .content {
+            margin-left: 200px;
+            padding: 20px;
         }
-        .sidebar a.active, .sidebar a:hover {
-            background-color: #45a049; /* Warna hijau sedikit lebih gelap */
-        }
-        .submenu {
-            background-color: #3e8e41;
+        
+        h1 {
+            margin-top: 0;
         }
     </style>
 </head>
 
-<body class="bg-gray-100 font-sans">
-    <div class="flex h-screen">
-        <aside class="sidebar w-64 text-white flex-shrink-0">
-            <div class="p-6 text-2xl font-semibold flex items-center">
-                <i class='bx bxs-leaf bx-sm mr-2'></i>
-                <span>LeaAnjayy</span>
-            </div>
-            <nav class="flex-grow">
-                <a href="#" class="flex items-center py-3 px-6">
-                    <i class='bx bxs-dashboard bx-sm mr-3'></i> Dashboard
-                </a>
-                <a href="#" class="flex items-center py-3 px-6">
-                    <i class='bx bx-check-square bx-sm mr-3'></i> Verifikasi
-                </a>
-                <a href="#" class="flex items-center justify-between py-3 px-6">
-                    <div class="flex items-center">
-                        <i class='bx bx-microphone bx-sm mr-3'></i> Wawancara
-                    </div>
-                    <i class='bx bx-chevron-down'></i>
-                </a>
-                <a href="#" class="flex items-center py-3 px-6">
-                    <i class='bx bx-calendar-check bx-sm mr-3'></i> Absensi
-                </a>
-                <a href="#" class="flex items-center justify-between py-3 px-6">
-                    <div class="flex items-center">
-                        <i class='bx bx-edit bx-sm mr-3'></i> Penilaian
-                    </div>
-                     <i class='bx bx-chevron-down'></i>
-                </a>
-                <a href="#" class="flex items-center justify-between py-3 px-6">
-                     <div class="flex items-center">
-                        <i class='bx bx-bar-chart-alt-2 bx-sm mr-3'></i> Ranking
-                    </div>
-                     <i class='bx bx-chevron-down'></i>
-                </a>
-                 <a href="#" class="flex items-center justify-between py-3 px-6">
-                     <div class="flex items-center">
-                        <i class='bx bxs-megaphone bx-sm mr-3'></i> Pengumuman
-                    </div>
-                     <i class='bx bx-chevron-down'></i>
-                </a>
-
-                <div>
-                    <button onclick="toggleMenu()" class="w-full flex items-center justify-between py-3 px-6 active">
-                        <div class="flex items-center">
-                            <i class='bx bx-folder bx-sm mr-3'></i> Rekap
-                        </div>
-                        <i id="rekap-icon" class='bx bx-chevron-up'></i>
-                    </button>
-                    <div id="rekap-submenu" class="submenu flex flex-col">
-                        <a href="#" class="py-2 px-12 text-sm active">Pendaftar</a>
-                        <a href="#" class="py-2 px-12 text-sm">Kelulusan</a>
-                        <a href="#" class="py-2 px-12 text-sm">Absensi</a>
-                        <a href="#" class="py-2 px-12 text-sm">Kusioner</a>
-                    </div>
-                </div>
-            </nav>
-        </aside>
-
-        <main class="flex-1 flex flex-col">
-            <header class="bg-white shadow-sm p-4 flex justify-end items-center">
-                <div class="flex items-center">
-                    <span class="mr-4 font-semibold text-gray-700"><%= user ? user.name : 'Rafi' %></span>
-                    <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                         <i class='bx bxs-user bx-md text-gray-600'></i>
-                    </div>
-                </div>
-            </header>
-
-            <div class="p-8 overflow-y-auto">
-                <%- body %>
-            </div>
-        </main>
+<body>
+    <div class="sidebar">
+        <h2>LeaAnjayyy</h2>
+        <ul>
+            <li><a href="/aslab/dashboard">Dashboard</a></li>
+            <li><a href="#">Verifikasi</a></li>
+            <li><a href="#">Wawancara</a></li>
+            <li><a href="#">Penilaian</a></li>
+        </ul>
     </div>
+    <div class="content">
+        <h1>Dashboard Admin</h1>
+        <p>Selamat datang, admin!</p>
 
-    <script>
-        function toggleMenu() {
-            const submenu = document.getElementById('rekap-submenu');
-            const icon = document.getElementById('rekap-icon');
-            submenu.classList.toggle('hidden');
-            if (submenu.classList.contains('hidden')) {
-                icon.classList.remove('bx-chevron-up');
-                icon.classList.add('bx-chevron-down');
-            } else {
-                icon.classList.remove('bx-chevron-down');
-                icon.classList.add('bx-chevron-up');
-            }
-        }
-        // Initially show the menu since 'Pendaftar' is active
-        document.addEventListener('DOMContentLoaded', () => {
-             // No need to toggle, it's visible by default
-        });
-    </script>
+        <div class="statistik">
+            <h3>Statistik</h3>
+            <ul>
+                <li>Total Peserta: 256</li>
+                <li>Sudah Dinilai: 187</li>
+                <li>Belum Dinilai: 69</li>
+            </ul>
+        </div>
+    </div>
 </body>
 
 </html>

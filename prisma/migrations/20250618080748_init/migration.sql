@@ -5,7 +5,7 @@ CREATE TABLE `User` (
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `role` ENUM('mahasiswa', 'admin', 'asisten_lab') NOT NULL,
+    `role` ENUM('mahasiswa', 'admin', 'aslab') NOT NULL,
 
     UNIQUE INDEX `User_nim_key`(`nim`),
     UNIQUE INDEX `User_email_key`(`email`),

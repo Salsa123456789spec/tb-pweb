@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Pendaftar</title>
+    <link rel="stylesheet" href="/styles/main.css"><!-- pastikan ini disesuaikan -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Data Pendaftar</h2>
+
+        <div class="d-flex justify-content-between mb-3">
+            <div>
+                <label for="entries">Show</label>
+                <select id="entries" class="form-select d-inline-block w-auto" onchange="updateTableLimit()">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                </select>
+                <span>entries</span>
+            </div>
+
+            <div>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+            </div>
+        </div>
+
+        <table class="table table-striped" id="pendaftarTable">
+            <thead>
+                <tr>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>No HP</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="pendaftarBody">
+                <% pendaftar.forEach((data, index) => { %>
+                    <tr>
+                        <td><%= data.nim %></td>
+                        <td><%= data.nama %></td>
+                        <td><%= data.no_hp %></td>
+                        <td>
+                            <a href="/aslab/edit/<%= data.id %>" class="text-warning me-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="/aslab/delete/<%= data.id %>" class="text-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Pagination Placeholder -->
+        <div class="d-flex justify-content-between">
+            <span id="paginationInfo">Showing 1 to 5</span>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item disabled"><a class="page-link" href="#">previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const tableRows = document.querySelectorAll("#pendaftarBody tr");
+
+        searchInput.addEventListener("input", function() {
+            const query = this.value.toLowerCase();
+            tableRows.forEach(row => {
+                const rowText = row.innerText.toLowerCase();
+                row.style.display = rowText.includes(query) ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<aside class="w-64 min-h-screen bg-gradient-to-b from-purple-700 to-purple-900 text-white shadow-md">
+  <div class="p-6 text-xl font-bold">
+    Super Admin
+  </div>
+  <nav class="px-4">
+    <a href="/superadmin/dashboard"
+       class="block py-3 px-4 rounded transition
+       <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">dashboard</span>
+      Dashboard
+    </a>
+    <a href="/superadmin/users"
+       class="block py-3 px-4 rounded transition
+       <%= activePage === 'users' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">group</span>
+      Kelola User
+    </a>
+    <!-- Tambah menu lain sesuai kebutuhan -->
+  </nav>
+</aside>

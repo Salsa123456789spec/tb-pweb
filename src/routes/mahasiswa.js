@@ -1,8 +1,6 @@
-// src/routes/mahasiswa.js
 import express from 'express';
 import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
-import prisma from '../models/prisma.js'; // pastikan path sesuai
-import { getJadwalWawancara } from '../controllers/jadwalWawancaraController.js'; // Import controller baru
+import prisma from '../models/prisma.js'; // Ensure the path is correct
 
 const router = express.Router();
 
@@ -23,7 +21,6 @@ router.get('/dashboard', ensureAuthenticated, ensureRole('mahasiswa'), async (re
   });
 });
 
-
 router.get('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa'), (req, res) => {
   res.render('mahasiswa/formulirPendaftaran', {
     layout: 'mahasiswa/layout/main',
@@ -43,7 +40,47 @@ router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa')
   res.redirect('/mahasiswa/formulirPendaftaran');
 });
 
-// Tambahkan rute untuk Jadwal Wawancara di sini
-router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), getJadwalWawancara);
+// New route to fetch and display interview schedules
+router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), async (req, res) => {
+  const user = req.session.user;
+
+  try {
+    const jadwalWawancara = await prisma.jadwalWawancara.findMany({
+      where: {
+        pendaftaran: { // Accessing the related Pendaftaran model
+          user_id: user.id,
+        },
+      },
+      include: {
+        pendaftaran: { // Include Pendaftaran data to get name and divisi
+          select: {
+            domisili: true, // You can select other fields if needed
+            asal: true,
+            nomor_whatsapp: true,
+            divisi: true,
+            user: { // Include user to get their name
+              select: {
+                name: true,
+                nim: true
+              }
+            }
+          },
+        },
+      },
+    });
+
+    res.render('mahasiswa/jadwalWawancara', { // Assuming your EJS file is in views/mahasiswa/jadwalWawancara.ejs
+      layout: 'mahasiswa/layout/main',
+      title: 'Jadwal Wawancara',
+      user: req.session.user,
+      activePage: 'wawancara', // Adjust activePage as per your sidebar navigation
+      jadwalWawancara: jadwalWawancara,
+    });
+  } catch (err) {
+    console.error("Error fetching jadwal wawancara:", err);
+    req.flash('error_msg', 'Terjadi kesalahan saat memuat jadwal wawancara.');
+    res.redirect('/mahasiswa/dashboard'); // Redirect to dashboard or an error page
+  }
+});
 
 export default router;

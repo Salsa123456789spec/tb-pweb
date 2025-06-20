@@ -1,4 +1,3 @@
-// src/index.js
 import express from 'express';
 import path from 'path';
 import url from 'url';
@@ -12,7 +11,6 @@ import loginRouter from './routes/login.js';
 import adminRouter from './routes/admin.js';
 import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
-// import jadwalWawancaraRoutes from './routes/jadwalWawancaraRoutes.js'; // <--- HAPUS ATAU KOMENTARI BARIS INI
 
 
 const app = express();
@@ -55,8 +53,9 @@ app.use(expressLayouts);
 app.set('layout', 'mahasiswa/layout/main');
 app.use('/superadmin', adminRouter);
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
-app.use('/mahasiswa', mahasiswaRouter);
-// app.use('/jadwalWawancara', jadwalWawancaraRoutes); // <--- HAPUS ATAU KOMENTARI BARIS INI
+app.use('/mahasiswa', mahasiswaRouter); // Keep this line as it handles other /mahasiswa routes
+// Add the new route for interview schedule
+app.use('/mahasiswa/jadwalWawancara', mahasiswaRouter); // Use the same router since the route is defined there
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);

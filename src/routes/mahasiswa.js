@@ -1,6 +1,8 @@
+// src/routes/mahasiswa.js
 import express from 'express';
 import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
 import prisma from '../models/prisma.js'; // pastikan path sesuai
+import { getJadwalWawancara } from '../controllers/jadwalWawancaraController.js'; // Import controller baru
 
 const router = express.Router();
 
@@ -15,7 +17,7 @@ router.get('/dashboard', ensureAuthenticated, ensureRole('mahasiswa'), async (re
   res.render('mahasiswa/dashboard', {
     layout: 'mahasiswa/layout/main',
     title: 'Dashboard Mahasiswa',
-     user: req.session.user,
+    user: req.session.user,
     pendaftaran: pendaftaran,
     activePage: 'dashboard',
   });
@@ -27,7 +29,7 @@ router.get('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa'),
     layout: 'mahasiswa/layout/main',
     title: 'Formulir Pendaftaran',
     user: req.session.user,
-     activePage: 'formulirPendaftaran'
+    activePage: 'formulirPendaftaran'
   });
 });
 
@@ -40,5 +42,8 @@ router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa')
   req.flash('success_msg', 'Formulir berhasil dikirim');
   res.redirect('/mahasiswa/formulirPendaftaran');
 });
+
+// Tambahkan rute untuk Jadwal Wawancara di sini
+router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), getJadwalWawancara);
 
 export default router;

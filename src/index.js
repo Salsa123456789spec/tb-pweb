@@ -8,10 +8,12 @@ import expressLayouts from 'express-ejs-layouts';
 
 import registerRouter from './routes/register.js';
 import loginRouter from './routes/login.js';
+
 import adminRouter from './routes/admin.js';
 import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
-import jadwalWawancaraRoutes from './routes/jadwalWawancaraRoutes.js'; // Import the new route
+// import jadwalWawancaraRoutes from './routes/jadwalWawancaraRoutes.js'; // <--- HAPUS ATAU KOMENTARI BARIS INI
+
 
 const app = express();
 const port = 3000;
@@ -54,7 +56,7 @@ app.set('layout', 'mahasiswa/layout/main');
 app.use('/superadmin', adminRouter);
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
 app.use('/mahasiswa', mahasiswaRouter);
-app.use('/jadwalWawancara', jadwalWawancaraRoutes); // Add the new route
+// app.use('/jadwalWawancara', jadwalWawancaraRoutes); // <--- HAPUS ATAU KOMENTARI BARIS INI
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);

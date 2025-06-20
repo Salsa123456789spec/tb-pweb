@@ -6,7 +6,7 @@ import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
 const router = express.Router();
 
 // Route to get all interview schedules for 'mahasiswa' role
-router.get('/', getJadwalWawancara);
+router.get('/', ensureAuthenticated, ensureRole('mahasiswa'), getJadwalWawancara);
 
 // Route to get all interview schedules for 'admin' role
 router.get('/admin', ensureAuthenticated, ensureRole('admin'), getJadwalWawancara);

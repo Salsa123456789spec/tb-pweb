@@ -11,7 +11,7 @@ import loginRouter from './routes/login.js';
 import adminRouter from './routes/admin.js';
 import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
-
+import penugasanRoutes from './routes/penugasan.js';
 
 
 const app = express();
@@ -56,6 +56,7 @@ app.use('/superadmin', adminRouter);
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
 
 app.use('/mahasiswa', mahasiswaRouter);
+app.use('/mahasiswa/assignments', penugasanRoutes); // Add this line for penugasan routes
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);

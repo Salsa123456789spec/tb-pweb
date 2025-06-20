@@ -48,3 +48,12 @@ model Pendaftaran {
 
   user                  User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
 }
+
+model Tugas {
+  id               Int                @id @default(autoincrement())
+  judul            String
+  deskripsi        String?
+  deadline         DateTime
+
+  
+}

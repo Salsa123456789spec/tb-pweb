@@ -1,8 +1,13 @@
+// src/routes/mahasiswa.js
 import express from 'express';
 import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
-import prisma from '../models/prisma.js'; // pastikan path sesuai
+import prisma from '../models/prisma.js';
+import { getTugasMagang, getDetailTugas, submitTugas } from '../controllers/tugasController.js'; // Import controller tugas
+import upload from '../middleware/upload.js'; // Pastikan Anda memiliki middleware upload untuk penyerahan tugas
 
 const router = express.Router();
+
+// ... (Rute yang sudah ada, seperti dashboard, formulirPendaftaran, jadwalWawancara) ...
 
 router.get('/dashboard', ensureAuthenticated, ensureRole('mahasiswa'), async (req, res) => {
   const user = req.session.user;
@@ -15,7 +20,7 @@ router.get('/dashboard', ensureAuthenticated, ensureRole('mahasiswa'), async (re
   res.render('mahasiswa/dashboard', {
     layout: 'mahasiswa/layout/main',
     title: 'Dashboard Mahasiswa',
-     user: req.session.user,
+    user: req.session.user,
     pendaftaran: pendaftaran,
     activePage: 'dashboard',
   });
@@ -27,7 +32,7 @@ router.get('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa'),
     layout: 'mahasiswa/layout/main',
     title: 'Formulir Pendaftaran',
     user: req.session.user,
-     activePage: 'formulirPendaftaran'
+    activePage: 'formulirPendaftaran'
   });
 });
 
@@ -42,5 +47,15 @@ router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa')
 });
 
 
+// Rute untuk menampilkan daftar tugas magang
+router.get('/tugasMagang', ensureAuthenticated, ensureRole('mahasiswa'), getTugasMagang);
+
+// Rute untuk menampilkan detail tugas magang (opsional)
+router.get('/tugasMagang/:id', ensureAuthenticated, ensureRole('mahasiswa'), getDetailTugas);
+
+// Rute untuk mengumpulkan tugas (POST request)
+// Gunakan middleware upload.single('fileTugas') jika Anda mengizinkan upload satu file
+// atau upload.array('fileTugas') jika multiple files, sesuaikan dengan form input name Anda.
+router.post('/tugasMagang/:id/submit', ensureAuthenticated, ensureRole('mahasiswa'), upload.single('fileTugas'), submitTugas);
 
 export default router;

@@ -1,0 +1,161 @@
+
+
+<style>
+  .content-area {
+    padding: 20px;
+  }
+  .detail-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 20px;
+  }
+  .detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+  }
+  .detail-title {
+    font-size: 2em;
+    color: #333;
+    margin: 0;
+  }
+  .detail-status {
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: bold;
+  }
+  .detail-status.not-submitted {
+    background-color: #ffe0e0;
+    color: #dc3545;
+  }
+  .detail-status.submitted {
+    background-color: #e0f2f7;
+    color: #007bff;
+  }
+  .detail-info p {
+    margin-bottom: 10px;
+    color: #555;
+    line-height: 1.6;
+  }
+  .detail-info strong {
+    color: #333;
+  }
+  .detail-description {
+    white-space: pre-wrap; /* Preserve line breaks from database */
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+  .submission-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px dashed #ddd;
+  }
+  .submission-section h3 {
+    margin-bottom: 15px;
+    color: #444;
+  }
+  .file-upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .file-upload-form label {
+    font-weight: bold;
+    color: #555;
+  }
+  .file-upload-form input[type="file"] {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  .file-upload-form button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.2s ease;
+  }
+  .file-upload-form button:hover {
+    background-color: #218838;
+  }
+  .submission-details {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  .submission-details p {
+    margin: 5px 0;
+  }
+  .submission-details a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  .submission-details a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="content-area">
+  <a href="/mahasiswa/tugasMagang" class="back-button">&larr; Kembali ke Daftar Tugas</a>
+
+  <div class="detail-card">
+    <div class="detail-header">
+      <h1 class="detail-title"><%= tugas.judul %></h1>
+      <span class="detail-status <%= statusPengumpulan === 'Belum dikumpul' ? 'not-submitted' : 'submitted' %>">
+        <%= statusPengumpulan %>
+      </span>
+    </div>
+
+    <div class="detail-info">
+      <p><strong>Tenggat:</strong> <%= new Date(tugas.deadline).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></p>
+      <p><strong>Dibuat pada:</strong> <%= new Date(tugas.createdAt).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+      <% if (tugas.updatedAt && tugas.createdAt.getTime() !== tugas.updatedAt.getTime()) { %>
+        <p><strong>Terakhir Diperbarui:</strong> <%= new Date(tugas.updatedAt).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+      <% } %>
+    </div>
+
+    <div class="detail-description">
+      <h3>Deskripsi Tugas:</h3>
+      <p><%= tugas.deskripsi ? tugas.deskripsi : 'Tidak ada deskripsi.' %></p>
+    </div>
+
+    <div class="submission-section">
+      <h3>Pengumpulan Tugas</h3>
+
+      <% if (statusPengumpulan === 'Sudah dikumpul') { %>
+        <div class="submission-details">
+          <p>Anda sudah mengumpulkan tugas ini.</p>
+          <% if (pengumpulan) { %>
+            <p><strong>Tanggal Pengumpulan:</strong> <%= new Date(pengumpulan.tanggalPengumpulan).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></p>
+            <p><strong>Status:</strong> <%= pengumpulan.status %></p>
+            <% if (pengumpulan.nilai) { %>
+              <p><strong>Nilai:</strong> <%= pengumpulan.nilai %></p>
+            <% } %>
+            <% if (pengumpulan.fileUrl) { %>
+              <p><strong>File Dikumpulkan:</strong> <a href="<%= pengumpulan.fileUrl %>" target="_blank">Lihat File</a></p>
+            <% } %>
+          <% } %>
+        </div>
+      <% } else { %>
+        <form action="/mahasiswa/tugasMagang/<%= tugas.id %>/submit" method="POST" enctype="multipart/form-data" class="file-upload-form">
+          <label for="fileTugas">Unggah File Tugas Anda:</label>
+          <input type="file" id="fileTugas" name="fileTugas" required>
+          <button type="submit">Kumpulkan Tugas</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
+</div>

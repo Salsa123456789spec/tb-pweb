@@ -1,0 +1,112 @@
+<style>
+  /* Basic styling to match the image layout */
+  .content-area {
+    padding: 20px;
+  }
+  h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .info-text {
+    color: #666;
+    margin-bottom: 25px;
+  }
+  .info-text a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  .info-text a:hover {
+    text-decoration: underline;
+  }
+  .tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .task-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+  }
+  .task-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent status text from wrapping */
+  }
+  .task-status.not-submitted {
+    background-color: #ffe0e0; /* Light red */
+    color: #dc3545; /* Darker red */
+  }
+  .task-status.submitted {
+    background-color: #e0f2f7; /* Light blue */
+    color: #007bff; /* Darker blue */
+  }
+  .task-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+  }
+  .task-deadline {
+    font-size: 0.95em;
+    color: #666;
+    margin-top: 5px; /* Space between title and deadline */
+  }
+  .task-detail-button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    align-self: flex-start; /* Align button to the start of the flex item */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .task-detail-button:hover {
+    background-color: #e6e6e6;
+    border-color: #bbb;
+  }
+  .no-tasks-message {
+    color: #888;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.1em;
+  }
+</style>
+
+<div class="content-area">
+  <h2>Penugasan</h2>
+  <p class="info-text">Anda bisa melihat pembagian kelompok magang pada laman hasil seleksi wawancara atau bisa dengan mengklik <a href="#">disini</a></p>
+
+  <div class="tasks-list">
+    <% if (tugas && tugas.length > 0) { %>
+      <% tugas.forEach(function(item) { %>
+        <div class="task-card">
+          <div class="task-header">
+            <span class="task-title"><%= item.judul %></span>
+            <span class="task-status <%= item.statusPengumpulan === 'Belum dikumpul' ? 'not-submitted' : 'submitted' %>">
+              <%= item.statusPengumpulan %>
+            </span>
+          </div>
+          <span class="task-deadline">Tenggat <%= new Date(item.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></span>
+          <a href="/mahasiswa/tugasMagang/<%= item.id %>" class="task-detail-button">Tampilkan detail</a>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p class="no-tasks-message">Belum ada tugas magang yang diberikan saat ini.</p>
+    <% } %>
+  </div>
+</div>

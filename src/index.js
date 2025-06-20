@@ -12,6 +12,10 @@ import adminRouter from './routes/admin.js';
 import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
 import konfirmasiPendaftaranRoutes from './routes/konfirmasiPendaftaran.js';
+import adminRoutes from './routes/admin.js';
+import aslabRoutes from './routes/aslab.js';
+
+
 
 
 
@@ -56,6 +60,8 @@ app.set('layout', 'mahasiswa/layout/main');
 app.use('/superadmin', adminRouter);
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
 app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
+app.use('/admin', adminRoutes);
+app.use('/aslab', aslabRoutes);
 
 app.use('/mahasiswa', mahasiswaRouter);
 

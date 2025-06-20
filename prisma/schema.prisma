@@ -28,8 +28,11 @@ model User {
   password      String
   role          Role
 
+
   // Relasi balik ke Pendaftaran
   pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
+  
+  pengumuman  Pengumuman[]
 }
 
 model Pendaftaran {
@@ -48,4 +51,18 @@ model Pendaftaran {
   status                Status   @default(menunggu)
 
   user                  User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
+}
+
+model Pengumuman {
+  id                Int      @id @default(autoincrement())
+  user_id           Int       
+  tahap1_status     String   // 'lulus' atau 'gagal'
+  tahap2_status     String
+  tahap3_status     String
+  hasil_akhir       String   // 'aktif' atau 'tidak_aktif'
+  tanggal_diumumkan DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("pengumuman") // opsional: nama tabel di database
 }

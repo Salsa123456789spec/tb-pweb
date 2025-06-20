@@ -1,8 +1,11 @@
 import bcrypt from 'bcryptjs';
 
-const hashPassword = async () => {
-    const hashed = await bcrypt.hash('sayaadmin', 10);
-    console.log('Hashed password:', hashed);
+const main = async () => {
+  const hashed1 = await bcrypt.hash('sayaadmin', 10);
+  console.log('Hashed sayaadmin:', hashed1);
+
+  const hashed2 = await bcrypt.hash('akuaslab', 10);
+  console.log('Hashed akuaslab:', hashed2);
 };
 
-hashPassword();
+main();

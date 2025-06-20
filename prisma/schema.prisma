@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  mahasiswa
+  admin
+  asisten_lab
+}
+
+enum Status {
+  menunggu
+  diterima
+  ditolak
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  nim           String         @unique
+  name          String
+  email         String         @unique
+  password      String
+  role          Role
+
+  // Relasi balik ke Pendaftaran
+  pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
+}
+
+model Pendaftaran {
+  id                    Int      @id @default(autoincrement())
+  user_id               Int
+  domisili              String   @db.VarChar(100)
+  asal                  String   @db.VarChar(100)
+  nomor_whatsapp        String   @db.VarChar(20)
+  divisi                String   @db.VarChar(100)
+  CV_file               String   @db.VarChar(255)
+  KRS_file              String   @db.VarChar(255)
+  KHS_file              String   @db.VarChar(255)
+  surat_permohonan_file String   @db.VarChar(255)
+  alasan                String?  @db.Text
+  pernyataan            Boolean
+  status                Status   @default(menunggu)
+
+  user                  User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
+}

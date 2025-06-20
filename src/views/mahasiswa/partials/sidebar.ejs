@@ -1,0 +1,43 @@
+<!-- Sidebar -->
+ 
+<aside class="w-64 min-h-screen bg-white shadow-md hidden md:block" style="background: linear-gradient(90deg, #84DA81 0%, #537D5D 100%);">
+    <div class="p-6 font-bold text-black-600 text-md">
+    
+                        <div>Laboratorium of</div>
+                        <div class="font-bold">Enterprise</div>
+                        <div class="font-bold">Application</div>
+                    </div>
+    <nav class="px-5">
+               <a href="/mahasiswa/dashboard"
+      class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+        <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+      <span class="material-icons">dashboard</span>
+      <span>Dashboard</span>
+    </a>
+                <a href="/mahasiswa/formulirPendaftaran"
+      class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+        <%= activePage === 'formulirPendaftaran' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+      <span class="material-icons">description</span>
+      <span>Formulir Pendaftaran</span>
+    </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">announcement</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">people</span>
+                    <span>Wawancara</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">work</span>
+                    <span>Magang</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">forum</span>
+                    <span>Forum diskusi</span>
+                </a>
+                <!-- New Dashboard Link -->
+               
+                
+            </nav>
+</aside>

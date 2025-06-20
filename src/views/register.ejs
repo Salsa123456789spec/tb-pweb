@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Halaman Daftar</title>
+</head>
+
+<body>
+    <!-- Flash Message -->
+    <% if (typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: "<%= success_msg[0] %>"
+            });
+        </script>
+        <% } %>
+
+            <% if (typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: "<%= error_msg[0] %>"
+                    }).then(() => {
+                        // Reset form hanya jika popup error (bukan validasi Joi)
+                        const form = document.getElementById('registerForm');
+                        if (form) form.reset();
+                    });
+                </script>
+                <% } %>
+
+                    <div class="min-h-screen flex items-center justify-center bg-gray-200 py-10 px-4">
+                        <div class="flex flex-col items-center w-full max-w-[48rem] shadow-md bg-white rounded-md overflow-hidden">
+                            <div class="flex w-full flex-col md:flex-row">
+                                <!-- Form -->
+                                <div class="flex justify-center items-center w-full md:w-1/2 p-8">
+                                    <div class="w-full max-w-xs">
+                                        <h1 class="text-xl font-semibold mb-4">Daftar</h1>
+
+                                        <% if (Array.isArray(errors) && errors.length > 0) { %>
+                                            <ul class="text-red-500 text-sm mb-3">
+                                                <% errors.forEach(err => { %>
+                                                    <li>
+                                                        <%= err.msg %>
+                                                    </li>
+                                                    <% }) %>
+                                            </ul>
+                                            <% } %>
+
+                                                <form id="registerForm" action="/register" method="POST">
+                                                    <div class="mb-3">
+                                                        <label class="block text-xs font-semibold mb-1">Nama</label>
+                                                        <input type="text" name="name" placeholder="Nama Lengkap" value="<%= old?.name || '' %>" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" style="border-color: #7dbb7d;" />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="block text-xs font-semibold mb-1">NIM</label>
+                                                        <input type="text" name="nim" placeholder="NIM" value="<%= old?.nim || '' %>" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" style="border-color: #7dbb7d;" />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="block text-xs font-semibold mb-1">Email</label>
+                                                        <input type="email" name="email" placeholder="Email" value="<%= old?.email || '' %>" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" style="border-color: #7dbb7d;" />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="block text-xs font-semibold mb-1">Password</label>
+                                                        <input type="password" name="password" placeholder="******" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" style="border-color: #7dbb7d;" />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="block text-xs font-semibold mb-1">Konfirmasi Password</label>
+                                                        <input type="password" name="confirmPassword" placeholder="******" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" style="border-color: #7dbb7d;" />
+                                                    </div>
+
+                                                    <button class="w-full text-white py-1.5 rounded-md text-sm mb-2" style="background-color: #467445;">Daftar</button>
+                                                </form>
+
+                                                <div class="text-center mt-4">
+                                                    <span class="text-xs text-gray-400 font-semibold">Sudah memiliki akun?</span>
+                                                    <a href="/login" class="text-xs font-semibold" style="color: #467445;">Masuk</a>
+                                                </div>
+                                    </div>
+                                </div>
+
+                                <!-- Banner -->
+                                <div class="w-full md:w-1/2 hidden md:block">
+                                    <img src="/img/gambar.png" alt="Banner" class="h-full w-full object-cover rounded-r-md" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</body>
+
+</html>

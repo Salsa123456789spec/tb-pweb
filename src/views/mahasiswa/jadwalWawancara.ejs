@@ -1,0 +1,43 @@
+<% layout('mahasiswa/layout/main') -%>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Jadwal Wawancara</h2>
+
+            <% if (jadwalWawancara && jadwalWawancara.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">ID Pendaftaran</th>
+                            <th scope="col">Waktu</th>
+                            <th scope="col">Pewawancara</th>
+                            <th scope="col">Kontak Pewawancara</th>
+                            <th scope="col">Ruang</th>
+                            <th scope="col">Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% jadwalWawancara.forEach((jadwal, index) => { %>
+                        <tr>
+                            <th scope="row"><%= index + 1 %></th>
+                            <td><%= jadwal.pendaftaran_id %></td>
+                            <td><%= new Date(jadwal.waktu).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) %></td>
+                            <td><%= jadwal.pewawancara || '-' %></td>
+                            <td><%= jadwal.kontak_pewwc || '-' %></td>
+                            <td><%= jadwal.ruang || '-' %></td>
+                            <td><%= new Date(jadwal.tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <% } else { %>
+            <div class="alert alert-info" role="alert">
+                Belum ada jadwal wawancara yang tersedia.
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>

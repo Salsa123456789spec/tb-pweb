@@ -5,8 +5,17 @@ import { validateLogin } from '../validation/login.js';
 
 const router = express.Router();
 
+// Data default untuk layout agar tidak menulis berulang-ulang
+const layoutData = {
+    title: 'Login Akun',
+    activePage: 'login',
+    layout: 'mahasiswa/layout/main'
+};
+
+// GET Halaman Login
 router.get('/', (req, res) => {
     res.render('login', {
+        ...layoutData, // Menggunakan data layout default
         success_msg: req.flash('success_msg'),
         error_msg: req.flash('error_msg'),
         errors: [],
@@ -14,6 +23,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// POST untuk proses Login
 router.post('/', async (req, res) => {
     const { nim, password } = req.body;
 
@@ -21,6 +31,7 @@ router.post('/', async (req, res) => {
     const { error } = validateLogin(req.body);
     if (error) {
         return res.render('login', {
+            ...layoutData, // FIX: Menambahkan data layout
             success_msg: [],
             error_msg: [],
             errors: error.details.map(err => ({ msg: err.message })),
@@ -35,6 +46,7 @@ router.post('/', async (req, res) => {
 
         if (!user) {
             return res.render('login', {
+                ...layoutData, // FIX: Menambahkan data layout
                 success_msg: [],
                 error_msg: [],
                 errors: [{ msg: 'NIM tidak ditemukan. Silakan daftar terlebih dahulu.' }],
@@ -45,6 +57,7 @@ router.post('/', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.render('login', {
+                ...layoutData, // FIX: Menambahkan data layout
                 success_msg: [],
                 error_msg: [],
                 errors: [{ msg: 'NIM atau Password salah.' }],
@@ -53,13 +66,13 @@ router.post('/', async (req, res) => {
         }
 
         // Set session
-       req.session.user = {
-  id: user.id,
-  role: user.role,
-  email: user.email,
-  name: user.name,
-  nim: user.nim
-};
+        req.session.user = {
+            id: user.id,
+            role: user.role,
+            email: user.email,
+            name: user.name,
+            nim: user.nim
+        };
 
         // Redirect sesuai role
         if (user.role === 'mahasiswa') {
@@ -70,6 +83,7 @@ router.post('/', async (req, res) => {
             return res.redirect('/superadmin/dashboard');
         } else {
             return res.render('login', {
+                ...layoutData, // FIX: Menambahkan data layout
                 success_msg: [],
                 error_msg: [],
                 errors: [{ msg: 'Role tidak dikenali.' }],
@@ -80,6 +94,7 @@ router.post('/', async (req, res) => {
     } catch (err) {
         console.error(err);
         return res.render('login', {
+            ...layoutData, // FIX: Menambahkan data layout
             success_msg: [],
             error_msg: [],
             errors: [{ msg: 'Terjadi kesalahan server.' }],

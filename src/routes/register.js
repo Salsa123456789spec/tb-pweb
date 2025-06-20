@@ -6,9 +6,17 @@ import { validateRegister } from '../validation/register.js';
 
 const router = express.Router();
 
+// Data default untuk layout agar tidak berulang
+const layoutData = {
+    title: 'Registrasi Akun',
+    activePage: 'register',
+    layout: 'mahasiswa/layout/main'
+};
+
 // GET Register Page
 router.get('/', (req, res) => {
     res.render('register', {
+        ...layoutData, // Menggunakan data layout default
         success_msg: req.flash('success_msg'),
         error_msg: req.flash('error_msg'),
         errors: [],
@@ -24,6 +32,7 @@ router.post('/', async(req, res) => {
     const { error } = validateRegister(req.body);
     if (error) {
         return res.render('register', {
+            ...layoutData, // FIX: Menambahkan data layout
             success_msg: [],
             error_msg: [],
             errors: error.details.map(err => ({ msg: err.message })),
@@ -41,6 +50,7 @@ router.post('/', async(req, res) => {
 
         if (existingUser) {
             return res.render('register', {
+                ...layoutData, // FIX: Menambahkan data layout
                 success_msg: [],
                 error_msg: ['NIM atau Email sudah digunakan.'],
                 errors: [],
@@ -66,10 +76,11 @@ router.post('/', async(req, res) => {
     } catch (err) {
         console.error(err);
         res.render('register', {
+            ...layoutData, // FIX: Menambahkan data layout
             success_msg: [],
             error_msg: ['Terjadi kesalahan saat registrasi.'],
             errors: [],
-            // old: req.body
+            old: req.body
         });
     }
 });

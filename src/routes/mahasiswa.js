@@ -40,7 +40,7 @@ router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa')
   res.redirect('/mahasiswa/formulirPendaftaran');
 });
 
-// New route to fetch and display interview schedules
+// Route to fetch and display interview schedules
 router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), async (req, res) => {
   const user = req.session.user;
 
@@ -54,7 +54,7 @@ router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), asy
       include: {
         pendaftaran: { // Include Pendaftaran data to get name and divisi
           select: {
-            domisili: true, // You can select other fields if needed
+            domisili: true,
             asal: true,
             nomor_whatsapp: true,
             divisi: true,

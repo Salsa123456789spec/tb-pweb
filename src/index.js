@@ -11,6 +11,13 @@ import loginRouter from './routes/login.js';
 import adminRouter from './routes/admin.js';
 import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
+import konfirmasiPendaftaranRoutes from './routes/konfirmasiPendaftaran.js';
+import superadminRoutes from './routes/superadmin.js';
+
+// ...
+
+
+
 
 
 
@@ -54,8 +61,10 @@ app.use(expressLayouts);
 app.set('layout', 'mahasiswa/layout/main');
 app.use('/superadmin', adminRouter);
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
-
+app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
 app.use('/mahasiswa', mahasiswaRouter);
+app.use('/superadmin', superadminRoutes);
+
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);

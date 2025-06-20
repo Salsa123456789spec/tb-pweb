@@ -21,7 +21,8 @@ enum Status {
 
 model User {
   id            Int            @id @default(autoincrement())
-  nim           String         @unique
+  nim           String?        @unique
+  no_aslab      String?        @unique   
   name          String
   email         String         @unique
   password      String

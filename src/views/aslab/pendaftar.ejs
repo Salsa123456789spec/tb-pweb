@@ -1,0 +1,59 @@
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Pendaftar</h1>
+
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center">
+            <span class="mr-2 text-gray-700">show</span>
+            <select class="border rounded px-2 py-1">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+            <span class="ml-2 text-gray-700">entries</span>
+        </div>
+        <div class="relative">
+            <input type="text" placeholder="Search......" class="border rounded px-4 py-2 pl-10 w-64">
+            <i class='bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400'></i>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead class="bg-gray-50 border-b">
+                <tr>
+                    <th class="p-3">NIM <i class='bx bx-sort-alt-2 align-middle'></i></th>
+                    <th class="p-3">Nama <i class='bx bx-sort-alt-2 align-middle'></i></th>
+                    <th class="p-3">No HP <i class='bx bx-sort-alt-2 align-middle'></i></th>
+                    <th class="p-3">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (pendaftar && pendaftar.length > 0) { %>
+                    <% pendaftar.forEach(p => { %>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-3"><%= p.nim %></td>
+                            <td class="p-3"><%= p.nama %></td>
+                            <td class="p-3"><%= p.no_hp %></td>
+                            <td class="p-3">
+                                <button class="text-red-500 hover:text-red-700 mr-2"><i class='bx bxs-trash-alt'></i></button>
+                                <button class="text-yellow-500 hover:text-yellow-700"><i class='bx bxs-edit'></i></button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                     <tr>
+                        <td colspan="4" class="p-3 text-center text-gray-500">Data tidak ditemukan.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex justify-end mt-4">
+        <nav class="flex items-center">
+            <a href="#" class="px-3 py-1 border rounded-l-md hover:bg-gray-200">previous</a>
+            <a href="#" class="px-3 py-1 border-t border-b bg-green-500 text-white">1</a>
+            <a href="#" class="px-3 py-1 border rounded-r-md hover:bg-gray-200">next</a>
+        </nav>
+    </div>
+</div>

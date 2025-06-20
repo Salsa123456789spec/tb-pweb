@@ -13,38 +13,204 @@ enum Role {
   asisten_lab
 }
 
-enum Status {
+enum StatusPendaftaran {
   menunggu
   diterima
   ditolak
 }
 
-model User {
-  id            Int            @id @default(autoincrement())
-  nim           String         @unique
-  name          String
-  email         String         @unique
-  password      String
-  role          Role
+enum Tahapan {
+  SATU
+  DUA
+  TIGA
+}
 
-  // Relasi balik ke Pendaftaran
-  pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
+enum StatusKehadiran {
+  Hadir
+  Izin
+  Alfa
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  nim       String   @unique
+  password  String
+  name      String
+  email     String   @unique
+  role      Role
+
+  pendaftaran     Pendaftaran?
+  materi          Materi[]
 }
 
 model Pendaftaran {
-  id                    Int      @id @default(autoincrement())
-  user_id               Int
-  domisili              String   @db.VarChar(100)
-  asal                  String   @db.VarChar(100)
-  nomor_whatsapp        String   @db.VarChar(20)
-  divisi                String   @db.VarChar(100)
-  CV_file               String   @db.VarChar(255)
-  KRS_file              String   @db.VarChar(255)
-  KHS_file              String   @db.VarChar(255)
-  surat_permohonan_file String   @db.VarChar(255)
-  alasan                String?  @db.Text
+  id                    Int       @id @default(autoincrement())
+  user_id               Int       @unique
+  domisili              String
+  asal                  String
+  nomor_whatsapp        String
+  divisi                String
+  CV_file               String
+  KRS_file              String
+  KHS_file              String
+  surat_permohonan_file String
+  alasan                String?
   pernyataan            Boolean
-  status                Status   @default(menunggu)
+  status                StatusPendaftaran @default(menunggu)
 
-  user                  User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
+  user                  User      @relation(fields: [user_id], references: [id])
+  pengumuman            Pengumuman?
+  kuisioner             Feedback_Kuisioner?
+  diskusi               Diskusi[]
+  pengumpulanTugas      PengumpulanTugas[]
+  jadwalWawancara       JadwalWawancara?
+  magang                Magang?
+  kehadiran             Kehadiran[]
+  kelulusan             Kelulusan?
+}
+
+model Pengumuman {
+  id               Int       @id @default(autoincrement())
+  pendaftaran_id   Int       @unique
+  tahapan          Tahapan?
+
+  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+}
+
+model Feedback_Kuisioner {
+  id                          Int       @id @default(autoincrement())
+  pendaftaran_id              Int       @unique
+  kejelasan_soal              Int
+  alokasi_waktu               Int
+  kondisi_ruangan             Int
+  profesionalisme_pewawancara Int
+  bimbingan_arahan            Int
+  supervisi                   Int
+  kualitas_mentoring         Int
+  proses_keseluruhan         Int
+  saran                      String?
+  kesan_pesan                String?
+
+  pendaftaran                Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+}
+
+model Materi {
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  judul          String
+  file           String
+  deskripsi      String?
+  tanggal_upload DateTime @default(now())
+
+  user           User     @relation(fields: [user_id], references: [id])
+}
+
+model Tugas {
+  id               Int                @id @default(autoincrement())
+  judul            String
+  deskripsi        String?
+  deadline         DateTime
+
+  pengumpulanTugas PengumpulanTugas[]
+}
+
+model PengumpulanTugas {
+  id               Int       @id @default(autoincrement())
+  tugas_id         Int
+  pendaftaran_id   Int
+  file             String
+  tanggal_kumpul   DateTime  @default(now())
+
+  tugas            Tugas     @relation(fields: [tugas_id], references: [id])
+  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+  penilaian        Penilaian?
+}
+
+model JadwalWawancara {
+  id              Int      @id @default(autoincrement())
+  pendaftaran_id  Int      @unique
+  waktu           DateTime
+  pewawancara     String?
+  kontak_pewwc    Int?
+  ruang           String?
+  tanggal         DateTime?
+
+  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+  komplain        KomplainJadwal[]
+}
+
+model Magang {
+  id              Int      @id @default(autoincrement())
+  pendaftaran_id  Int      @unique
+  kelompok_id     Int
+  mulai           DateTime?
+  selesai         DateTime?
+
+  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+  kelompok        Kelompok    @relation(fields: [kelompok_id], references: [id])
+}
+
+model Kelompok {
+  id        Int       @id @default(autoincrement())
+  nama      String
+  deskripsi String?
+  kuota     Int
+  mentor    String?
+
+  magang    Magang[]
+}
+
+model FAQ {
+  id         Int    @id @default(autoincrement())
+  pertanyaan String
+  jawaban    String
+}
+
+model Penilaian {
+  id              Int    @id @default(autoincrement())
+  pengumpulan_id  Int    @unique
+  nilai           Int
+  feedback        String?
+
+  pengumpulan     PengumpulanTugas @relation(fields: [pengumpulan_id], references: [id])
+}
+
+model Diskusi {
+  id              Int      @id @default(autoincrement())
+  pendaftaran_id  Int
+  pesan           String
+  waktu           DateTime
+
+  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+}
+
+model Kehadiran {
+  id              Int              @id @default(autoincrement())
+  pendaftaran_id  Int
+  pertemuan       Int
+  tanggal         DateTime
+  status          StatusKehadiran
+
+  pendaftaran     Pendaftaran      @relation(fields: [pendaftaran_id], references: [id])
+}
+
+model Kelulusan {
+  id              Int      @id @default(autoincrement())
+  pendaftaran_id  Int      @unique
+  nilai           Int
+  divisi          String
+
+  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+}
+
+model KomplainJadwal {
+  id                  Int      @id @default(autoincrement())
+  jadwal_id           Int
+  alasan              String
+  status              String   @default("menunggu") // bisa disesuaikan enum jika perlu
+  tanggal_pengajuan   DateTime @default(now())
+  tanggal_diajukan    DateTime?
+  waktu_diajukan      DateTime?
+
+  jadwal              JadwalWawancara @relation(fields: [jadwal_id], references: [id])
 }

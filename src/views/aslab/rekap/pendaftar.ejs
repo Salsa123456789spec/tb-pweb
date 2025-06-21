@@ -29,7 +29,8 @@
             <div class="col-md-6">
                 <form>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Cari data pendaftar...">
+                        <!-- Input pencarian diberi ID "searchInput" -->
+                        <input type="text" id="searchInput" class="form-control" placeholder="Cari data pendaftar...">
                         <button class="btn btn-outline-success" type="button">
                             <i class="fas fa-search"></i>
                         </button>
@@ -48,7 +49,8 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <!-- tbody diberi ID "pendaftarTableBody" -->
+                <tbody id="pendaftarTableBody" class="text-center">
                     <% if (pendaftar && pendaftar.length > 0) { %>
                         <% pendaftar.forEach(p => { %>
                             <tr>
@@ -89,3 +91,35 @@
         </div>
     <% } %>
 </div>
+
+<!-- Script untuk Fungsionalitas Pencarian Real-time -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const tableBody = document.getElementById('pendaftarTableBody');
+        const rows = tableBody.getElementsByTagName('tr');
+
+        searchInput.addEventListener('keyup', function(event) {
+            const searchTerm = event.target.value.toLowerCase();
+
+            // Loop melalui semua baris tabel
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const nimCell = row.cells[0]; // Kolom NIM
+                const nameCell = row.cells[1]; // Kolom Nama
+
+                if (nimCell && nameCell) {
+                    const nimText = nimCell.textContent || nimCell.innerText;
+                    const nameText = nameCell.textContent || nameCell.innerText;
+
+                    // Cek jika NIM atau Nama mengandung kata kunci pencarian
+                    if (nimText.toLowerCase().indexOf(searchTerm) > -1 || nameText.toLowerCase().indexOf(searchTerm) > -1) {
+                        row.style.display = ""; // Tampilkan baris jika cocok
+                    } else {
+                        row.style.display = "none"; // Sembunyikan baris jika tidak cocok
+                    }
+                }
+            }
+        });
+    });
+</script>

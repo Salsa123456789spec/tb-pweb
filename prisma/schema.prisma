@@ -44,6 +44,7 @@ model User {
   pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
   
   pengumuman    Pengumuman[]
+  materi          Materi[]
 }
 
 model Pendaftaran {
@@ -134,4 +135,15 @@ model FAQ {
   id         Int    @id @default(autoincrement())
   pertanyaan String
   jawaban    String
+}
+
+model Materi {
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  judul          String
+  file           String
+  deskripsi      String?
+  tanggal_upload DateTime @default(now())
+
+  user           User     @relation(fields: [user_id], references: [id])
 }

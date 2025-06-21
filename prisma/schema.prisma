@@ -7,45 +7,118 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  mahasiswa
-  admin
-  aslab
+model diskusi {
+  id             Int         @id @default(autoincrement())
+  pendaftaran_id Int
+  pesan          String
+  waktu          DateTime
+  pendaftaran    pendaftaran @relation(fields: [pendaftaran_id], references: [id], map: "Diskusi_pendaftaran_id_fkey")
+
+  @@index([pendaftaran_id], map: "Diskusi_pendaftaran_id_fkey")
 }
 
-enum StatusPendaftaran {
-  menunggu
-  diterima
-  ditolak
+model faq {
+  id         Int    @id @default(autoincrement())
+  pertanyaan String
+  jawaban    String
 }
 
-enum Tahapan {
-  SATU
-  DUA
-  TIGA
+model feedback_kuisioner {
+  id                          Int         @id @default(autoincrement())
+  pendaftaran_id              Int         @unique(map: "Feedback_Kuisioner_pendaftaran_id_key")
+  kejelasan_soal              Int
+  alokasi_waktu               Int
+  kondisi_ruangan             Int
+  profesionalisme_pewawancara Int
+  bimbingan_arahan            Int
+  supervisi                   Int
+  kualitas_mentoring          Int
+  proses_keseluruhan          Int
+  saran                       String?
+  kesan_pesan                 String?
+  pendaftaran                 pendaftaran @relation(fields: [pendaftaran_id], references: [id], map: "Feedback_Kuisioner_pendaftaran_id_fkey")
 }
 
-enum StatusKehadiran {
-  Hadir
-  Izin
-  Alfa
+model jadwalwawancara {
+  id             Int              @id @default(autoincrement())
+  pendaftaran_id Int              @unique(map: "JadwalWawancara_pendaftaran_id_key")
+  waktu          DateTime
+  pewawancara    String?
+  kontak_pewwc   Int?
+  ruang          String?
+  tanggal        DateTime?
+  pendaftaran    pendaftaran      @relation(fields: [pendaftaran_id], references: [id], map: "JadwalWawancara_pendaftaran_id_fkey")
+  komplainjadwal komplainjadwal[]
 }
 
-model User {
+model kehadiran {
+  id             Int              @id @default(autoincrement())
+  pendaftaran_id Int
+  pertemuan      Int
+  tanggal        DateTime
+  status         kehadiran_status
+  pendaftaran    pendaftaran      @relation(fields: [pendaftaran_id], references: [id], map: "Kehadiran_pendaftaran_id_fkey")
+
+  @@index([pendaftaran_id], map: "Kehadiran_pendaftaran_id_fkey")
+}
+
+model kelompok {
   id        Int      @id @default(autoincrement())
-  nim       String   @unique
-  password  String
-  name      String
-  email     String   @unique
-  role      Role
-
-  pendaftaran     Pendaftaran?
-  materi          Materi[]
+  nama      String
+  deskripsi String?
+  kuota     Int
+  mentor    String?
+  magang    magang[]
 }
 
-model Pendaftaran {
-  id                    Int       @id @default(autoincrement())
-  user_id               Int       @unique
+model kelulusan {
+  id             Int         @id @default(autoincrement())
+  pendaftaran_id Int         @unique(map: "Kelulusan_pendaftaran_id_key")
+  nilai          Int
+  divisi         String
+  pendaftaran    pendaftaran @relation(fields: [pendaftaran_id], references: [id], map: "Kelulusan_pendaftaran_id_fkey")
+}
+
+model komplainjadwal {
+  id                Int             @id @default(autoincrement())
+  jadwal_id         Int
+  alasan            String
+  status            String          @default("menunggu")
+  tanggal_pengajuan DateTime        @default(now())
+  tanggal_diajukan  DateTime?
+  waktu_diajukan    DateTime?
+  jadwalwawancara   jadwalwawancara @relation(fields: [jadwal_id], references: [id], map: "KomplainJadwal_jadwal_id_fkey")
+
+  @@index([jadwal_id], map: "KomplainJadwal_jadwal_id_fkey")
+}
+
+model magang {
+  id             Int         @id @default(autoincrement())
+  pendaftaran_id Int         @unique(map: "Magang_pendaftaran_id_key")
+  kelompok_id    Int
+  mulai          DateTime?
+  selesai        DateTime?
+  kelompok       kelompok    @relation(fields: [kelompok_id], references: [id], map: "Magang_kelompok_id_fkey")
+  pendaftaran    pendaftaran @relation(fields: [pendaftaran_id], references: [id], map: "Magang_pendaftaran_id_fkey")
+
+  @@index([kelompok_id], map: "Magang_kelompok_id_fkey")
+}
+
+model materi {
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  judul          String
+  file           String
+  deskripsi      String?
+  tanggal_upload DateTime @default(now())
+  user           user     @relation(fields: [user_id], references: [id], map: "Materi_user_id_fkey")
+
+  @@index([user_id], map: "Materi_user_id_fkey")
+}
+
+model pendaftaran {
+  id                    Int                 @id @default(autoincrement())
+  user_id               Int                 @unique(map: "Pendaftaran_user_id_key")
   domisili              String
   asal                  String
   nomor_whatsapp        String
@@ -56,161 +129,91 @@ model Pendaftaran {
   surat_permohonan_file String
   alasan                String?
   pernyataan            Boolean
-  status                StatusPendaftaran @default(menunggu)
-
-  user                  User      @relation(fields: [user_id], references: [id])
-  pengumuman            Pengumuman?
-  kuisioner             Feedback_Kuisioner?
-  diskusi               Diskusi[]
-  pengumpulanTugas      PengumpulanTugas[]
-  jadwalWawancara       JadwalWawancara?
-  magang                Magang?
-  kehadiran             Kehadiran[]
-  kelulusan             Kelulusan?
+  status                pendaftaran_status  @default(menunggu)
+  diskusi               diskusi[]
+  feedback_kuisioner    feedback_kuisioner?
+  jadwalwawancara       jadwalwawancara?
+  kehadiran             kehadiran[]
+  kelulusan             kelulusan?
+  magang                magang?
+  user                  user                @relation(fields: [user_id], references: [id], map: "Pendaftaran_user_id_fkey")
+  pengumpulantugas      pengumpulantugas[]
+  pengumuman            pengumuman?
 }
 
-model Pengumuman {
-  id               Int       @id @default(autoincrement())
-  pendaftaran_id   Int       @unique
-  tahapan          Tahapan?
-
-  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
-}
-
-model Feedback_Kuisioner {
-  id                          Int       @id @default(autoincrement())
-  pendaftaran_id              Int       @unique
-  kejelasan_soal              Int
-  alokasi_waktu               Int
-  kondisi_ruangan             Int
-  profesionalisme_pewawancara Int
-  bimbingan_arahan            Int
-  supervisi                   Int
-  kualitas_mentoring         Int
-  proses_keseluruhan         Int
-  saran                      String?
-  kesan_pesan                String?
-
-  pendaftaran                Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
-}
-
-model Materi {
-  id             Int      @id @default(autoincrement())
-  user_id        Int
-  judul          String
+model pengumpulantugas {
+  id             Int         @id @default(autoincrement())
+  tugas_id       Int
+  pendaftaran_id Int
   file           String
-  deskripsi      String?
-  tanggal_upload DateTime @default(now())
+  tanggal_kumpul DateTime    @default(now())
+  pendaftaran    pendaftaran @relation(fields: [pendaftaran_id], references: [id], map: "PengumpulanTugas_pendaftaran_id_fkey")
+  tugas          tugas       @relation(fields: [tugas_id], references: [id], map: "PengumpulanTugas_tugas_id_fkey")
+  penilaian      penilaian?
 
-  user           User     @relation(fields: [user_id], references: [id])
+  @@index([pendaftaran_id], map: "PengumpulanTugas_pendaftaran_id_fkey")
+  @@index([tugas_id], map: "PengumpulanTugas_tugas_id_fkey")
 }
 
-model Tugas {
+model pengumuman {
+  id             Int                 @id @default(autoincrement())
+  pendaftaran_id Int                 @unique(map: "Pengumuman_pendaftaran_id_key")
+  tahapan        pengumuman_tahapan?
+  user_id        Int?
+  pendaftaran    pendaftaran         @relation(fields: [pendaftaran_id], references: [id], map: "Pengumuman_pendaftaran_id_fkey")
+  user           user?               @relation(fields: [user_id], references: [id], map: "Pengumuman_user_id_fkey")
+
+  @@index([user_id], map: "Pengumuman_user_id_fkey")
+}
+
+model penilaian {
+  id               Int              @id @default(autoincrement())
+  pengumpulan_id   Int              @unique(map: "Penilaian_pengumpulan_id_key")
+  nilai            Int
+  feedback         String?
+  pengumpulantugas pengumpulantugas @relation(fields: [pengumpulan_id], references: [id], map: "Penilaian_pengumpulan_id_fkey")
+}
+
+model tugas {
   id               Int                @id @default(autoincrement())
   judul            String
   deskripsi        String?
   deadline         DateTime
-
-  pengumpulanTugas PengumpulanTugas[]
+  pengumpulantugas pengumpulantugas[]
 }
 
-model PengumpulanTugas {
-  id               Int       @id @default(autoincrement())
-  tugas_id         Int
-  pendaftaran_id   Int
-  file             String
-  tanggal_kumpul   DateTime  @default(now())
-
-  tugas            Tugas     @relation(fields: [tugas_id], references: [id])
-  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
-  penilaian        Penilaian?
+model user {
+  id          Int          @id @default(autoincrement())
+  nim         String       @unique(map: "User_nim_key")
+  name        String
+  email       String       @unique(map: "User_email_key")
+  password    String
+  role        user_role
+  materi      materi[]
+  pendaftaran pendaftaran?
+  pengumuman  pengumuman[]
 }
 
-model JadwalWawancara {
-  id              Int      @id @default(autoincrement())
-  pendaftaran_id  Int      @unique
-  waktu           DateTime
-  pewawancara     String?
-  kontak_pewwc    Int?
-  ruang           String?
-  tanggal         DateTime?
-
-  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
-  komplain        KomplainJadwal[]
+enum pengumuman_tahapan {
+  tahap1
+  tahap2
+  tahap3
 }
 
-model Magang {
-  id              Int      @id @default(autoincrement())
-  pendaftaran_id  Int      @unique
-  kelompok_id     Int
-  mulai           DateTime?
-  selesai         DateTime?
-
-  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
-  kelompok        Kelompok    @relation(fields: [kelompok_id], references: [id])
+enum kehadiran_status {
+  Hadir
+  Izin
+  Alfa
 }
 
-model Kelompok {
-  id        Int       @id @default(autoincrement())
-  nama      String
-  deskripsi String?
-  kuota     Int
-  mentor    String?
-
-  magang    Magang[]
+enum user_role {
+  mahasiswa
+  admin
+  asisten_lab
 }
 
-model FAQ {
-  id         Int    @id @default(autoincrement())
-  pertanyaan String
-  jawaban    String
-}
-
-model Penilaian {
-  id              Int    @id @default(autoincrement())
-  pengumpulan_id  Int    @unique
-  nilai           Int
-  feedback        String?
-
-  pengumpulan     PengumpulanTugas @relation(fields: [pengumpulan_id], references: [id])
-}
-
-model Diskusi {
-  id              Int      @id @default(autoincrement())
-  pendaftaran_id  Int
-  pesan           String
-  waktu           DateTime
-
-  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
-}
-
-model Kehadiran {
-  id              Int              @id @default(autoincrement())
-  pendaftaran_id  Int
-  pertemuan       Int
-  tanggal         DateTime
-  status          StatusKehadiran
-
-  pendaftaran     Pendaftaran      @relation(fields: [pendaftaran_id], references: [id])
-}
-
-model Kelulusan {
-  id              Int      @id @default(autoincrement())
-  pendaftaran_id  Int      @unique
-  nilai           Int
-  divisi          String
-
-  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
-}
-
-model KomplainJadwal {
-  id                  Int      @id @default(autoincrement())
-  jadwal_id           Int
-  alasan              String
-  status              String   @default("menunggu") // bisa disesuaikan enum jika perlu
-  tanggal_pengajuan   DateTime @default(now())
-  tanggal_diajukan    DateTime?
-  waktu_diajukan      DateTime?
-
-  jadwal              JadwalWawancara @relation(fields: [jadwal_id], references: [id])
+enum pendaftaran_status {
+  menunggu
+  diterima
+  ditolak
 }

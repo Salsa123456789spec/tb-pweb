@@ -6,7 +6,7 @@ import { getRekapPendaftar, getDetailPendaftar, deletePendaftar } from '../contr
 const router = express.Router();
 
 // Rute untuk dashboard
-router.get("/dashboard", ensureAuthenticated, ensureRole('aslab'), (req, res) => {
+router.get("/dashboard", ensureAuthenticated, ensureRole('asisten_lab'), (req, res) => {
     res.render("aslab/dashboard", {
         layout: 'aslab/layout/main', // Pastikan file /views/aslab/layout/main.ejs ada
         title: 'Dashboard Aslab',
@@ -16,7 +16,7 @@ router.get("/dashboard", ensureAuthenticated, ensureRole('aslab'), (req, res) =>
 });
 
 // Rute untuk halaman Absensi
-router.get("/absensi", ensureAuthenticated, ensureRole('aslab'), (req, res) => {
+router.get("/absensi", ensureAuthenticated, ensureRole('asisten_lab'), (req, res) => {
     // Anda bisa menambahkan logika untuk mengambil data riwayat dari database di sini
     const riwayatAbsensi = [
         {
@@ -37,12 +37,12 @@ router.get("/absensi", ensureAuthenticated, ensureRole('aslab'), (req, res) => {
 });
 
 // Rute untuk menampilkan list pendaftar
-router.get("/rekap/pendaftar", ensureAuthenticated, ensureRole('aslab'), getRekapPendaftar);
+router.get("/rekap/pendaftar", ensureAuthenticated, ensureRole('asisten_lab'), getRekapPendaftar);
 
 // Rute untuk menampilkan halaman detail pendaftar
-router.get("/rekap/pendaftar/detail/:id", ensureAuthenticated, ensureRole('aslab'), getDetailPendaftar);
+router.get("/rekap/pendaftar/detail/:id", ensureAuthenticated, ensureRole('asisten_lab'), getDetailPendaftar);
 
 // Rute untuk menghapus data pendaftar
-router.get("/rekap/pendaftar/delete/:id", ensureAuthenticated, ensureRole('aslab'), deletePendaftar);
+router.get("/rekap/pendaftar/delete/:id", ensureAuthenticated, ensureRole('asisten_lab'), deletePendaftar);
 
 export default router;

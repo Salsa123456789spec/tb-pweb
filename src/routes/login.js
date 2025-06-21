@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
 
         // Redirect sesuai role
         switch (user.role) {
-            case 'aslab':
+            case 'asisten_lab':
                 return res.redirect('/aslab/dashboard');
             case 'mahasiswa':
                 return res.redirect('/mahasiswa/dashboard');

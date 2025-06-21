@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
     console.log("Session user:", req.session.user);
 
     // Redirect berdasarkan role
-    if (user.role === "aslab") {
+    if (user.role === "asisten_lab") {
       res.redirect("/aslab/dashboard");
     } else {
       res.redirect("/mahasiswa/dashboard");

@@ -7,12 +7,13 @@ import { getRekapPendaftar, getDetailPendaftar, deletePendaftar } from '../contr
 
 const router = express.Router();
 
-// Rute untuk dashboard (sudah ada)
+// Rute untuk dashboard (DIPERBAIKI)
 router.get("/dashboard", ensureAuthenticated, ensureRole('aslab'), (req, res) => {
     res.render("aslab/dashboard", {
-        layout: 'aslab/layout/main',
-        title: 'Dashboard',
-        user: req.session.user
+        layout: 'aslab/layout/main', // Pastikan file /views/aslab/layout/main.ejs ada
+        title: 'Dashboard Aslab',
+        user: req.session.user,
+        activePage: 'dashboard' // Variabel ini ditambahkan untuk mengatasi kemungkinan error di layout
     });
 });
 

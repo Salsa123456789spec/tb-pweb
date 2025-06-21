@@ -1,60 +1,62 @@
+<%# src/views/aslab/layout/main.ejs %>
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Admin</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- optional -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | LeeAnjayy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-        }
-        
-        .sidebar {
-            width: 200px;
-            height: 100vh;
-            background: #22c55e;
-            color: white;
-            padding: 20px;
-            float: left;
-        }
-        
-        .content {
-            margin-left: 200px;
-            padding: 20px;
-        }
-        
-        h1 {
-            margin-top: 0;
-        }
+        :root { --sidebar-width: 250px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+        .sidebar { width: var(--sidebar-width); height: 100vh; background: linear-gradient(180deg, #4CAF50 0%, #2E7D32 100%); position: fixed; left: 0; top: 0; z-index: 1000; overflow-y: auto; transition: transform 0.3s ease; }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header h3 { color: white; font-size: 18px; font-weight: bold; margin: 0; }
+        .sidebar-menu { padding: 20px 0; }
+        .menu-item { display: block; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; transition: all 0.3s ease; border: none; background: none; width: 100%; text-align: left; }
+        .menu-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .menu-item.active { background: rgba(255,255,255,0.2); color: white; border-right: 3px solid white; }
+        .menu-item i { width: 20px; margin-right: 10px; }
+        .main-content { margin-left: var(--sidebar-width); transition: margin-left 0.3s ease; }
+        .top-bar { background: white; padding: 15px 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background: #4CAF50; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+        .content-area { padding: 30px; }
     </style>
 </head>
 
 <body>
     <div class="sidebar">
-        <h2>LeaAnjayyy</h2>
-        <ul>
-            <li><a href="/aslab/dashboard">Dashboard</a></li>
-            <li><a href="#">Verifikasi</a></li>
-            <li><a href="#">Wawancara</a></li>
-            <li><a href="#">Penilaian</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <h1>Dashboard Admin</h1>
-        <p>Selamat datang, admin!</p>
-
-        <div class="statistik">
-            <h3>Statistik</h3>
-            <ul>
-                <li>Total Peserta: 256</li>
-                <li>Sudah Dinilai: 187</li>
-                <li>Belum Dinilai: 69</li>
-            </ul>
+        <div class="sidebar-header">
+            <h3><i class="fas fa-user-shield"></i> Aslab Panel</h3>
         </div>
+        <nav class="sidebar-menu">
+            <a href="/aslab/dashboard" class="menu-item <%= locals.activePage === 'dashboard' ? 'active' : '' %>">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/aslab/rekap/pendaftar" class="menu-item <%= locals.activePage === 'rekap-pendaftar' ? 'active' : '' %>">
+                <i class="fas fa-users"></i> Rekap Pendaftar
+            </a>
+            </nav>
     </div>
-</body>
 
+    <div class="main-content">
+        <div class="top-bar">
+            <div></div> <div class="user-info">
+                <span><%= user.name %></span>
+                <div class="user-avatar" title="<%= user.name %>"><%= user.name.charAt(0).toUpperCase() %></div>
+            </div>
+        </div>
+
+        <main class="content-area">
+            <%- body %>
+        </main>
+        
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

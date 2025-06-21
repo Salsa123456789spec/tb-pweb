@@ -5,64 +5,40 @@ import { validateLogin } from '../validation/login.js';
 
 const router = express.Router();
 
-// Data default untuk layout agar tidak menulis berulang-ulang
+// Data default untuk layout
 const layoutData = {
     title: 'Login Akun',
     activePage: 'login',
-    layout: false // <-- MENJADI SEPERTI INI
+    layout: false
 };
 
 // GET Halaman Login
 router.get('/', (req, res) => {
     res.render('login', {
-        ...layoutData, // Menggunakan data layout default
-        success_msg: req.flash('success_msg'),
-        error_msg: req.flash('error_msg'),
-        errors: [],
-        old: {}
+        ...layoutData,
+        errors: req.flash('errors'), // Ambil error dari flash
+        old: req.flash('old')[0] || {} // Ambil old input dari flash
     });
 });
 
-// POST untuk proses Login
+// POST untuk proses Login (DIPERBAIKI)
 router.post('/', async (req, res) => {
     const { nim, password } = req.body;
 
-    // Validasi input
     const { error } = validateLogin(req.body);
     if (error) {
-        return res.render('login', {
-            ...layoutData, // FIX: Menambahkan data layout
-            success_msg: [],
-            error_msg: [],
-            errors: error.details.map(err => ({ msg: err.message })),
-            old: req.body
-        });
+        req.flash('errors', error.details.map(err => ({ msg: err.message })));
+        req.flash('old', req.body);
+        return res.redirect('/login');
     }
 
     try {
-        const user = await prisma.user.findUnique({
-            where: { nim }
-        });
+        const user = await prisma.user.findUnique({ where: { nim } });
 
-        if (!user) {
-            return res.render('login', {
-                ...layoutData, // FIX: Menambahkan data layout
-                success_msg: [],
-                error_msg: [],
-                errors: [{ msg: 'NIM tidak ditemukan. Silakan daftar terlebih dahulu.' }],
-                old: req.body
-            });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.render('login', {
-                ...layoutData, // FIX: Menambahkan data layout
-                success_msg: [],
-                error_msg: [],
-                errors: [{ msg: 'NIM atau Password salah.' }],
-                old: req.body
-            });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            req.flash('errors', [{ msg: 'NIM atau Password salah.' }]);
+            req.flash('old', req.body);
+            return res.redirect('/login');
         }
 
         // Set session
@@ -75,31 +51,22 @@ router.post('/', async (req, res) => {
         };
 
         // Redirect sesuai role
-        if (user.role === 'mahasiswa') {
-            return res.redirect('/mahasiswa/dashboard');
-        } else if (user.role === 'aslab') {
-            return res.redirect('/aslab/dashboard');
-        } else if (user.role === 'admin') {
-            return res.redirect('/superadmin/dashboard');
-        } else {
-            return res.render('login', {
-                ...layoutData, // FIX: Menambahkan data layout
-                success_msg: [],
-                error_msg: [],
-                errors: [{ msg: 'Role tidak dikenali.' }],
-                old: req.body
-            });
+        switch (user.role) {
+            case 'aslab':
+                return res.redirect('/aslab/dashboard');
+            case 'mahasiswa':
+                return res.redirect('/mahasiswa/dashboard');
+            case 'admin':
+                return res.redirect('/superadmin/dashboard');
+            default:
+                req.flash('errors', [{ msg: 'Role tidak dikenali.' }]);
+                return res.redirect('/login');
         }
 
     } catch (err) {
         console.error(err);
-        return res.render('login', {
-            ...layoutData, // FIX: Menambahkan data layout
-            success_msg: [],
-            error_msg: [],
-            errors: [{ msg: 'Terjadi kesalahan server.' }],
-            old: req.body
-        });
+        req.flash('errors', [{ msg: 'Terjadi kesalahan server.' }]);
+        return res.redirect('/login');
     }
 });
 

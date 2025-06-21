@@ -19,6 +19,12 @@ enum Status {
   ditolak
 }
 
+enum StatusKumpul {
+  terkumpul
+  terlambat
+  belum_terkumpul
+}
+
 model User {
   id            Int            @id @default(autoincrement())
   nim           String         @unique
@@ -66,8 +72,14 @@ model PengumpulanTugas {
   pendaftaran_id   Int
   file             String
   tanggal_kumpul   DateTime  @default(now())
+  status           StatusKumpul    @default(belum_terkumpul)
 
   tugas            Tugas     @relation(fields: [tugas_id], references: [id])
   pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
  
+}
+model FAQ {
+  id         Int    @id @default(autoincrement())
+  pertanyaan String
+  jawaban    String
 }

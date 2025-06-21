@@ -11,7 +11,7 @@ import loginRouter from './routes/login.js';
 import adminRouter from './routes/admin.js';
 import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
-
+import faqRouter from './routes/faq.js'; 
 
 
 const app = express();
@@ -54,7 +54,7 @@ app.use(expressLayouts);
 app.set('layout', 'mahasiswa/layout/main');
 app.use('/superadmin', adminRouter);
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
-
+app.use('/mahasiswa/faq', faqRouter); 
 app.use('/mahasiswa', mahasiswaRouter);
 
 

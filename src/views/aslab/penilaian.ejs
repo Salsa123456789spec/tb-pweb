@@ -1,0 +1,55 @@
+
+
+  <div class="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-lg shadow">
+    <h1 class="text-2xl font-bold mb-6">Penilaian Pendaftaran Mahasiswa</h1>
+
+    <!-- Informasi Mahasiswa -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div>
+        <p class="font-semibold">Nama:</p>
+        <p><%= pendaftar.user.name %></p>
+      </div>
+      <div>
+        <p class="font-semibold">NIM:</p>
+        <p><%= pendaftar.user.nim %></p>
+      </div>
+      <div>
+        <p class="font-semibold">Divisi yang dipilih:</p>
+        <p><%= pendaftar.divisi %></p>
+      </div>
+      <div>
+        <p class="font-semibold">Status:</p>
+        <p class="capitalize"><%= pendaftar.status %></p>
+      </div>
+    </div>
+
+    <!-- Dokumen -->
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-4">Dokumen Terlampir</h2>
+      <div class="space-y-2">
+        <div><a class="text-blue-600 underline" href="/uploads/<%= pendaftar.CV_file %>" target="_blank">Lihat CV</a></div>
+        <div><a class="text-blue-600 underline" href="/uploads/<%= pendaftar.KRS_file %>" target="_blank">Lihat KRS</a></div>
+        <div><a class="text-blue-600 underline" href="/uploads/<%= pendaftar.KHS_file %>" target="_blank">Lihat KHS</a></div>
+        <div><a class="text-blue-600 underline" href="/uploads/<%= pendaftar.surat_permohonan_file %>" target="_blank">Lihat Surat Permohonan</a></div>
+      </div>
+    </div>
+
+    <!-- Form Penilaian -->
+    <form action="/verifikasi/penilaian/<%= pendaftar.id %>" method="POST" class="space-y-6">
+      <div>
+        <label for="catatan" class="block font-semibold mb-2">Catatan (Opsional)</label>
+        <textarea id="catatan" name="catatan" rows="4" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-green-500"><%= pendaftar.catatan || '' %></textarea>
+      </div>
+
+      <div class="flex gap-4">
+        <button type="submit" name="aksi" value="approve" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+          ✅ Setujui
+        </button>
+        <button type="submit" name="aksi" value="reject" class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">
+          ❌ Tolak
+        </button>
+        <a href="/verifikasi" class="ml-auto text-gray-600 hover:underline">← Kembali</a>
+      </div>
+    </form>
+  </div>
+

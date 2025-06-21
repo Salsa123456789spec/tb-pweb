@@ -19,6 +19,13 @@ enum Status {
   ditolak
 }
 
+enum StatusKumpul {
+  belum_terkumpul
+  terkumpul
+}
+
+
+
 model User {
   id            Int            @id @default(autoincrement())
   nim           String?        @unique
@@ -51,6 +58,28 @@ model Pendaftaran {
   status                Status   @default(menunggu)
 
   user                  User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
+  pengumpulanTugas      PengumpulanTugas[]
+}
+
+model Tugas {
+  id               Int                @id @default(autoincrement())
+  judul            String
+  deskripsi        String?
+  deadline         DateTime
+  lampiran         String? 
+  pengumpulanTugas PengumpulanTugas[]
+}
+model PengumpulanTugas {
+  id               Int       @id @default(autoincrement())
+  tugas_id         Int
+  pendaftaran_id   Int
+  file             String
+  tanggal_kumpul   DateTime  @default(now())
+  status           StatusKumpul    @default(belum_terkumpul)
+
+  tugas            Tugas     @relation(fields: [tugas_id], references: [id])
+  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+ 
 }
 
 model Pengumuman {

@@ -16,8 +16,8 @@ router.get('/verifBerkas', async (req, res) => {
   pendaftar,
   activePage: 'verifBerkas',
   title: 'Verifikasi Berkas',
-   user: req.session.user,
-   layout: 'aslab/layout/main'  
+   layout: 'aslab/layout/main' ,
+   user: req.session.user, 
 });
 
   } catch (err) {
@@ -25,5 +25,22 @@ router.get('/verifBerkas', async (req, res) => {
     res.status(500).send('Gagal mengambil data.');
   }
 });
+router.get('/penilaian/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const pendaftar = await Pendaftar.findByPk(id, {
+      include: ['user'] // pastikan relasi 'user' ada di model
+    });
+
+    if (!pendaftar) return res.status(404).send('Data tidak ditemukan');
+
+    res.render('penilaian', { pendaftar });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Terjadi kesalahan server');
+  }
+});
+
 
 export default router;

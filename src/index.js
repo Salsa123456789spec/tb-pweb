@@ -15,6 +15,18 @@ import konfirmasiPendaftaranRoutes from './routes/konfirmasiPendaftaran.js';
 import adminRoutes from './routes/admin.js';
 import aslabRoutes from './routes/aslab.js';
 import verifikasiRoutes from './routes/verifBerkas.js';
+import penilaianRoutes from './routes/penilaian.js';
+import penilaianMagangRoutes from './routes/penilaianMagang.js';
+import penilaianTotalRoutes from './routes/penilaianTotal.js';
+import rankingMagangRoutes from './routes/rankingMagang.js';
+import tugasMagangRoutes from './routes/tugasMagang.js';
+import formTugasRoutes from './routes/formTugas.js';
+import buatTugasRoutes from './routes/buatTugas.js';
+import hapusTugasRoutes from './routes/hapusTugas.js';
+import detailTugasRoutes from './routes/detailTugas.js';
+
+
+
 
 
 
@@ -61,14 +73,27 @@ app.get('/', (req, res) => {
 app.use(expressLayouts);
 app.set('layout', 'mahasiswa/layout/main');
 app.use('/superadmin', adminRouter);
+
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
 app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
 app.use('/admin', adminRoutes);
 app.use('/aslab', aslabRoutes);
 app.use('/aslab', verifikasiRoutes);
+app.use('/penilaian', penilaianRoutes);
+app.use('/aslab', penilaianMagangRoutes);
+app.use('/aslab', penilaianTotalRoutes);
+app.use('/aslab', rankingMagangRoutes);
+app.use('/', tugasMagangRoutes);
+app.use('/aslab', formTugasRoutes);
+app.use('/', buatTugasRoutes);
+app.use('/aslab', hapusTugasRoutes);
+app.use('/aslab', detailTugasRoutes);
+
 
 app.use('/mahasiswa', mahasiswaRouter);
+
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);
 });
+

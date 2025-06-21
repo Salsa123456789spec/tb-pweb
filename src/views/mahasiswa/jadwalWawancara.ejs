@@ -1,186 +1,172 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Wawancara</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'green-custom': {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            300: '#86efac',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-gray-50">
-    <div class="w-full min-h-screen">
-        <div class="w-full px-6 lg:px-12 xl:px-16 py-8">
-            <div class="w-full mb-10">
-                <h1 class="text-4xl font-bold text-gray-900 mb-2">Jadwal Wawancara</h1>
-                <p class="text-gray-600 text-lg">Jadwal wawancara asisten lab</p>
-            </div>
+<div class="w-full min-h-screen">
+    <div class="w-full px-6 lg:px-12 xl:px-16 py-8">
+        <div class="w-full mb-10">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Jadwal Wawancara</h1>
+            <p class="text-gray-600 text-lg">Jadwal wawancara asisten lab</p>
+        </div>
 
-            <% if (jadwalWawancara && jadwalWawancara.length > 0) { %>
-            <div class="w-full space-y-6">
-                <% jadwalWawancara.forEach((jadwal, index) => { %>
-                <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-all duration-300 hover:scale-[1.01] w-full">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">
-                                <%= jadwal.pendaftaran?.user?.name || 'Nama Pendaftar' %> - <%= jadwal.pendaftaran?.divisi || 'Divisi' %>
-                            </h3>
-                            <p class="text-gray-500 text-sm">ID Pendaftaran: <%= jadwal.pendaftaran_id || 'N/A' %></p>
+        <% if (jadwalWawancara && jadwalWawancara.length > 0) { %>
+        <div class="w-full space-y-6">
+            <% jadwalWawancara.forEach((jadwal) => { %>
+            <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-all duration-300 hover:scale-[1.01] w-full">
+                <div class="flex items-start justify-between mb-6">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                            <%= jadwal.pendaftaran?.user?.name || 'Nama Pendaftar' %> - <%= jadwal.pendaftaran?.divisi || 'Divisi' %>
+                        </h3>
+                        <p class="text-gray-500 text-sm">ID Pendaftaran: <%= jadwal.pendaftaran_id || 'N/A' %></p>
+                        
+                        <% if (jadwal.KomplainJadwal && jadwal.KomplainJadwal.length > 0) { %>
+                            <% const komplain = jadwal.KomplainJadwal[0]; %>
+                            <% let statusClass = ''; %>
+                            <% let statusText = ''; %>
                             
-                            <% if (jadwal.KomplainJadwal && jadwal.KomplainJadwal.length > 0) { %>
-                                <span class="inline-flex items-center px-3 py-1 mt-2 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zm-1 9a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
-                                    Status Komplain: <%= jadwal.KomplainJadwal[0].status.charAt(0).toUpperCase() + jadwal.KomplainJadwal[0].status.slice(1) %>
-                                </span>
+                            <% if (komplain.status === 'menunggu') { %>
+                                <% statusClass = 'bg-yellow-100 text-yellow-800'; %>
+                                <% statusText = 'Menunggu Review'; %>
+                            <% } else if (komplain.status === 'diterima') { %>
+                                <% statusClass = 'bg-green-100 text-green-800'; %>
+                                <% statusText = 'Diterima'; %>
+                            <% } else if (komplain.status === 'ditolak') { %>
+                                <% statusClass = 'bg-red-100 text-red-800'; %>
+                                <% statusText = 'Ditolak'; %>
+                            <% } else { %>
+                                <% statusClass = 'bg-gray-100 text-gray-800'; %>
+                                <% statusText = komplain.status.charAt(0).toUpperCase() + komplain.status.slice(1); %>
                             <% } %>
+                            
+                            <span class="inline-flex items-center px-3 py-1 mt-2 rounded-full text-sm font-medium <%= statusClass %>">
+                                Status Komplain: <%= statusText %>
+                            </span>
+                        <% } else { %>
+                            <span class="inline-flex items-center px-3 py-1 mt-2 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                Belum Ada Komplain
+                            </span>
+                        <% } %>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900">
+                                <%= jadwal.pewawancara?.nama || 'Nama Pewawancara' %>
+                            </h4>
+                            <p class="text-gray-500 text-sm">Pewawancara</p>
+                            <p class="text-gray-500 text-sm">Kontak: <%= jadwal.pewawancara?.kontak || 'N/A' %></p>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-4">
-                            <div class="relative">
-                                <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
+                    <div class="flex items-center space-x-8">
+                        <div class="flex items-center space-x-3 bg-green-50 px-4 py-3 rounded-xl">
+                            <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
                             </div>
                             <div>
-                                <h4 class="text-lg font-semibold text-gray-900">
-                                    <%= jadwal.pewawancara?.nama || 'Nama Pewawancara' %>
-                                </h4>
-                                <p class="text-gray-500 text-sm">
-                                    Pewawancara
-                                </p>
-                                <p class="text-gray-500 text-sm">
-                                    Kontak: <%= jadwal.pewawancara?.kontak || 'N/A' %>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Tanggal</p>
+                                <p class="text-sm font-semibold text-gray-900">
+                                    <%= new Date(jadwal.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %>
                                 </p>
                             </div>
                         </div>
 
-                        <div class="flex items-center space-x-8">
-                            <div class="flex items-center space-x-3 bg-green-50 px-4 py-3 rounded-xl">
-                                <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Tanggal</p>
-                                    <p class="text-sm font-semibold text-gray-900">
-                                        <%= new Date(jadwal.tanggal).toLocaleDateString('id-ID', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric'
-                                        }) %>
-                                    </p>
-                                </div>
+                        <div class="flex items-center space-x-3 bg-blue-50 px-4 py-3 rounded-xl">
+                            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
                             </div>
-
-                            <div class="flex items-center space-x-3 bg-blue-50 px-4 py-3 rounded-xl">
-                                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Waktu</p>
-                                    <p class="text-sm font-semibold text-gray-900">
-                                        <%= new Date(jadwal.waktu).toLocaleTimeString('id-ID', {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        }) %>
-                                    </p>
-                                </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Waktu</p>
+                                <p class="text-sm font-semibold text-gray-900">
+                                    <%= new Date(jadwal.waktu).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) %>
+                                </p>
                             </div>
+                        </div>
 
-                            <div class="flex items-center space-x-3 bg-purple-50 px-4 py-3 rounded-xl">
-                                <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Ruangan</p>
-                                    <p class="text-sm font-semibold text-gray-900">
-                                        <%= jadwal.ruang || 'Ruang LAB 6 A' %>
-                                    </p>
-                                </div>
+                        <div class="flex items-center space-x-3 bg-purple-50 px-4 py-3 rounded-xl">
+                            <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Ruangan</p>
+                                <p class="text-sm font-semibold text-gray-900">
+                                    <%= jadwal.ruang || 'Ruang LAB 6 A' %>
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <% }) %>
             </div>
+            <% }) %>
+        </div>
 
-            <div class="w-full mt-12 flex justify-end">
-                <%
-                    // Asumsi tombol komplain hanya berlaku untuk jadwal pertama yang ditampilkan
-                    const firstJadwal = jadwalWawancara[0];
-                    const hasPendingComplaintForFirstJadwal = firstJadwal && firstJadwal.KomplainJadwal && firstJadwal.KomplainJadwal.length > 0;
-                %>
-                <% if (hasPendingComplaintForFirstJadwal) { %>
-                    <span class="bg-gray-400 text-white font-bold py-4 px-10 rounded-2xl shadow-lg flex items-center space-x-3 opacity-75 cursor-not-allowed">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>Komplain Diajukan</span>
-                    </span>
-                <% } else { %>
-                    <a href="/mahasiswa/komplain-wawancara/<%= jadwalWawancara[0].id %>" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-10 rounded-2xl shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl flex items-center space-x-3">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>Komplain Jadwal</span>
-                    </a>
+        <div class="w-full mt-12 flex justify-end">
+            <% const firstJadwal = jadwalWawancara[0]; %>
+            <% const hasComplaint = firstJadwal && firstJadwal.KomplainJadwal && firstJadwal.KomplainJadwal.length > 0; %>
+
+            <% if (hasComplaint) { %>
+                <% const komplain = firstJadwal.KomplainJadwal[0]; %>
+                <% let buttonClass = ''; %>
+                <% let buttonText = ''; %>
+                <% let buttonIcon = ''; %>
+                
+                <% if (komplain.status === 'menunggu') { %>
+                    <% buttonClass = 'bg-yellow-500 hover:bg-yellow-600'; %>
+                    <% buttonText = 'Komplain Sedang Diproses'; %>
+                    <% buttonIcon = 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'; %>
+                <% } else if (komplain.status === 'diterima') { %>
+                    <% buttonClass = 'bg-green-500 hover:bg-green-600'; %>
+                    <% buttonText = 'Komplain Diterima'; %>
+                    <% buttonIcon = 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'; %>
+                <% } else if (komplain.status === 'ditolak') { %>
+                    <% buttonClass = 'bg-red-500 hover:bg-red-600'; %>
+                    <% buttonText = 'Komplain Ditolak'; %>
+                    <% buttonIcon = 'M6 18L18 6M6 6l12 12'; %>
                 <% } %>
-            </div>
-
+                
+                <span class="<%= buttonClass %> text-white font-bold py-4 px-10 rounded-2xl shadow-lg flex items-center space-x-3 opacity-75 cursor-not-allowed">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= buttonIcon %>"></path>
+                    </svg>
+                    <span><%= buttonText %></span>
+                </span>
             <% } else { %>
-            <div class="w-full">
-                <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-16 text-center">
-                    <div class="mb-8">
-                        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Belum Ada Jadwal Wawancara</h3>
-                        <p class="text-gray-500 text-lg mb-8 max-w-md mx-auto">Jadwal wawancara belum tersedia saat ini. Silakan periksa kembali dalam beberapa waktu.</p>
-                        
-                        <div class="flex justify-center space-x-4">
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <a href="/mahasiswa/komplain-wawancara/<%= firstJadwal.id %>" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-10 rounded-2xl shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl flex items-center space-x-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Komplain Jadwal</span>
+                </a>
             <% } %>
         </div>
+
+        <% } else { %>
+        <div class="w-full">
+            <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-16 text-center">
+                <div class="mb-8">
+                    <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Belum Ada Jadwal Wawancara</h3>
+                    <p class="text-gray-500 text-lg mb-8 max-w-md mx-auto">Jadwal wawancara belum tersedia saat ini. Silakan periksa kembali dalam beberapa waktu.</p>
+                </div>
+            </div>
+        </div>
+        <% } %>
     </div>
-</body>
-</html>     
+</div> 

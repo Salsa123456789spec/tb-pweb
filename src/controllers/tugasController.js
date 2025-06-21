@@ -79,61 +79,71 @@ export const getTugasById = async(req, res) => {
 
 
 /**
- * @desc    Mengumpulkan file tugas
+ * @desc    Mengumpulkan atau Memperbarui Tugas
  * @route   POST /mahasiswa/tugas/:id/kumpul
  * @access  Private (Mahasiswa)
  */
-export const submitTugas = async(req, res) => {
+export const submitTugas = async (req, res) => {
     const { id: tugasId } = req.params;
     const userId = req.session.user.id;
 
-    try {
-        // 1. Pastikan file terupload
-        if (!req.file) {
-            req.flash('error_msg', 'Silakan pilih file untuk diunggah.');
-            return res.redirect(`/mahasiswa/tugas/${tugasId}`);
-        }
+    if (!req.file) {
+        req.flash('error_msg', 'Anda harus melampirkan sebuah file.');
+        return res.redirect(`/mahasiswa/tugas/${tugasId}`);
+    }
 
-        // 2. Dapatkan pendaftaran_id dari user yang sedang login
+    try {
+        // 1. Dapatkan pendaftaran_id dari user yang sedang login
         const pendaftaran = await prisma.pendaftaran.findFirst({
             where: { user_id: userId },
-            select: { id: true } // Hanya butuh ID pendaftaran
+            select: { id: true }
         });
 
         if (!pendaftaran) {
-            req.flash('error_msg', 'Anda harus menyelesaikan pendaftaran terlebih dahulu.');
+            req.flash('error_msg', 'Pendaftaran tidak ditemukan.');
             return res.redirect(`/mahasiswa/tugas/${tugasId}`);
         }
+        const pendaftaranId = pendaftaran.id;
 
-        // 3. Cek apakah tugas sudah pernah dikumpulkan
+        // 2. Cek apakah sudah ada pengumpulan untuk tugas ini
         const existingSubmission = await prisma.pengumpulanTugas.findFirst({
             where: {
                 tugas_id: parseInt(tugasId),
-                pendaftaran_id: pendaftaran.id
+                pendaftaran_id: pendaftaranId
             }
         });
+
+        const dataToSubmit = {
+            file: req.file.filename,
+            tanggal_kumpul: new Date()
+        };
 
         if (existingSubmission) {
-            req.flash('error_msg', 'Anda sudah mengumpulkan tugas ini.');
-            return res.redirect(`/mahasiswa/tugas/${tugasId}`);
+            // 3. JIKA SUDAH ADA: Perbarui data yang ada
+            await prisma.pengumpulanTugas.update({
+                where: {
+                    id: existingSubmission.id
+                },
+                data: dataToSubmit
+            });
+            req.flash('success_msg', 'File tugas berhasil diperbarui.');
+        } else {
+            // 4. JIKA BELUM ADA: Buat data baru
+            await prisma.pengumpulanTugas.create({
+                data: {
+                    tugas_id: parseInt(tugasId),
+                    pendaftaran_id: pendaftaranId,
+                    ...dataToSubmit
+                }
+            });
+            req.flash('success_msg', 'Tugas berhasil dikumpulkan.');
         }
 
-        // 4. Simpan informasi file ke database
-        await prisma.pengumpulanTugas.create({
-            data: {
-                tugas_id: parseInt(tugasId),
-                pendaftaran_id: pendaftaran.id,
-                file: req.file.filename, // Nama file yang disimpan oleh multer
-                // tanggal_kumpul akan otomatis diisi oleh database
-            }
-        });
-
-        req.flash('success_msg', 'Tugas berhasil dikumpulkan!');
         res.redirect(`/mahasiswa/tugas/${tugasId}`);
 
     } catch (err) {
         console.error(err);
-        req.flash('error_msg', 'Terjadi kesalahan saat mengumpulkan tugas.');
+        req.flash('error_msg', 'Terjadi kesalahan saat memproses tugas.');
         res.redirect(`/mahasiswa/tugas/${tugasId}`);
     }
 };

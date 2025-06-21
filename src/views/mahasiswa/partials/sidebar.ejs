@@ -1,45 +1,77 @@
-<!-- Sidebar -->
- 
 <aside class="w-64 min-h-screen bg-white shadow-md hidden md:block" style="background: linear-gradient(90deg, #84DA81 0%, #537D5D 100%);">
-    <div class="p-6 font-bold text-black-600 text-md">
-    
-                        <div>Laboratorium of</div>
-                        <div class="font-bold">Enterprise</div>
-                        <div class="font-bold">Application</div>
-                    </div>
-    <nav class="px-5">
-               <a href="/mahasiswa/dashboard"
-      class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
-        <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
-      <span class="material-icons">dashboard</span>
-      <span>Dashboard</span>
-    </a>
-                <a href="/mahasiswa/formulirPendaftaran"
-      class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
-        <%= activePage === 'formulirPendaftaran' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
-      <span class="material-icons">description</span>
-      <span>Formulir Pendaftaran</span>
-    </a>
-                <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
-                    <span class="material-icons">announcement</span>
-                    <span>Pengumuman</span>
-                </a>
-    <a href="/mahasiswa/jadwalWawancara"
-      class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
-      <%= activePage === 'wawancara' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
-      <span class="material-icons">people</span>
-      <span>Wawancara</span>
-    </a>
-                <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
-                    <span class="material-icons">work</span>
-                    <span>Magang</span>
-                </a>
-                <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
-                    <span class="material-icons">forum</span>
-                    <span>Forum diskusi</span>
-                </a>
-                <!-- New Dashboard Link -->
-               
-                
-            </nav>
+  <div class="p-6 font-bold text-black-600 text-md">
+      <div>Laboratorium of</div>
+      <div class="font-bold">Enterprise</div>
+      <div class="font-bold">Application</div>
+  </div>
+  <nav class="px-5">
+      <a href="/mahasiswa/dashboard"
+          class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+          <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+          <span class="material-icons">dashboard</span>
+          <span>Dashboard</span>
+      </a>
+      <a href="/mahasiswa/formulirPendaftaran"
+          class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+          <%= activePage === 'formulirPendaftaran' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+          <span class="material-icons">description</span>
+          <span>Formulir Pendaftaran</span>
+      </a>
+
+      <div class="relative">
+          <a href="#" id="pengumumanDropdownToggle" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2 cursor-pointer">
+              <span class="material-icons">announcement</span>
+              <span>Pengumuman</span>
+              <span class="material-icons ml-auto text-sm" id="dropdownArrow">expand_more</span>
+          </a>
+          <div id="pengumumanDropdownMenu" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
+              <a href="/pengumuman/hasil-tahap-1" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Hasil Tahap 1</a>
+              <a href="/pengumuman/hasil-tahap-2" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Hasil Tahap 2</a>
+              <a href="/pengumuman/hasil-tahap-3" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Hasil Tahap 3</a>
+          </div>
+      </div>
+
+      <a href="/mahasiswa/jadwalWawancara"
+          class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+          <%= activePage === 'wawancara' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+          <span class="material-icons">people</span>
+          <span>Wawancara</span>
+      </a>
+      <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+          <span class="material-icons">work</span>
+          <span>Magang</span>
+      </a>
+      <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+          <span class="material-icons">forum</span>
+          <span>Forum diskusi</span>
+      </a>
+  </nav>
 </aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const dropdownToggle = document.getElementById('pengumumanDropdownToggle');
+      const dropdownMenu = document.getElementById('pengumumanDropdownMenu');
+      const dropdownArrow = document.getElementById('dropdownArrow');
+
+      dropdownToggle.addEventListener('click', function (event) {
+          event.preventDefault(); // Prevent default link behavior
+
+          if (dropdownMenu.style.maxHeight === '0px' || dropdownMenu.style.maxHeight === '') {
+              dropdownMenu.style.maxHeight = dropdownMenu.scrollHeight + 'px'; // Expand
+              dropdownArrow.textContent = 'expand_less'; // Arrow up
+          } else {
+              dropdownMenu.style.maxHeight = '0px'; // Collapse
+              dropdownArrow.textContent = 'expand_more'; // Arrow down
+          }
+      });
+
+      // Optional: Close the dropdown if the user clicks outside of it
+      document.addEventListener('click', function (event) {
+          if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+              dropdownMenu.style.maxHeight = '0px'; // Collapse
+              dropdownArrow.textContent = 'expand_more'; // Arrow down
+          }
+      });
+  });
+</script>

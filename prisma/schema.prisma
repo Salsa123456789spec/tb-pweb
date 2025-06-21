@@ -19,6 +19,12 @@ enum Status {
   ditolak
 }
 
+enum Tahapan {
+  tahap1
+  tahap2
+  tahap3
+}
+
 model User {
   id            Int            @id @default(autoincrement())
   nim           String?        @unique
@@ -51,19 +57,28 @@ model Pendaftaran {
 
   user                    User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
   jadwalWawancara         JadwalWawancara[]
+  pengumuman              Pengumuman[]
 }
 
 model JadwalWawancara {
-  id              Int      @id @default(autoincrement())
-  pendaftaran_id  Int      
+  id              Int               @id @default(autoincrement())
+  pendaftaran_id  Int
   waktu           DateTime
-  pewawancara     String?
-  kontak_pewwc    Int?
   ruang           String?
   tanggal         DateTime?
 
-  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+  pewawancara_id  Int?              // FK baru ke tabel Pewawancara
+
+  pendaftaran     Pendaftaran       @relation(fields: [pendaftaran_id], references: [id])
+  pewawancara     Pewawancara?      @relation(fields: [pewawancara_id], references: [id])
   komplain        KomplainJadwal[]
+}
+
+model Pewawancara {
+  id         Int                @id @default(autoincrement())
+  nama       String
+  kontak     String
+  jadwal     JadwalWawancara[] // Relasi ke JadwalWawancara
 }
 
 model KomplainJadwal {
@@ -79,15 +94,12 @@ model KomplainJadwal {
 }
 
 model Pengumuman {
-  id                Int      @id @default(autoincrement())
-  user_id           Int       
-  tahap1_status     String   // 'lulus' atau 'gagal'
-  tahap2_status     String
-  tahap3_status     String
-  hasil_akhir       String   // 'aktif' atau 'tidak_aktif'
-  tanggal_diumumkan DateTime @default(now())
+  id               Int       @id @default(autoincrement())
+  user_id          Int
+  pendaftaran_id   Int       
+  tahapan          Tahapan?
 
-  user User @relation(fields: [user_id], references: [id])
-
-  @@map("pengumuman") // opsional: nama tabel di database
+  user             User      @relation(fields: [user_id], references: [id])
+  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
 }
+

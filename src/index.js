@@ -9,7 +9,7 @@ import registerRouter from './routes/register.js';
 import loginRouter from './routes/login.js';
 
 import adminRouter from './routes/admin.js';
-import mahasiswaRouter from './routes/mahasiswa.js';
+import mahasiswaRouter from './routes/mahasiswa.js'; // Pastikan ini diimpor
 import formulirRoutes from './routes/formulirPendaftaran.js';
 import konfirmasiPendaftaranRoutes from './routes/konfirmasiPendaftaran.js';
 import adminRoutes from './routes/admin.js';
@@ -64,9 +64,9 @@ app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
 app.use('/admin', adminRoutes);
 app.use('/aslab', aslabRoutes);
 
-app.use('/mahasiswa', mahasiswaRouter); // Keep this line as it handles other /mahasiswa routes
-// Add the new route for interview schedule
-app.use('/mahasiswa/jadwalWawancara', mahasiswaRouter); // Use the same router since the route is defined there
+app.use('/mahasiswa', mahasiswaRouter); // Ini adalah baris yang menangani semua rute di mahasiswaRouter
+
+// app.use('/mahasiswa/jadwalWawancara', mahasiswaRouter); // Baris ini duplikat dan tidak diperlukan jika route sudah di mahasiswaRouter
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);

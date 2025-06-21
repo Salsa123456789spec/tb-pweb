@@ -82,9 +82,9 @@ router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), asy
 // =========================================================
 // NEW: Routes for individual Pengumuman Tahap pages
 // =========================================================
-router.get('/pengumuman/hasil-tahap-1', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap1);
-router.get('/pengumuman/hasil-tahap-2', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap2);
-router.get('/pengumuman/hasil-tahap-3', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap3);
+router.get('/hasil-tahap-1', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap1);
+router.get('/hasil-tahap-2', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap2);
+router.get('/hasil-tahap-3', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap3);
 
 
 router.use('/', komplainWawancaraRoutes); // This mounts the complaint routes

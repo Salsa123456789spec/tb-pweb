@@ -2,19 +2,50 @@ import prisma from '../models/prisma.js';
 
 export const getAllTugas = async (req, res) => {
     try {
-        // Ambil semua data tugas dari database
-        const tugas = await prisma.tugas.findMany({
-            orderBy: {
-                deadline: 'asc' // Urutkan berdasarkan deadline terdekat
-            }
+        const userId = req.session.user.id;
+
+        // Cari pendaftaran user
+        const pendaftaran = await prisma.pendaftaran.findFirst({
+            where: { user_id: userId },
         });
 
-        // Render halaman EJS dan kirim data tugas ke dalamnya
+        const tugas = await prisma.tugas.findMany({
+            orderBy: { deadline: 'asc' },
+        });
+
+        let tugasWithStatus = [];
+
+        if (!pendaftaran) {
+            tugasWithStatus = tugas.map(t => ({
+                ...t,
+                status: 'belum_terkumpul'
+            }));
+        } else {
+            const pengumpulanList = await prisma.pengumpulanTugas.findMany({
+                where: { pendaftaran_id: pendaftaran.id }
+            });
+
+            tugasWithStatus = tugas.map(t => {
+                const pengumpulan = pengumpulanList.find(p => p.tugas_id === t.id);
+                return {
+                    ...t,
+                    status: pengumpulan?.status || 'belum_terkumpul'
+                };
+            });
+        }
+
+        // Sort: yang belum_terkumpul dulu, lalu lainnya, tetap deadline ASC
+        tugasWithStatus.sort((a, b) => {
+            if (a.status === 'belum_terkumpul' && b.status !== 'belum_terkumpul') return -1;
+            if (a.status !== 'belum_terkumpul' && b.status === 'belum_terkumpul') return 1;
+            return new Date(a.deadline) - new Date(b.deadline);
+        });
+
         res.render('mahasiswa/tugasMagang', {
             layout: 'mahasiswa/layout/main',
             title: 'Tugas Magang',
             user: req.session.user,
-            tugas: tugas,
+            tugas: tugasWithStatus,
             activePage: 'tugas'
         });
     } catch (err) {
@@ -23,6 +54,7 @@ export const getAllTugas = async (req, res) => {
         res.redirect('/mahasiswa/dashboard');
     }
 };
+
 
 /**
  * @desc    Menampilkan detail tugas magang berdasarkan ID

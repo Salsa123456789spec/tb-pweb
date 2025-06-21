@@ -12,7 +12,6 @@ import adminRouter from './routes/admin.js';
 import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
 
-
 const app = express();
 const port = 3000;
 const __dirname = path.dirname(url.fileURLToPath(

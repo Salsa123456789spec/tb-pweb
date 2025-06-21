@@ -47,7 +47,7 @@ model Pendaftaran {
   status                  Status   @default(menunggu)
 
   user                    User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
-  jadwalWawancara         JadwalWawancara[] // <--- BARIS INI DITAMBAHKAN
+  jadwalWawancara         JadwalWawancara[]
 }
 
 model JadwalWawancara {

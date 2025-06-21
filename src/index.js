@@ -42,6 +42,8 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
+    res.locals.title = res.locals.title || 'LEA';
+    res.locals.activePage = res.locals.activePage || '';
     next();
 });
 
@@ -49,7 +51,10 @@ app.use((req, res, next) => {
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.get('/', (req, res) => {
-    res.render('mahasiswa/layout/index');
+    res.render('mahasiswa/layout/index', {
+        title: 'LEA - Home',
+        activePage: 'home'
+    });
 });
 app.use(expressLayouts);
 app.set('layout', 'mahasiswa/layout/main');

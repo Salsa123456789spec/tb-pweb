@@ -69,7 +69,7 @@ router.post('/', async(req, res) => {
             success_msg: [],
             error_msg: ['Terjadi kesalahan saat registrasi.'],
             errors: [],
-            // old: req.body
+            old: req.body || {}
         });
     }
 });

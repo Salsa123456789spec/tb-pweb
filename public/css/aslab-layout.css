@@ -1,0 +1,193 @@
+/* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* Warna latar belakang abu-abu muda */
+    margin: 0;
+}
+
+.wrapper {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(180deg, #4CAF50 0%, #2E7D32 100%);
+    position: fixed; /* Membuat sidebar tetap di posisi */
+    display: flex;
+    flex-direction: column;
+    color: white;
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.app-brand {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+.app-brand:hover {
+    color: #f1f1f1;
+}
+
+.sidebar-menu {
+    flex-grow: 1;
+    overflow-y: auto; /* Untuk bisa scroll jika menu panjang */
+}
+
+.menu-item, .menu-item-toggle {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-right: 4px solid transparent; /* Border transparan untuk alignment */
+}
+
+.menu-item:hover, .menu-item-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.menu-item.active, .menu-item-toggle.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-right-color: white; /* Menampilkan border saat aktif */
+    font-weight: 500;
+}
+
+.menu-item i, .menu-item-toggle i {
+    width: 20px;
+    margin-right: 15px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding-bottom: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Dropdown/Submenu di Sidebar */
+.menu-item-toggle {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.menu-item-toggle.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.menu-item-toggle::after {
+    content: '\f078'; /* Font Awesome down arrow */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    transition: transform 0.3s ease-in-out;
+}
+
+.submenu {
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+}
+
+.submenu-item {
+    display: block;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.5rem 1.25rem 0.5rem 3.6rem; /* Indentasi ke dalam */
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    font-size: 0.9rem;
+}
+
+.submenu-item:hover {
+    color: white;
+}
+
+.submenu-item.active-submenu {
+    color: white;
+    font-weight: bold;
+}
+
+/* Main Content Area */
+.main-content-wrapper {
+    margin-left: 250px; /* Memberi ruang untuk sidebar */
+    width: calc(100% - 250px); /* Memenuhi sisa lebar */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.top-bar {
+    background: white;
+    padding: 0 2rem; /* Padding horizontal */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    /* Mendorong judul ke kiri dan info user ke kanan */
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.top-bar-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #4CAF50;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Content area di dalam wrapper */
+.content-area {
+    padding: 2rem;
+    flex-grow: 1;
+    width: 100%; /* Pastikan mengambil lebar penuh dari wrapper */
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem; /* Jarak bawah dari judul */
+}
+
+.data-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    overflow: hidden;
+    width: 100%; /* Memastikan kartu memenuhi .content-area */
+}
+
+.card-header-custom {
+    background: #4caf50;
+    color: white;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+}

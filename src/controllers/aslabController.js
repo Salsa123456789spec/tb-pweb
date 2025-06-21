@@ -1,5 +1,3 @@
-// src/controllers/aslabController.js
-
 import prisma from '../models/prisma.js';
 import fs from 'fs';
 import path from 'path';
@@ -8,16 +6,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Controller untuk menampilkan semua pendaftar (DIPERBAIKI DENGAN LOGGING)
+// Controller untuk menampilkan semua pendaftar
 export const getRekapPendaftar = async (req, res) => {
-  console.log(`[LOG] Memulai proses untuk rute: /aslab/rekap/pendaftar...`);
   try {
-    console.log(`[LOG] Mencoba mengambil data dari tabel 'pendaftaran' di database...`);
     const semuaPendaftar = await prisma.pendaftaran.findMany({
       include: { user: { select: { name: true, nim: true } } },
       orderBy: { id: 'desc' }
     });
-    console.log(`[LOG] Berhasil! Ditemukan ${semuaPendaftar.length} data pendaftar.`);
 
     const pendaftarFormatted = semuaPendaftar.map(p => ({
       nim: p.user.nim,
@@ -26,23 +21,21 @@ export const getRekapPendaftar = async (req, res) => {
       id: p.id
     }));
 
-    console.log(`[LOG] Mulai me-render view 'aslab/pendaftar.ejs'...`);
-    res.render('aslab/pendaftar', {
+    // Menggunakan path 'aslab/rekap/pendaftar' untuk rendering
+    res.render('aslab/rekap/pendaftar', {
       layout: 'aslab/layout/main',
       title: 'Rekap Pendaftar',
       user: req.session.user,
       pendaftar: pendaftarFormatted,
-      activePage: 'rekap-pendaftar',
-      success_msg: req.flash('success_msg')
+      // DISESUAIKAN: Menggunakan 'rekap/pendaftar' agar cocok dengan logika di sidebar.ejs
+      activePage: 'rekap/pendaftar',
+      success_msg: req.flash('success_msg'),
+      error_msg: req.flash('error_msg') // Menambahkan error_msg untuk konsistensi
     });
-    console.log(`[LOG] View berhasil di-render.`);
 
   } catch (error) {
-    // Jika ada error di blok 'try', kode ini akan dijalankan.
     console.error("[ERROR] Terjadi kegagalan saat mengambil data pendaftar:", error);
     req.flash('error_msg', 'Gagal memuat data pendaftar. Silakan periksa log server.');
-    
-    console.log(`[LOG] Mengalihkan (redirect) ke '/aslab/dashboard' karena terjadi error.`);
     res.redirect('/aslab/dashboard');
   }
 };
@@ -61,12 +54,14 @@ export const getDetailPendaftar = async (req, res) => {
             return res.redirect('/aslab/rekap/pendaftar');
         }
 
-        res.render('aslab/detail-pendaftar', {
+        // Menggunakan path 'aslab/rekap/detail-pendaftar' untuk rendering
+        res.render('aslab/rekap/detail-pendaftar', {
             layout: 'aslab/layout/main',
             title: 'Detail Pendaftar',
             user: req.session.user,
             detail: detailPendaftar,
-            activePage: 'rekap-pendaftar'
+            // DISESUAIKAN: Nilai ini memastikan menu "Rekap" tetap terbuka saat melihat detail
+            activePage: 'rekap/pendaftar'
         });
     } catch (error) {
         console.error("Gagal mengambil detail pendaftar:", error);
@@ -93,7 +88,8 @@ export const deletePendaftar = async (req, res) => {
 
             filesToDelete.forEach(file => {
                 if (file) {
-                    const filePath = path.join(__dirname, '../../../public/uploads', file);
+                    // Path relatif dari root proyek ke folder uploads
+                    const filePath = path.join(process.cwd(), 'public/uploads', file);
                     fs.unlink(filePath, (err) => {
                         if (err) console.error(`Gagal menghapus file: ${filePath}`, err);
                     });

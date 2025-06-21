@@ -4,7 +4,7 @@ import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
 import prisma from '../models/prisma.js';
 import upload from '../middleware/upload.js'; // Pastikan Anda memiliki middleware upload untuk penyerahan tugas
 
-import { getAllTugas } from '../controllers/tugasController.js';
+import { getAllTugas, getTugasById } from '../controllers/tugasController.js'; 
 
 const router = express.Router();
 
@@ -48,5 +48,7 @@ router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa')
 });
 
 router.get('/tugas', ensureAuthenticated, ensureRole('mahasiswa'), getAllTugas);
+// Rute BARU untuk menampilkan detail tugas berdasarkan ID
+router.get('/tugas/:id', ensureAuthenticated, ensureRole('mahasiswa'), getTugasById);
 
 export default router;

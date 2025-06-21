@@ -4,6 +4,8 @@ import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
 import prisma from '../models/prisma.js';
 import upload from '../middleware/upload.js'; // Pastikan Anda memiliki middleware upload untuk penyerahan tugas
 
+import { getAllTugas } from '../controllers/tugasController.js';
+
 const router = express.Router();
 
 // ... (Rute yang sudah ada, seperti dashboard, formulirPendaftaran, jadwalWawancara) ...
@@ -44,5 +46,7 @@ router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa')
   req.flash('success_msg', 'Formulir berhasil dikirim');
   res.redirect('/mahasiswa/formulirPendaftaran');
 });
+
+router.get('/tugas', ensureAuthenticated, ensureRole('mahasiswa'), getAllTugas);
 
 export default router;

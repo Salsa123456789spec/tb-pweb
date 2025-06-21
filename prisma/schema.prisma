@@ -47,6 +47,8 @@ model Pendaftaran {
   status                Status   @default(menunggu)
 
   user                  User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
+  pengumpulanTugas      PengumpulanTugas[]
+
 }
 
 model Tugas {
@@ -55,5 +57,17 @@ model Tugas {
   deskripsi        String?
   deadline         DateTime
 
-  
+  pengumpulanTugas PengumpulanTugas[]
+}
+
+model PengumpulanTugas {
+  id               Int       @id @default(autoincrement())
+  tugas_id         Int
+  pendaftaran_id   Int
+  file             String
+  tanggal_kumpul   DateTime  @default(now())
+
+  tugas            Tugas     @relation(fields: [tugas_id], references: [id])
+  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+ 
 }

@@ -123,10 +123,72 @@ async function main() {
     });
     console.log(`✅ Jadwal Wawancara berhasil dihubungkan dengan ${pewawancaraPertama.nama}`);
   }
+
+  // Create sample tasks
+  const tasks = [
+    {
+      judul: 'Tugas Magang Minggu 1',
+      deskripsi: 'Mempelajari dasar-dasar teknologi yang digunakan dalam proyek magang',
+      deadline: new Date('2024-12-30T23:59:59Z')
+    },
+    {
+      judul: 'Tugas Magang Minggu 2',
+      deskripsi: 'Implementasi fitur dasar sesuai dengan requirement yang diberikan',
+      deadline: new Date('2025-01-06T23:59:59Z')
+    },
+    {
+      judul: 'Tugas Magang Minggu 3',
+      deskripsi: 'Pengembangan fitur lanjutan dan testing',
+      deadline: new Date('2025-01-13T23:59:59Z')
+    }
+  ];
+
+  for (const task of tasks) {
+    try {
+      await prisma.tugas.create({
+        data: task
+      });
+    } catch (error) {
+      // Skip if task already exists
+      console.log(`Task "${task.judul}" already exists, skipping...`);
+    }
+  }
+
+  // Create sample FAQ
+  const faqs = [
+    {
+      pertanyaan: 'Bagaimana cara mengumpulkan tugas?',
+      jawaban: 'Anda dapat mengumpulkan tugas melalui halaman detail tugas dengan mengklik tombol "Kumpulkan Tugas" dan memilih file yang akan diupload.'
+    },
+    {
+      pertanyaan: 'Apa yang terjadi jika terlambat mengumpulkan tugas?',
+      jawaban: 'Tugas yang dikumpulkan setelah deadline akan ditandai sebagai "Terlambat" dan akan mempengaruhi penilaian.'
+    },
+    {
+      pertanyaan: 'Apakah bisa mengumpulkan ulang tugas?',
+      jawaban: 'Ya, Anda dapat mengumpulkan ulang tugas dengan file yang baru. File lama akan diganti dengan file yang baru.'
+    }
+  ];
+
+  for (const faq of faqs) {
+    try {
+      await prisma.fAQ.create({
+        data: faq
+      });
+    } catch (error) {
+      // Skip if FAQ already exists
+      console.log(`FAQ "${faq.pertanyaan}" already exists, skipping...`);
+    }
+  }
+
+  console.log('Sample data has been seeded!');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Gagal seed:', e);
+    console.error(e);
+    process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

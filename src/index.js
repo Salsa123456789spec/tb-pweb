@@ -15,6 +15,8 @@ import konfirmasiPendaftaranRoutes from './routes/konfirmasiPendaftaran.js';
 import adminRoutes from './routes/admin.js';
 import aslabRoutes from './routes/aslab.js';
 import faqRouter from './routes/faq.js'; 
+import tugasRouter from './routes/tugas.js';
+import materiMagangRouter from './routes/materiMagang.js';
 
 const app = express();
 const port = 3000;
@@ -65,6 +67,8 @@ app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
 app.use('/admin', adminRoutes);
 app.use('/aslab', aslabRoutes);
 app.use('/mahasiswa/faq', faqRouter); 
+app.use('/mahasiswa/tugas', tugasRouter);
+app.use('/mahasiswa/materiMagang', materiMagangRouter);
 app.use('/mahasiswa', mahasiswaRouter);
 
 app.listen(port, () => {

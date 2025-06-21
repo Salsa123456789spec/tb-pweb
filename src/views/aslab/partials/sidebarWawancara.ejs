@@ -1,0 +1,154 @@
+<aside class="flex flex-col bg-gradient-to-b from-[#7AC17E] to-[#4A7B4A] text-white w-56 border-r border-black">
+    <div class="flex items-center gap-2 px-5 py-4 border-b border-black">
+        <img alt="LEA's Calling logo, blue geometric shape with text LEA's Calling" class="w-6 h-6" height="24"
+            src="https://storage.googleapis.com/a1aa/image/bbbefc48-6c6a-40a1-1435-5f99393651d0.jpg"
+            width="24" />
+        <span class="font-semibold text-sm select-none">
+            LEA's Calling
+        </span>
+    </div>
+    <nav class="flex flex-col mt-4 space-y-1 text-sm font-semibold">
+        <div class="relative group">
+            <button class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md w-full text-left 
+                <%= ['dashboard', 'manajemenRecruitment'].includes(activePage) ? 'bg-white text-black' : 'text-white' %>" 
+                type="button" id="dashboardDropdownButton">
+                <i class="fas fa-home text-lg 
+                    <%= ['dashboard', 'manajemenRecruitment'].includes(activePage) ? 'text-black' : 'text-white' %>">
+                </i>
+                <span class="<%= ['dashboard', 'manajemenRecruitment'].includes(activePage) ? 'text-black' : 'text-white' %>">
+                    Dashboard
+                </span>
+                <i class="fas fa-chevron-down ml-auto 
+                    <%= ['dashboard', 'manajemenRecruitment'].includes(activePage) ? 'text-black' : 'text-white' %>">
+                </i>
+            </button>
+            <div class="mt-1 w-full bg-[#7AC17E] border border-black rounded-md flex flex-col text-black font-normal" id="dashboardDropdownContent">
+                <a class="px-4 py-2 hover:bg-[#4A7B4A] hover:text-white 
+                    <%= activePage === 'manajemenRecruitment' ? 'bg-[#4A7B4A] text-white' : '' %>" 
+                    href="/superadmin/manajemenRecruitment">
+                    Manajemen Recruitment
+                </a>
+            </div>
+        </div>
+
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-70" href="/superadmin/verifikasi">
+            <i class="fas fa-cog text-white text-lg">
+            </i>
+            <span class="text-white">
+                Verifikasi
+            </span>
+        </a>
+
+        <div class="relative group">
+            <button class="flex items-center gap-3 px-5 py-3 rounded-r-md w-full text-left 
+                <%= ['jadwalWawancara', 'evaluasiPermohonan', 'komplainJadwal'].includes(activePage) ? 'bg-white text-black font-bold' : 'bg-[#7AC17E] text-white' %>"
+                type="button" id="wawancaraDropdownButton">
+                <i class="fas fa-check-circle text-lg 
+                    <%= ['jadwalWawancara', 'evaluasiPermohonan', 'komplainJadwal'].includes(activePage) ? 'text-black' : 'text-white' %>">
+                </i>
+                <span class="<%= ['jadwalWawancara', 'evaluasiPermohonan', 'komplainJadwal'].includes(activePage) ? 'text-black' : 'text-white' %>">
+                    Wawancara
+                </span>
+                <i class="fas fa-chevron-down ml-auto 
+                    <%= ['jadwalWawancara', 'evaluasiPermohonan', 'komplainJadwal'].includes(activePage) ? 'text-black' : 'text-white' %>">
+                </i>
+            </button>
+            <div class="mt-1 w-full bg-[#7AC17E] border border-black rounded-md flex flex-col text-black font-normal" id="wawancaraDropdownContent">
+                <a class="px-4 py-2 border-b border-black hover:bg-[#4A7B4A] hover:text-white 
+                    <%= activePage === 'jadwalWawancara' ? 'bg-[#4A7B4A] text-white' : '' %>" 
+                    href="/superadmin/jadwalWawancara">
+                    Input Data
+                </a>
+                <a class="px-4 py-2 border-b border-black hover:bg-[#4A7B4A] hover:text-white 
+                    <%= activePage === 'jadwalWawancara' ? 'bg-[#4A7B4A] text-white' : '' %>" 
+                    href="/superadmin/jadwalWawancara">
+                    Jadwal Wawancara
+                </a>
+                <a class="px-4 py-2 border-b border-black hover:bg-[#4A7B4A] hover:text-white 
+                    <%= activePage === 'evaluasiPermohonan' ? 'bg-[#4A7B4A] text-white' : '' %>" 
+                    href="/superadmin/evaluasiPermohonan">
+                    Evaluasi Permohonan
+                </a>
+            </div>
+        </div>
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-70" href="/superadmin/penilaian">
+            <i class="fas fa-clipboard-list text-white text-lg">
+            </i>
+            <span class="select-none">
+                Penilaian
+            </span>
+            <i class="fas fa-chevron-down ml-auto text-white">
+            </i>
+        </a>
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-70" href="/superadmin/ranking">
+            <i class="fas fa-chart-bar text-white text-lg">
+            </i>
+            <span class="select-none">
+                Ranking
+            </span>
+            <i class="fas fa-chevron-down ml-auto text-white">
+            </i>
+        </a>
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-70" href="/superadmin/pengumuman">
+            <i class="fas fa-bullhorn text-white text-lg">
+            </i>
+            <span class="select-none">
+                Pengumuman
+            </span>
+            <i class="fas fa-chevron-down ml-auto text-white">
+            </i>
+        </a>
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-70" href="/superadmin/rekap">
+            <i class="fas fa-folder text-white text-lg">
+            </i>
+            <span class="select-none">
+                Rekap
+            </span>
+            <i class="fas fa-chevron-down ml-auto text-white">
+            </i>
+        </a>
+    </nav>
+</aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const wawancaraButton = document.getElementById('wawancaraDropdownButton');
+        const wawancaraContent = document.getElementById('wawancaraDropdownContent');
+        const dashboardButton = document.getElementById('dashboardDropdownButton');
+        const dashboardContent = document.getElementById('dashboardDropdownContent');
+
+        const activePage = "<%= activePage %>"; // Variabel dari controller
+
+        // Fungsi untuk menginisialisasi status dropdown
+        function initializeDropdown(button, content, activePagesArray) {
+            if (activePagesArray.includes(activePage)) {
+                content.style.display = 'flex'; // Gunakan 'flex' untuk layout kolom
+                button.classList.remove('bg-[#7AC17E]', 'text-white');
+                button.classList.add('bg-white', 'text-black', 'font-bold');
+            } else {
+                content.style.display = 'none'; // Sembunyikan
+                button.classList.remove('bg-white', 'text-black', 'font-bold');
+                button.classList.add('bg-[#7AC17E]', 'text-white');
+            }
+        }
+
+        // Inisialisasi kedua dropdown
+        initializeDropdown(wawancaraButton, wawancaraContent, ['jadwalWawancara', 'evaluasiPermohonan', 'komplainJadwal']);
+        initializeDropdown(dashboardButton, dashboardContent, ['dashboard', 'manajemenRecruitment']);
+
+        // Tambahkan event listener untuk toggle
+        if (wawancaraButton) {
+            wawancaraButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                wawancaraContent.style.display = wawancaraContent.style.display === 'flex' ? 'none' : 'flex';
+            });
+        }
+
+        if (dashboardButton) {
+            dashboardButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                dashboardContent.style.display = dashboardContent.style.display === 'flex' ? 'none' : 'flex';
+            });
+        }
+    });
+</script>

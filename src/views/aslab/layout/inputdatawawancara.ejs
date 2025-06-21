@@ -1,0 +1,310 @@
+<header class="flex justify-between items-center mb-6">
+    <h1 class="font-extrabold text-xl underline decoration-black decoration-2">
+        Input Data Wawancara
+    </h1>
+    <div class="flex items-center gap-2">
+        <span class="font-semibold text-lg select-none">
+            Rafi
+        </span>
+        <div
+            class="w-10 h-10 rounded-full border border-black bg-[#4A7B4A] shadow-md flex items-center justify-center">
+            <i class="fas fa-user text-white text-xl">
+            </i>
+        </div>
+    </div>
+</header>
+
+<section class="border border-[#4A7B4A] rounded-md p-5 max-w-4xl w-full mb-8">
+    <div class="flex gap-6 mb-4 text-sm font-semibold select-none">
+        <button class="border-b-2 border-[#4A7B4A] pb-1 text-[#4A7B4A] focus:outline-none">
+            Data Pewawancara
+        </button>
+    </div>
+    <h2 class="text-[#4A7B4A] font-semibold mb-3 text-sm select-none">
+        Input Data Pewawancara
+    </h2>
+    <form id="pewawancaraForm" class="flex flex-col gap-3 text-xs text-black max-w-md">
+        <label class="select-none" for="nama-aslab">
+            Nama Aslab*
+        </label>
+        <input class="border border-black rounded-sm px-2 py-1 text-xs" id="nama-aslab" name="nama_aslab"
+            placeholder="Masukkan nama Aslab" type="text" required />
+        <label class="select-none" for="kontak">
+            Kontak*
+        </label>
+        <input class="border border-black rounded-sm px-2 py-1 text-xs" id="kontak" name="kontak"
+            placeholder="Masukkan Nomor WhatsApp Aslab" type="text" required />
+        <div class="flex gap-3 mt-2">
+            <button class="bg-[#4A7B4A] text-white font-semibold rounded px-4 py-1 text-xs tracking-widest"
+                type="submit">
+                Simpan
+            </button>
+        </div>
+    </form>
+</section>
+
+<section class="border border-[#4A7B4A] rounded-md p-5 max-w-4xl w-full text-xs text-black">
+    <h3 class="text-[#4A7B4A] font-semibold mb-3 select-none underline decoration-[#4A7B4A] decoration-1">
+        Data Pewawancara Terdaftar
+    </h3>
+    <div class="mb-3 flex items-center gap-1 select-none">
+        <span>
+            lihat
+        </span>
+        <div class="relative inline-block">
+            <button aria-haspopup="listbox" aria-expanded="false" aria-labelledby="listbox-label"
+                class="bg-[#7AC17E] text-black rounded text-xs w-12 h-6 flex items-center justify-center font-semibold relative pl-2 pr-6"
+                id="listbox-button" type="button">
+                <span id="listbox-selected" class="pointer-events-none select-none">
+                    <%= pagination.limit %>
+                </span>
+                <i class="fas fa-chevron-down absolute right-2 top-1.5 text-xs text-black"></i>
+            </button>
+            <ul aria-labelledby="listbox-label"
+                class="absolute z-10 mt-1 w-14 bg-[#7AC17E] border border-black rounded shadow-lg hidden"
+                id="listbox" role="listbox" tabindex="-1">
+                <li aria-selected="<%= pagination.limit === 5 ? 'true' : 'false' %>"
+                    class="cursor-pointer select-none px-2 py-1 text-black font-semibold flex items-center gap-1"
+                    role="option" tabindex="0" data-value="5">
+                    5
+                    <i class="fas fa-check-circle text-black text-xs <%= pagination.limit === 5 ? '' : 'hidden' %>">
+                    </i>
+                </li>
+                <li aria-selected="<%= pagination.limit === 10 ? 'true' : 'false' %>"
+                    class="cursor-pointer select-none px-2 py-1 hover:bg-[#4A7B4A] hover:text-white rounded"
+                    role="option" tabindex="0" data-value="10">
+                    10
+                </li>
+                <li aria-selected="<%= pagination.limit === 15 ? 'true' : 'false' %>"
+                    class="cursor-pointer select-none px-2 py-1 hover:bg-[#4A7B4A] hover:text-white rounded"
+                    role="option" tabindex="0" data-value="15">
+                    15
+                </li>
+                <li aria-selected="<%= pagination.limit === 20 ? 'true' : 'false' %>"
+                    class="cursor-pointer select-none px-2 py-1 hover:bg-[#4A7B4A] hover:text-white rounded"
+                    role="option" tabindex="0" data-value="20">
+                    20
+                </li>
+            </ul>
+        </div>
+        <span>
+            data
+        </span>
+    </div>
+    <table class="w-full border-collapse border border-[#4A7B4A]">
+        <thead>
+            <tr class="border-b border-[#4A7B4A]">
+                <th class="border-r border-[#4A7B4A] py-1 px-2 text-left font-semibold select-none">
+                    No
+                    <i class="fas fa-sort">
+                    </i>
+                </th>
+                <th class="border-r border-[#4A7B4A] py-1 px-2 text-left font-semibold select-none">
+                    Nama
+                    <i class="fas fa-sort">
+                    </i>
+                </th>
+                <th class="border-r border-[#4A7B4A] py-1 px-2 text-left font-semibold select-none">
+                    Kontak
+                    <i class="fas fa-sort">
+                    </i>
+                </th>
+                <th class="py-1 px-2 text-left font-semibold select-none">
+                    Aksi
+                    <i class="fas fa-sort">
+                    </i>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="pewawancaraTableBody">
+            <% if (pewawancara && pewawancara.length > 0) { %>
+                <% pewawancara.forEach((item, index) => { %>
+                    <tr class="border-b border-[#4A7B4A]">
+                        <td class="border-r border-[#4A7B4A] py-2 px-2 text-center select-none">
+                            <%= (pagination.currentPage - 1) * pagination.limit + index + 1 %>
+                        </td>
+                        <td class="border-r border-[#4A7B4A] py-2 px-2 text-center select-none">
+                            <%= item.nama %>
+                        </td>
+                        <td class="border-r border-[#4A7B4A] py-2 px-2 text-center select-none">
+                            <%= item.kontak %>
+                        </td>
+                        <td class="py-2 px-2 text-center flex justify-center gap-3">
+                            <button aria-label="Delete row <%= item.id %>" class="text-red-500 delete-btn" data-id="<%= item.id %>">
+                                <i class="fas fa-trash-alt">
+                                </i>
+                            </button>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="4" class="py-4 px-2 text-center text-gray-500">
+                        Tidak ada data pewawancara
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+    <div class="mt-4 flex justify-end gap-1 text-xs font-semibold select-none">
+        <button aria-label="Previous page" id="prevBtn"
+            class="bg-[#4A7B4A] text-white rounded px-3 py-1 hover:bg-[#3a5a3a] <%= !pagination.hasPrevious ? 'opacity-50 cursor-not-allowed' : '' %>"
+            <% if (!pagination.hasPrevious) { %>disabled<% } %>>
+            previous
+        </button>
+        <button aria-current="page" aria-label="Current page <%= pagination.currentPage %>"
+            class="bg-[#4A7B4A] text-white rounded px-3 py-1 hover:bg-[#3a5a3a]">
+            <%= pagination.currentPage %>
+        </button>
+        <button aria-label="Next page" id="nextBtn" 
+            class="bg-[#4A7B4A] text-white rounded px-3 py-1 hover:bg-[#3a5a3a] <%= !pagination.hasNext ? 'opacity-50 cursor-not-allowed' : '' %>"
+            <% if (!pagination.hasNext) { %>disabled<% } %>>
+            next
+        </button>
+    </div>
+</section>
+
+<script>
+    // Dropdown toggle script for the "lihat" dropdown
+    const listboxButton = document.getElementById('listbox-button');
+    const listbox = document.getElementById('listbox');
+    const listboxSelected = document.getElementById('listbox-selected');
+
+    listboxButton.addEventListener('click', () => {
+        const expanded = listboxButton.getAttribute('aria-expanded') === 'true';
+        listboxButton.setAttribute('aria-expanded', String(!expanded));
+        listbox.classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!listboxButton.contains(event.target) && !listbox.contains(event.target)) {
+            listboxButton.setAttribute('aria-expanded', 'false');
+            listbox.classList.add('hidden');
+        }
+    });
+
+    // Keyboard navigation and selection for listbox options
+    const options = listbox.querySelectorAll('[role="option"]');
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.getAttribute('data-value');
+            
+            // Update visual state
+            options.forEach(o => {
+                o.setAttribute('aria-selected', 'false');
+                const icon = o.querySelector('i');
+                if (icon) {
+                    icon.style.display = 'none';
+                }
+            });
+            option.setAttribute('aria-selected', 'true');
+            const icon = option.querySelector('i');
+            if (icon) {
+                icon.style.display = 'block';
+            }
+            
+            listboxSelected.textContent = value;
+            listboxButton.setAttribute('aria-expanded', 'false');
+            listbox.classList.add('hidden');
+            
+            // Reload page with new limit
+            const url = new URL(window.location);
+            url.searchParams.set('limit', value);
+            url.searchParams.set('page', '1');
+            window.location.href = url.toString();
+        });
+        option.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                option.click();
+            }
+        });
+    });
+
+    // Form submission
+    const form = document.getElementById('pewawancaraForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = {
+            nama_aslab: formData.get('nama_aslab'),
+            kontak: formData.get('kontak')
+        };
+
+        try {
+            const response = await fetch('/aslab/inputdatawawancara', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                alert(result.message);
+                form.reset();
+                location.reload();
+            } else {
+                alert('Error: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menyimpan data');
+        }
+    });
+
+    // Delete functionality
+    document.addEventListener('click', async (e) => {
+        if (e.target.closest('.delete-btn')) {
+            const button = e.target.closest('.delete-btn');
+            const id = button.getAttribute('data-id');
+            
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                try {
+                    const response = await fetch(`/aslab/api/pewawancara/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        alert(result.message);
+                        location.reload();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus data');
+                }
+            }
+        }
+    });
+
+    // Pagination functionality
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    prevBtn.addEventListener('click', () => {
+        if (!prevBtn.disabled) {
+            const url = new URL(window.location);
+            const currentPage = parseInt(url.searchParams.get('page')) || 1;
+            url.searchParams.set('page', currentPage - 1);
+            window.location.href = url.toString();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (!nextBtn.disabled) {
+            const url = new URL(window.location);
+            const currentPage = parseInt(url.searchParams.get('page')) || 1;
+            url.searchParams.set('page', currentPage + 1);
+            window.location.href = url.toString();
+        }
+    });
+</script> 

@@ -1,0 +1,247 @@
+<header class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-extrabold underline decoration-black decoration-2">
+        Verifikasi
+    </h1>
+    <div class="flex items-center space-x-3">
+        <span class="font-semibold text-lg">
+            Rafi
+        </span>
+        <div
+            class="w-10 h-10 rounded-full border border-gray-400 overflow-hidden flex items-center justify-center">
+            <img alt="User icon silhouette with green background in circle" class="w-10 h-10 object-cover"
+                height="40"
+                src="https://storage.googleapis.com/a1aa/image/8b8d5ed5-a518-481f-5cfa-ee964acd6539.jpg"
+                width="40" />
+        </div>
+    </div>
+</header>
+
+<form class="mb-6 relative max-w-xl">
+    <input
+        class="w-full border border-gray-400 rounded-full py-3 px-4 pl-10 text-base placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+        placeholder="Cari pendaftar........" type="text" />
+    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-base">
+    </i>
+</form>
+
+<section class="border border-green-700 rounded-lg p-6 w-full max-w-full overflow-x-auto"
+    style="min-height: 600px;">
+    <div class="flex items-center mb-4 text-base font-semibold text-gray-800">
+        <span>
+            lihat
+        </span>
+        <div class="relative ml-2 mr-1">
+            <button id="dataPerPageBtn" 
+                class="bg-green-300 text-green-900 rounded-md px-3 py-1 flex items-center text-base font-semibold cursor-pointer hover:bg-green-400 transition-colors">
+                <span id="dataPerPageValue">5</span>
+                <i class="fas fa-chevron-down ml-1 text-green-700"></i>
+            </button>
+            <select id="dataPerPageSelect" 
+                class="absolute top-full left-0 mt-1 bg-white border border-green-700 rounded shadow-md text-black text-base font-normal hidden z-10 min-w-[60px]">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        <span>
+            data
+        </span>
+    </div>
+    <table class="w-full text-left text-base border-separate border-spacing-y-4 border-green-700">
+        <thead>
+            <tr class="border-b border-green-700">
+                <th class="font-bold cursor-pointer py-3">
+                    NIM
+                    <i class="fas fa-sort ml-1">
+                    </i>
+                </th>
+                <th class="font-bold cursor-pointer py-3">
+                    Nama
+                    <i class="fas fa-sort ml-1">
+                    </i>
+                </th>
+                <th class="font-bold cursor-pointer py-3">
+                    Divisi
+                    <i class="fas fa-sort ml-1">
+                    </i>
+                </th>
+                <th class="font-bold cursor-pointer py-3">
+                    Status
+                    <i class="fas fa-sort ml-1">
+                    </i>
+                </th>
+                <th class="font-bold cursor-pointer py-3">
+                    Aksi
+                    <i class="fas fa-sort ml-1">
+                    </i>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="border-b border-green-700">
+                <td class="py-3">
+                    2311522022
+                </td>
+                <td class="py-3 font-semibold">
+                    Revin
+                </td>
+                <td class="py-3">
+                    Rumah Tangga
+                </td>
+                <td class="py-3">
+                    <span class="bg-yellow-300 text-black text-xs font-semibold px-3 rounded">
+                        Menunggu
+                    </span>
+                </td>
+                <td class="py-3">
+                    <button class="bg-green-700 text-white text-sm px-4 py-2 rounded" type="button">
+                        Lihat Detail
+                    </button>
+                </td>
+            </tr>
+            <tr class="border-b border-green-700">
+                <td class="py-3">
+                    2311521012
+                </td>
+                <td class="py-3 font-semibold">
+                    Aldi
+                </td>
+                <td class="py-3">
+                    Rumah Tangga
+                </td>
+                <td class="py-3">
+                    <span class="bg-red-700 text-white text-xs font-semibold px-3 rounded">
+                        Tidak lolos
+                    </span>
+                </td>
+                <td class="py-3">
+                    <button class="bg-green-700 text-white text-sm px-4 py-2 rounded" type="button">
+                        Lihat Detail
+                    </button>
+                </td>
+            </tr>
+            <tr class="border-b border-green-700">
+                <td class="py-3">
+                    2411521015
+                </td>
+                <td class="py-3 font-semibold">
+                    Levi
+                </td>
+                <td class="py-3">
+                    Rumah Tangga
+                </td>
+                <td class="py-3">
+                    <span class="bg-green-300 text-green-900 text-xs font-semibold px-3 rounded">
+                        Lulus
+                    </span>
+                </td>
+                <td class="py-3">
+                    <button class="bg-green-700 text-white text-sm px-4 py-2 rounded" type="button">
+                        Lihat Detail
+                    </button>
+                </td>
+            </tr>
+            <tr class="border-b border-green-700">
+                <td class="py-3">
+                    2411523031
+                </td>
+                <td class="py-3 font-semibold">
+                    Luffy
+                </td>
+                <td class="py-3">
+                    Rumah Tangga
+                </td>
+                <td class="py-3">
+                    <span class="bg-yellow-300 text-black text-xs font-semibold px-3 rounded">
+                        Menunggu
+                    </span>
+                </td>
+                <td class="py-3">
+                    <button class="bg-green-700 text-white text-sm px-4 py-2 rounded" type="button">
+                        Lihat Detail
+                    </button>
+                </td>
+            </tr>
+            <tr class="border-b border-green-700">
+                <td class="py-3">
+                    2411523011
+                </td>
+                <td class="py-3 font-semibold">
+                    Eren
+                </td>
+                <td class="py-3">
+                    Rumah Tangga
+                </td>
+                <td class="py-3">
+                    <span class="bg-green-300 text-green-900 text-xs font-semibold px-3 rounded">
+                        Lulus
+                    </span>
+                </td>
+                <td class="py-3">
+                    <button class="bg-green-700 text-white text-sm px-4 py-2 rounded" type="button">
+                        Lihat Detail
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="flex items-center justify-between mt-6">
+        <button
+            class="flex items-center space-x-2 border border-red-500 text-red-500 text-sm px-3 py-2 rounded"
+            type="button">
+            <i class="fas fa-file-export">
+            </i>
+            <span>
+                Export
+            </span>
+        </button>
+        <div class="flex items-center space-x-2 bg-green-700 text-white text-sm rounded px-3 py-2">
+            <button class="bg-green-700 px-3 py-1 rounded text-white font-semibold" type="button">
+                previous
+            </button>
+            <button class="bg-white text-green-700 px-3 py-1 rounded font-semibold" type="button">
+                1
+            </button>
+            <button class="bg-green-700 px-3 py-1 rounded text-white font-semibold" type="button">
+                next
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Dropdown functionality for data per page
+    const dataPerPageBtn = document.getElementById('dataPerPageBtn');
+    const dataPerPageSelect = document.getElementById('dataPerPageSelect');
+    const dataPerPageValue = document.getElementById('dataPerPageValue');
+
+    dataPerPageBtn.addEventListener('click', () => {
+        if (dataPerPageSelect.classList.contains('hidden')) {
+            dataPerPageSelect.classList.remove('hidden');
+            dataPerPageSelect.focus();
+        } else {
+            dataPerPageSelect.classList.add('hidden');
+        }
+    });
+
+    dataPerPageSelect.addEventListener('change', () => {
+        dataPerPageValue.textContent = dataPerPageSelect.value;
+        dataPerPageSelect.classList.add('hidden');
+        // Here you can add logic to update the table data based on selected value
+        console.log('Data per page changed to:', dataPerPageSelect.value);
+    });
+
+    dataPerPageSelect.addEventListener('blur', () => {
+        setTimeout(() => {
+            dataPerPageSelect.classList.add('hidden');
+        }, 150);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!dataPerPageBtn.contains(event.target) && !dataPerPageSelect.contains(event.target)) {
+            dataPerPageSelect.classList.add('hidden');
+        }
+    });
+</script> 

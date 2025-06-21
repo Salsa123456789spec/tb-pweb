@@ -14,6 +14,7 @@ import formulirRoutes from './routes/formulirPendaftaran.js';
 import konfirmasiPendaftaranRoutes from './routes/konfirmasiPendaftaran.js';
 import adminRoutes from './routes/admin.js';
 import aslabRoutes from './routes/aslab.js';
+import verifikasiRoutes from './routes/verifBerkas.js';
 
 
 
@@ -31,6 +32,8 @@ app.set('view engine', 'ejs');
 // Static files
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+
+
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -62,6 +65,7 @@ app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
 app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
 app.use('/admin', adminRoutes);
 app.use('/aslab', aslabRoutes);
+app.use('/aslab', verifikasiRoutes);
 
 app.use('/mahasiswa', mahasiswaRouter);
 

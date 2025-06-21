@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masuk</title>
+</head>
+
+<body>
+    <!-- Flash Message -->
+    <% if (typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: "<%= success_msg[0] %>"
+            });
+        </script>
+        <% } %>
+
+            <% if (typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: "<%= error_msg[0] %>"
+                    }).then(() => {
+                        // Reset form hanya jika popup error (bukan validasi Joi)
+                        const form = document.getElementById('registerForm');
+                        if (form) form.reset();
+                    });
+                </script>
+                <% } %>
+
+                    <div class="min-h-screen flex items-center justify-center bg-gray-200 py-10 px-4">
+                        <div class="flex flex-col items-center w-full max-w-[48rem] shadow-md bg-white rounded-md overflow-hidden">
+                            <div class="flex w-full flex-col md:flex-row">
+                                <!-- Form -->
+                                <div class="flex justify-center items-center w-full md:w-1/2 p-8">
+                                    <div class="w-full max-w-xs">
+                                        <h1 class="text-xl font-semibold mb-4">Masuk</h1>
+
+                                        <% if (Array.isArray(errors) && errors.length > 0) { %>
+                                            <ul class="text-red-500 text-sm mb-3">
+                                                <% errors.forEach(err => { %>
+                                                    <li>
+                                                        <%= err.msg %>
+                                                    </li>
+                                                    <% }) %>
+                                            </ul>
+                                            <% } %>
+
+                                                <form id="loginForm" action="/login" method="POST">
+                                                    
+                                                    <div class="mb-3">
+  
+ <!-- Pilih Role -->
+<div class="mb-3">
+  <label class="block text-xs font-semibold mb-1">Login Sebagai</label>
+  <select name="role" required class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700">
+    <option value="mahasiswa">Mahasiswa</option>
+    <option value="asisten_lab">Asisten Lab</option>
+    <option value="admin">Admin</option>
+  </select>
+</div>
+
+<!-- Identifier -->
+<div class="mb-3">
+  <label class="block text-xs font-semibold mb-1">NIM / No Aslab</label>
+  <input type="text" name="identifier" placeholder="NIM atau No Aslab" value="<%= old?.identifier || '' %>" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" />
+</div>
+
+</div>
+
+
+
+            
+                                                    <div class="mb-3">
+                                                        <label class="block text-xs font-semibold mb-1">Password</label>
+                                                        <input type="password" name="password" placeholder="******" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" style="border-color: #7dbb7d;" />
+                                                    </div>
+                                
+
+                                                    <button class="w-full text-white py-1.5 rounded-md text-sm mb-2" style="background-color: #467445;">Masuk</button>
+                                                </form>
+
+                                                <div class="text-center mt-4">
+                                                    <span class="text-xs text-gray-400 font-semibold">Belum memiliki akun?</span>
+                                                    <a href="/register" class="text-xs font-semibold" style="color: #467445;">Daftar</a>
+                                                </div>
+                                    </div>
+                                </div>
+
+                                <!-- Banner -->
+                                <div class="w-full md:w-1/2 hidden md:block">
+                                    <img src="/img/gambar.png" alt="Banner" class="h-full w-full object-cover rounded-r-md" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</body>
+
+</html>

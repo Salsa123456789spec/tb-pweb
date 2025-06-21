@@ -1,17 +1,25 @@
 import express from 'express';
 import prisma from '../models/prisma.js';
-import upload from '../middleware/upload.js'; // asumsi kamu pakai multer di sini
+import upload from '../middleware/upload.js'; // multer upload config
+import ensureNotRegistered from '../middleware/ensureNotRegistered.js';
 
 const router = express.Router();
 
-router.post('/', upload.fields([
+// GET: Tampilkan form jika belum pernah daftar
+router.get('/', ensureNotRegistered, (req, res) => {
+  const user = req.session.user;
+  res.render('mahasiswa/formulirPendaftaran', { user });
+});
+
+// POST: Kirim formulir pendaftaran
+router.post('/', ensureNotRegistered, upload.fields([
   { name: 'CV_file', maxCount: 1 },
   { name: 'KRS_file', maxCount: 1 },
   { name: 'KHS_file', maxCount: 1 },
   { name: 'surat_permohonan_file', maxCount: 1 }
 ]), async (req, res) => {
   try {
-    const user = req.session.user; // pastikan user sudah login
+    const user = req.session.user;
 
     await prisma.pendaftaran.create({
       data: {
@@ -25,15 +33,15 @@ router.post('/', upload.fields([
         KHS_file: req.files['KHS_file'][0].filename,
         surat_permohonan_file: req.files['surat_permohonan_file']?.[0]?.filename || '',
         alasan: req.body.alasan || null,
-        pernyataan: req.body.pernyataan === 'on' ? true : false,
+        pernyataan: req.body.pernyataan === 'on'
       }
     });
 
     req.flash('success_msg', 'Formulir berhasil disimpan!');
-    res.redirect('/mahasiswa/dashboard');
+    res.redirect('/mahasiswa/konfirmasiPendaftaran');
 
   } catch (err) {
-    console.error(err);
+    console.error('Error saat simpan pendaftaran:', err);
     req.flash('error_msg', 'Terjadi kesalahan saat menyimpan data.');
     res.redirect('/mahasiswa/formulirPendaftaran');
   }

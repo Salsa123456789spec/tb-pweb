@@ -20,15 +20,18 @@ enum Status {
 }
 
 model User {
-  id           Int          @id @default(autoincrement())
-  nim          String       @unique
-  name         String
-  email        String       @unique
-  password     String
-  role         Role
+  id            Int            @id @default(autoincrement())
+  nim           String?        @unique
+  no_aslab      String?        @unique   
+  name          String
+  email         String         @unique
+  password      String
+  role          Role
 
   // Relasi balik ke Pendaftaran
-  pendaftarans Pendaftaran[] @relation("UserToPendaftaran")
+  pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
+  
+  pengumuman    Pengumuman[]
 }
 
 model Pendaftaran {
@@ -73,4 +76,18 @@ model KomplainJadwal {
   waktu_diajukan      DateTime?
 
   jadwal              JadwalWawancara @relation(fields: [jadwal_id], references: [id])
+}
+
+model Pengumuman {
+  id                Int      @id @default(autoincrement())
+  user_id           Int       
+  tahap1_status     String   // 'lulus' atau 'gagal'
+  tahap2_status     String
+  tahap3_status     String
+  hasil_akhir       String   // 'aktif' atau 'tidak_aktif'
+  tanggal_diumumkan DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("pengumuman") // opsional: nama tabel di database
 }

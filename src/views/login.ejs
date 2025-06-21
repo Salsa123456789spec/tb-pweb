@@ -56,9 +56,27 @@
                                                 <form id="loginForm" action="/login" method="POST">
                                                     
                                                     <div class="mb-3">
-                                                        <label class="block text-xs font-semibold mb-1">NIM</label>
-                                                        <input type="text" name="nim" placeholder="NIM" value="<%= old?.nim || '' %>" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" style="border-color: #7dbb7d;" />
-                                                    </div>
+  
+ <!-- Pilih Role -->
+<div class="mb-3">
+  <label class="block text-xs font-semibold mb-1">Login Sebagai</label>
+  <select name="role" required class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700">
+    <option value="mahasiswa">Mahasiswa</option>
+    <option value="asisten_lab">Asisten Lab</option>
+    <option value="admin">Admin</option>
+  </select>
+</div>
+
+<!-- Identifier -->
+<div class="mb-3">
+  <label class="block text-xs font-semibold mb-1">NIM / No Aslab</label>
+  <input type="text" name="identifier" placeholder="NIM atau No Aslab" value="<%= old?.identifier || '' %>" class="w-full rounded-md border-2 px-2 py-1 text-sm text-gray-700" />
+</div>
+
+</div>
+
+
+
             
                                                     <div class="mb-3">
                                                         <label class="block text-xs font-semibold mb-1">Password</label>

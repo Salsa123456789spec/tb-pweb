@@ -33,16 +33,41 @@ router.get('/dashboard', ensureAuthenticated, ensureRole('admin'), async (req, r
 // Kelola User
 router.get('/kelolaUser', ensureAuthenticated, ensureRole('admin'), async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
-    const totalUser = await prisma.user.count();
+    const userList = await prisma.user.findMany({
+      include: {
+        pendaftarans: true
+      }
+    });
+    
+    const total = await prisma.user.count();
+    const totalAktif = await prisma.user.count({
+      where: {
+        pendaftarans: {
+          some: {
+            status: 'diterima'
+          }
+        }
+      }
+    });
+    const totalTidakAktif = await prisma.user.count({
+      where: {
+        pendaftarans: {
+          some: {
+            status: 'ditolak'
+          }
+        }
+      }
+    });
 
-    res.render('admin/kelolaUser', {
+    res.render('superadmin/kelolaUser', {
       layout: 'superadmin/layout/main',
       title: 'Kelola User',
       activePage: 'kelolaUser',
       user: req.session.user,
-      users,
-      totalUser,
+      userList,
+      total,
+      totalAktif,
+      totalTidakAktif,
     });
   } catch (error) {
     console.error('Error loading user data:', error);

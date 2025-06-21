@@ -25,6 +25,12 @@ enum Tahapan {
   tahap3
 }
 
+enum StatusKumpul {
+  terkumpul
+  terlambat
+  belum_terkumpul
+}
+
 model User {
   id            Int            @id @default(autoincrement())
   nim           String?        @unique
@@ -58,6 +64,7 @@ model Pendaftaran {
   user                    User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
   jadwalWawancara         JadwalWawancara[]
   pengumuman              Pengumuman[]
+  pengumpulanTugas        PengumpulanTugas[]
 }
 
 model JadwalWawancara {
@@ -102,3 +109,29 @@ model Pengumuman {
   pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
 }
 
+model Tugas {
+  id               Int                @id @default(autoincrement())
+  judul            String
+  deskripsi        String?
+  deadline         DateTime
+
+  pengumpulanTugas PengumpulanTugas[]
+}
+
+model PengumpulanTugas {
+  id               Int       @id @default(autoincrement())
+  tugas_id         Int
+  pendaftaran_id   Int
+  file             String
+  tanggal_kumpul   DateTime  @default(now())
+  status           StatusKumpul    @default(belum_terkumpul)
+
+  tugas            Tugas     @relation(fields: [tugas_id], references: [id])
+  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+}
+
+model FAQ {
+  id         Int    @id @default(autoincrement())
+  pertanyaan String
+  jawaban    String
+}

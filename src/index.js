@@ -9,11 +9,12 @@ import registerRouter from './routes/register.js';
 import loginRouter from './routes/login.js';
 
 import adminRouter from './routes/admin.js';
-import mahasiswaRouter from './routes/mahasiswa.js'; // Pastikan ini diimpor
+import mahasiswaRouter from './routes/mahasiswa.js';
 import formulirRoutes from './routes/formulirPendaftaran.js';
 import konfirmasiPendaftaranRoutes from './routes/konfirmasiPendaftaran.js';
 import adminRoutes from './routes/admin.js';
 import aslabRoutes from './routes/aslab.js';
+import faqRouter from './routes/faq.js'; 
 
 const app = express();
 const port = 3000;
@@ -63,10 +64,8 @@ app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
 app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
 app.use('/admin', adminRoutes);
 app.use('/aslab', aslabRoutes);
-
-app.use('/mahasiswa', mahasiswaRouter); // Ini adalah baris yang menangani semua rute di mahasiswaRouter
-
-// app.use('/mahasiswa/jadwalWawancara', mahasiswaRouter); // Baris ini duplikat dan tidak diperlukan jika route sudah di mahasiswaRouter
+app.use('/mahasiswa/faq', faqRouter); 
+app.use('/mahasiswa', mahasiswaRouter);
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);

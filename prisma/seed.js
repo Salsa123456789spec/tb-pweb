@@ -95,6 +95,34 @@ async function main() {
       console.log(`✅ User ${userData.name} dan pengumuman tahap 1 berhasil ditambahkan!`);
     }
   }
+
+  // Tambahkan data pewawancara
+  const pewawancaraList = [
+    { nama: 'Dr. John Smith', kontak: 'john.smith@example.com' },
+    { nama: 'Jane Doe, M.Sc.', kontak: '081234567891' },
+  ];
+
+  for (const pewawancaraData of pewawancaraList) {
+    const existingPewawancara = await prisma.pewawancara.findFirst({
+        where: { nama: pewawancaraData.nama },
+    });
+    if (!existingPewawancara) {
+        await prisma.pewawancara.create({ data: pewawancaraData });
+        console.log(`✅ Pewawancara ${pewawancaraData.nama} berhasil ditambahkan!`);
+    }
+  }
+
+  // Hubungkan jadwal dengan pewawancara
+  const jadwalPertama = await prisma.jadwalWawancara.findFirst();
+  const pewawancaraPertama = await prisma.pewawancara.findFirst();
+
+  if (jadwalPertama && pewawancaraPertama && !jadwalPertama.pewawancara_id) {
+    await prisma.jadwalWawancara.update({
+      where: { id: jadwalPertama.id },
+      data: { pewawancara_id: pewawancaraPertama.id },
+    });
+    console.log(`✅ Jadwal Wawancara berhasil dihubungkan dengan ${pewawancaraPertama.nama}`);
+  }
 }
 
 main()

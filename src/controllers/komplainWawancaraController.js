@@ -17,7 +17,8 @@ export const getKomplainWawancaraForm = async (req, res) => {
                     include: {
                         user: true
                     }
-                }
+                },
+                pewawancara: true
             }
         });
 

@@ -19,6 +19,7 @@ export const getJadwalWawancaraMahasiswa = async (req, res) => {
                         user: true
                     }
                 },
+                pewawancara: true, // BARIS INI DITAMBAHKAN/DIPASTIKAN ADA untuk menyertakan data pewawancara
                 KomplainJadwal: { // Sertakan data komplain terkait
                     where: {
                         status: "menunggu" // Hanya ambil komplain yang berstatus "menunggu"
@@ -38,4 +39,4 @@ export const getJadwalWawancaraMahasiswa = async (req, res) => {
         console.error('Error fetching jadwal wawancara for mahasiswa:', error);
         res.status(500).send('Terjadi kesalahan saat memuat jadwal wawancara.');
     }
-};
+};  

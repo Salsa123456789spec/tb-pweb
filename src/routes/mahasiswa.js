@@ -62,6 +62,7 @@ router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), asy
             }
           },
         },
+        pewawancara: true
       },
     });
 

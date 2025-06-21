@@ -72,10 +72,13 @@
                             </div>
                             <div>
                                 <h4 class="text-lg font-semibold text-gray-900">
-                                    <%= jadwal.pewawancara || 'Nama Pewawancara' %>
+                                    <%= jadwal.pewawancara?.nama || 'Nama Pewawancara' %>
                                 </h4>
                                 <p class="text-gray-500 text-sm">
                                     Pewawancara
+                                </p>
+                                <p class="text-gray-500 text-sm">
+                                    Kontak: <%= jadwal.pewawancara?.kontak || 'N/A' %>
                                 </p>
                             </div>
                         </div>
@@ -180,4 +183,4 @@
         </div>
     </div>
 </body>
-</html>
+</html>     

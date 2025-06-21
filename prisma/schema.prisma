@@ -61,24 +61,23 @@ model Pendaftaran {
 }
 
 model JadwalWawancara {
-  id              Int               @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   pendaftaran_id  Int
   waktu           DateTime
+  pewawancara_id  Int?
   ruang           String?
   tanggal         DateTime?
 
-  pewawancara_id  Int?              // FK baru ke tabel Pewawancara
-
-  pendaftaran     Pendaftaran       @relation(fields: [pendaftaran_id], references: [id])
-  pewawancara     Pewawancara?      @relation(fields: [pewawancara_id], references: [id])
+  pendaftaran     Pendaftaran  @relation(fields: [pendaftaran_id], references: [id])
   komplain        KomplainJadwal[]
+  pewawancara     Pewawancara? @relation(fields: [pewawancara_id], references: [id])
 }
 
 model Pewawancara {
-  id         Int                @id @default(autoincrement())
-  nama       String
-  kontak     String
-  jadwal     JadwalWawancara[] // Relasi ke JadwalWawancara
+  id        Int               @id @default(autoincrement())
+  nama      String
+  kontak    String
+  jadwal    JadwalWawancara[]
 }
 
 model KomplainJadwal {

@@ -58,9 +58,15 @@
                         <p class="text-sm text-gray-500">Pendaftar</p>
                         <p class="text-base font-medium text-gray-900"><%= jadwal.pendaftaran?.user?.name || 'N/A' %> (<%= jadwal.pendaftaran?.divisi || 'N/A' %>)</p>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Pewawancara</p>
-                        <p class="text-base font-medium text-gray-900"><%= jadwal.pewawancara || 'N/A' %></p>
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0">
+                        <i class="fas fa-user-tie text-blue-500 text-2xl"></i>
+                      </div>
+                      <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Pewawancara</p>
+                        <p class="text-base font-medium text-gray-900"><%= jadwal.pewawancara?.nama || 'Belum Ditentukan' %></p>
+                        <p class="text-sm text-gray-500">Kontak: <%= jadwal.pewawancara?.kontak || 'N/A' %></p>
+                      </div>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Tanggal</p>

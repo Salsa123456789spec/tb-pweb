@@ -31,12 +31,22 @@
             </div>
 
             <div class="border-t border-gray-200 pt-4">
-                 <% if (pengumpulan) { %>
-                    <p class="text-sm text-green-600 font-semibold">
-                        Terkumpul pada <%= new Date(pengumpulan.tanggal_kumpul).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }) %>
-                    </p>
+                <% if (pengumpulan) { %>
+                    <% if (pengumpulan.status === 'terlambat') { %>
+                        <p class="text-sm text-red-600 font-semibold">
+                            Terkumpul Terlambat pada <%= new Date(pengumpulan.tanggal_kumpul).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }) %>
+                        </p>
+                    <% } else { %>
+                        <p class="text-sm text-green-600 font-semibold">
+                            Terkumpul pada <%= new Date(pengumpulan.tanggal_kumpul).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }) %>
+                        </p>
+                    <% } %>
                 <% } else { %>
-                    <p class="text-sm text-yellow-600 font-semibold">Belum dikumpulkan</p>
+                    <% if (new Date() > new Date(tugas.deadline)) { %>
+                        <p class="text-sm text-red-600 font-semibold">Anda belum mengumpulkan tugas ini (Terlambat)</p>
+                    <% } else { %>
+                        <p class="text-sm text-yellow-600 font-semibold">Belum dikumpulkan</p>
+                    <% } %>
                 <% } %>
                 <p class="text-xs text-gray-500 mt-1">
                     Jatuh tempo <%= new Date(tugas.deadline).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }) %>

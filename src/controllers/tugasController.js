@@ -79,9 +79,9 @@ export const getTugasById = async(req, res) => {
 
 
 /**
- * @desc    Mengumpulkan atau Memperbarui Tugas
- * @route   POST /mahasiswa/tugas/:id/kumpul
- * @access  Private (Mahasiswa)
+ * @desc Mengumpulkan atau Memperbarui Tugas
+ * @route POST /mahasiswa/tugas/:id/kumpul
+ * @access Private (Mahasiswa)
  */
 export const submitTugas = async (req, res) => {
     const { id: tugasId } = req.params;
@@ -93,7 +93,17 @@ export const submitTugas = async (req, res) => {
     }
 
     try {
-        // 1. Dapatkan pendaftaran_id dari user yang sedang login
+        // 1. Dapatkan informasi tugas, termasuk deadline
+        const tugas = await prisma.tugas.findUnique({
+            where: { id: parseInt(tugasId) }
+        });
+
+        if (!tugas) {
+            req.flash('error_msg', 'Tugas tidak ditemukan.');
+            return res.redirect('/mahasiswa/tugas');
+        }
+
+        // 2. Dapatkan pendaftaran_id dari user yang sedang login
         const pendaftaran = await prisma.pendaftaran.findFirst({
             where: { user_id: userId },
             select: { id: true }
@@ -105,7 +115,15 @@ export const submitTugas = async (req, res) => {
         }
         const pendaftaranId = pendaftaran.id;
 
-        // 2. Cek apakah sudah ada pengumpulan untuk tugas ini
+        // 3. Tentukan status pengumpulan
+        const tanggalKumpul = new Date();
+        const deadline = new Date(tugas.deadline);
+        let status = 'terkumpul';
+        if (tanggalKumpul > deadline) {
+            status = 'terlambat';
+        }
+
+        // 4. Cek apakah sudah ada pengumpulan untuk tugas ini
         const existingSubmission = await prisma.pengumpulanTugas.findFirst({
             where: {
                 tugas_id: parseInt(tugasId),
@@ -115,11 +133,12 @@ export const submitTugas = async (req, res) => {
 
         const dataToSubmit = {
             file: req.file.filename,
-            tanggal_kumpul: new Date()
+            tanggal_kumpul: tanggalKumpul,
+            status: status // Tambahkan status di sini
         };
 
         if (existingSubmission) {
-            // 3. JIKA SUDAH ADA: Perbarui data yang ada
+            // 5. JIKA SUDAH ADA: Perbarui data yang ada
             await prisma.pengumpulanTugas.update({
                 where: {
                     id: existingSubmission.id
@@ -128,7 +147,7 @@ export const submitTugas = async (req, res) => {
             });
             req.flash('success_msg', 'File tugas berhasil diperbarui.');
         } else {
-            // 4. JIKA BELUM ADA: Buat data baru
+            // 6. JIKA BELUM ADA: Buat data baru
             await prisma.pengumpulanTugas.create({
                 data: {
                     tugas_id: parseInt(tugasId),

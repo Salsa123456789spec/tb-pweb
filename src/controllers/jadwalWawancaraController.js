@@ -1,27 +1,41 @@
-  // src/controllers/jadwalWawancaraController.js
-  import prisma from '../models/prisma.js';
+// src/controllers/jadwalWawancaraController.js
+import prisma from '../models/prisma.js'; // Pastikan path ini benar untuk instance Prisma Anda
 
-  export const getJadwalWawancara = async (req, res) => {
+export const getJadwalWawancaraMahasiswa = async (req, res) => {
     try {
-      const jadwalWawancara = await prisma.jadwalWawancara.findMany({
-        include: {
-          pendaftaran: true, // Sertakan data pendaftaran jika diperlukan
-        },
-        orderBy: {
-          tanggal: 'asc', // Urutkan berdasarkan tanggal agar lebih rapi
-        }
-      });
+        // Asumsi user ID tersedia dari sesi atau middleware autentikasi
+        // Ganti 'req.user.id' dengan cara Anda mendapatkan ID pengguna saat ini.
+        const userId = req.user.id; // Contoh: Asumsi user ID tersedia di req.user
 
-      // Render tampilan EJS dan kirim data jadwalWawancara
-      res.render('mahasiswa/jadwalWawancara', {
-        title: 'Jadwal Wawancara',
-        jadwalWawancara, // Mengirimkan array data ke view
-        user: req.session.user,
-        activePage: 'wawancara' // <--- TAMBAHKAN INI
-      });
+        const jadwalWawancara = await prisma.jadwalWawancara.findMany({
+            where: {
+                pendaftaran: {
+                    user_id: userId // Filter jadwal berdasarkan user yang sedang login
+                }
+            },
+            include: {
+                pendaftaran: {
+                    include: {
+                        user: true
+                    }
+                },
+                KomplainJadwal: { // Sertakan data komplain terkait
+                    where: {
+                        status: "menunggu" // Hanya ambil komplain yang berstatus "menunggu"
+                    },
+                    // Jika Anda yakin hanya ada satu komplain menunggu per jadwal,
+                    // Anda bisa menambahkan take: 1 di sini.
+                    // take: 1
+                }
+            }
+        });
 
+        res.render('mahasiswa/jadwalWawancara', {
+            title: 'Jadwal Wawancara',
+            jadwalWawancara: jadwalWawancara // Kirim data yang sudah diperkaya ke template EJS
+        });
     } catch (error) {
-      console.error('Error fetching jadwal wawancara:', error);
-      res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data jadwal wawancara', error: error.message });
+        console.error('Error fetching jadwal wawancara for mahasiswa:', error);
+        res.status(500).send('Terjadi kesalahan saat memuat jadwal wawancara.');
     }
-  };
+};

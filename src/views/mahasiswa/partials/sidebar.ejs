@@ -1,0 +1,123 @@
+<aside class="w-64 min-h-screen bg-white shadow-md hidden md:block" style="background: linear-gradient(90deg, #84DA81 0%, #537D5D 100%);">
+  <div class="p-6 font-bold text-black-600 text-md">
+      <div>Laboratorium of</div>
+      <div class="font-bold">Enterprise</div>
+      <div class="font-bold">Application</div>
+  </div>
+  <nav class="px-5">
+      <a href="/mahasiswa/dashboard"
+          class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+          <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+          <span class="material-icons">dashboard</span>
+          <span>Dashboard</span>
+      </a>
+      <a href="/mahasiswa/formulirPendaftaran"
+          class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+          <%= activePage === 'formulirPendaftaran' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+          <span class="material-icons">description</span>
+          <span>Formulir Pendaftaran</span>
+      </a>
+
+      <div class="relative">
+          <a href="#" id="pengumumanDropdownToggle" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2 cursor-pointer">
+              <span class="material-icons">announcement</span>
+              <span>Pengumuman</span>
+              <span class="material-icons ml-auto text-sm" id="pengumumanDropdownArrow">expand_more</span>
+          </a>
+          <div id="pengumumanDropdownMenu" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
+              <a href="/mahasiswa/pengumuman/hasil-tahap-1" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Hasil Tahap 1</a>
+              <a href="/mahasiswa/pengumuman/hasil-tahap-2" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Hasil Tahap 2</a>
+              <a href="/mahasiswa/pengumuman/hasil-tahap-3" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Hasil Tahap 3</a>
+          </div>
+      </div>
+
+      <a href="/mahasiswa/jadwalWawancara"
+          class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+          <%= activePage === 'wawancara' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+          <span class="material-icons">people</span>
+          <span>Wawancara</span>
+      </a>
+      
+      <div class="relative">
+        <button id="magangDropdownToggle" class="flex items-center w-full justify-between py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 focus:outline-none">
+            <div class="flex items-center space-x-3">
+                <span class="material-icons">work</span>
+                <span>Magang</span>
+            </div>
+            <span class="material-icons" id="magangDropdownArrow">expand_more</span>
+        </button>
+        <div id="magangDropdownMenu" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
+            <a href="/mahasiswa/tugas" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Penugasan</a>
+            <a href="/mahasiswa/materiMagang" class="block px-6 py-2 text-white hover:bg-white hover:bg-opacity-20">Materi</a>
+        </div>
+    </div>
+    
+      <a href="#" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+          <span class="material-icons">forum</span>
+          <span>Forum diskusi</span>
+      </a>
+        <a href="/mahasiswa/faq" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+            <span class="material-icons">quiz</span>
+            <span>FAQ</span>
+        </a>
+<<<<<<< HEAD
+        <a href="/mahasiswa/kuisioner"
+          class="flex items-center space-x-3 py-3 px-3 rounded-lg transition-all duration-200
+          <%= activePage === 'formulirPendaftaran' ? 'bg-white bg-opacity-20 text-white font-semibold' : 'hover:bg-white hover:bg-opacity-10 text-white' %>">
+          <span class="material-icons">description</span>
+          <span>kuisioner</span>
+      </a>
+=======
+>>>>>>> afce76a91f15dc6e198ab291d8381272a7c116a5
+  </nav>
+</aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Pengumuman Dropdown
+      const pengumumanDropdownToggle = document.getElementById('pengumumanDropdownToggle');
+      const pengumumanDropdownMenu = document.getElementById('pengumumanDropdownMenu');
+      const pengumumanDropdownArrow = document.getElementById('pengumumanDropdownArrow');
+
+      pengumumanDropdownToggle.addEventListener('click', function (event) {
+          event.preventDefault();
+          toggleDropdown(pengumumanDropdownMenu, pengumumanDropdownArrow);
+      });
+
+      // Magang Dropdown
+      const magangDropdownToggle = document.getElementById('magangDropdownToggle');
+      const magangDropdownMenu = document.getElementById('magangDropdownMenu');
+      const magangDropdownArrow = document.getElementById('magangDropdownArrow');
+
+      magangDropdownToggle.addEventListener('click', function (event) {
+          event.preventDefault();
+          toggleDropdown(magangDropdownMenu, magangDropdownArrow);
+      });
+
+      // Function to toggle dropdown
+      function toggleDropdown(menu, arrow) {
+          if (menu.style.maxHeight === '0px' || menu.style.maxHeight === '') {
+              menu.style.maxHeight = menu.scrollHeight + 'px';
+              arrow.textContent = 'expand_less';
+          } else {
+              menu.style.maxHeight = '0px';
+              arrow.textContent = 'expand_more';
+          }
+      }
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function (event) {
+          // Close pengumuman dropdown
+          if (!pengumumanDropdownToggle.contains(event.target) && !pengumumanDropdownMenu.contains(event.target)) {
+              pengumumanDropdownMenu.style.maxHeight = '0px';
+              pengumumanDropdownArrow.textContent = 'expand_more';
+          }
+          
+          // Close magang dropdown
+          if (!magangDropdownToggle.contains(event.target) && !magangDropdownMenu.contains(event.target)) {
+              magangDropdownMenu.style.maxHeight = '0px';
+              magangDropdownArrow.textContent = 'expand_more';
+          }
+      });
+  });
+</script>

@@ -1,49 +1,55 @@
-<div class="sidebar">
-    <div class="sidebar-header">
-        <a href="/aslab/dashboard" class="app-brand">
-            <i class="fas fa-graduation-cap"></i>
-            <span>LEAs Calling</span>
-        </a>
+<aside class="fixed flex h-full w-64 flex-col bg-[#1E8E3E] text-white">
+    <div class="flex items-center justify-center p-6 border-b border-white/10">
+        <h1 class="text-2xl font-bold">Lea'sCalling</h1>
     </div>
-    <nav class="sidebar-menu">
-        <a href="/aslab/dashboard" class="menu-item <%= activePage === 'dashboard' ? 'active' : '' %>">
-            <i class="fas fa-tachometer-alt"></i> Dashboard
+
+    <nav class="flex-grow p-4 space-y-2">
+        <a href="/aslab/dashboard" class="flex items-center gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors <%= activePage === 'dashboard' ? 'bg-white text-green-800 font-semibold' : '' %>">
+            <i class="fa-solid fa-house w-6 text-center"></i>
+            <span>Dashboard</span>
         </a>
-        <a href="/aslab/verifikasi" class="menu-item <%= activePage === 'verifikasi' ? 'active' : '' %>">
-            <i class="fas fa-check-circle"></i> Verifikasi
+        <a href="#" class="flex items-center gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors">
+            <i class="fa-solid fa-check-to-slot w-6 text-center"></i>
+            <span>Verifikasi</span>
         </a>
-        <a href="/aslab/wawancara" class="menu-item <%= activePage === 'wawancara' ? 'active' : '' %>">
-            <i class="fas fa-comments"></i> Wawancara
-        </a>
-        <a href="/aslab/absensi" class="menu-item <%= activePage === 'absensi' ? 'active' : '' %>">
-            <i class="fas fa-calendar-check"></i> Absensi
-        </a>
-        <a href="/aslab/penilaian" class="menu-item <%= activePage === 'penilaian' ? 'active' : '' %>">
-            <i class="fas fa-star"></i> Penilaian
-        </a>
-        <a href="/aslab/ranking" class="menu-item <%= activePage === 'ranking' ? 'active' : '' %>">
-            <i class="fas fa-trophy"></i> Ranking
-        </a>
-        <a href="/aslab/pengumuman" class="menu-item <%= activePage === 'pengumuman' ? 'active' : '' %>">
-            <i class="fas fa-bullhorn"></i> Pengumuman
+        <a href="#" class="flex items-center gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors">
+            <i class="fa-solid fa-file-lines w-6 text-center"></i>
+            <span>Wawancara</span>
         </a>
         
-        <a href="#rekapSubmenu" data-bs-toggle="collapse" aria-expanded="<%= activePage.startsWith('rekap') ? 'true' : 'false' %>" class="menu-item dropdown-toggle <%= activePage.startsWith('rekap') ? 'active' : '' %>">
-            <i class="fas fa-chart-bar"></i> Rekap
+        <a href="/aslab/absensi" class="flex items-center gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors <%= activePage === 'absensi' ? 'bg-white text-green-800 font-semibold' : '' %>">
+            <i class="fa-solid fa-calendar-check w-6 text-center"></i>
+            <span>Absensi</span>
         </a>
-        <div class="collapse <%= activePage.startsWith('rekap') ? 'show' : '' %>" id="rekapSubmenu">
-            <div class="submenu">
-                <a href="/aslab/rekap/pendaftar" class="submenu-item <%= activePage === 'rekap/pendaftar' ? 'active-submenu' : '' %>">Pendaftar</a>
-                <a href="/aslab/rekap/kelulusan" class="submenu-item <%= activePage === 'rekap/kelulusan' ? 'active-submenu' : '' %>">Kelulusan</a>
-                <a href="/aslab/rekap/absensi" class="submenu-item <%= activePage === 'rekap/absensi' ? 'active-submenu' : '' %>">Absensi</a>
-                <a href="/aslab/rekap/kuesioner" class="submenu-item <%= activePage === 'rekap/kuesioner' ? 'active-submenu' : '' %>">Kuesioner</a>
+        <a href="#" class="flex items-center gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors">
+            <i class="fa-solid fa-pencil-alt w-6 text-center"></i>
+            <span>Penilaian</span>
+        </a>
+        <a href="#" class="flex items-center gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors">
+            <i class="fa-solid fa-ranking-star w-6 text-center"></i>
+            <span>Ranking</span>
+        </a>
+        <a href="#" class="flex items-center gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors">
+            <i class="fa-solid fa-bullhorn w-6 text-center"></i>
+            <span>Pengumuman</span>
+        </a>
+        
+        <div>
+            <button class="menu-item-toggle flex w-full items-center justify-between gap-4 rounded-lg px-4 py-2.5 hover:bg-white/10 transition-colors <%= activePage.startsWith('rekap') ? 'bg-black/20' : '' %>">
+                <div class="flex items-center gap-4">
+                    <i class="fa-solid fa-folder w-6 text-center"></i>
+                    <span>Rekap</span>
+                </div>
+                <i class="fa-solid fa-chevron-down transform transition-transform duration-300 <%= activePage.startsWith('rekap') ? 'rotate-180' : '' %>"></i>
+            </button>
+            <div class="submenu pl-8 mt-1 space-y-1 <%= activePage.startsWith('rekap') ? '' : 'hidden' %>">
+                <a href="/aslab/rekap/pendaftar" class="block rounded-lg px-4 py-2 text-sm hover:bg-white/10 transition-colors <%= activePage === 'rekap/pendaftar' ? 'bg-white text-green-800 font-semibold' : '' %>">
+                    Pendaftar
+                </a>
+                <a href="#" class="block rounded-lg px-4 py-2 text-sm hover:bg-white/10 transition-colors">Kelulusan</a>
+                <a href="#" class="block rounded-lg px-4 py-2 text-sm hover:bg-white/10 transition-colors">Absensi</a>
+                <a href="#" class="block rounded-lg px-4 py-2 text-sm hover:bg-white/10 transition-colors">Kuisioner</a>
             </div>
         </div>
-
     </nav>
-    <div class="sidebar-footer">
-         <a href="/logout" class="menu-item">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
-    </div>
-</div>
+</aside>

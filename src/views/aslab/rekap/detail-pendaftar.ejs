@@ -1,106 +1,109 @@
-<div class="data-card">
-    <div class="card-body p-4 p-md-5">
-        <!-- 1. Header Baru di Dalam Kartu -->
-        <div class="card-internal-header">
-            <a href="/aslab/rekap/pendaftar" class="btn-back-icon">
-                <i class="fas fa-arrow-left"></i>
-            </a>
-            <h4 class="card-internal-title">Detail Pendaftar</h4>
-        </div>
+<div class="bg-white rounded-lg shadow-md p-6 font-sans">
 
-        <!-- 2. Header: Avatar (Ikon) dan Nama -->
-        <div class="text-center mb-5">
-            <div class="detail-avatar-final">
-                <i class="fas fa-user"></i>
-            </div>
-            <h2 class="detail-name-final mt-3"><%= detail.user.name %></h2>
-        </div>
+    <div class="flex items-center mb-6">
+        <a href="/aslab/rekap/pendaftar" class="text-gray-700 text-2xl">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1 class="text-xl font-bold text-gray-800 ml-4">Detail Pendaftar</h1>
+    </div>
 
-        <!-- 3. Detail Informasi (Tata Letak Vertikal) -->
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="text" class="form-control" value="<%= detail.user.email %>" readonly>
+    <div class="text-center mb-8">
+        <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-gray-200">
+            <i class="fa-solid fa-user text-5xl text-gray-400"></i>
         </div>
-        <div class="mb-3">
-            <label class="form-label">NIM</label>
-            <input type="text" class="form-control" value="<%= detail.user.nim %>" readonly>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Domisili</label>
-            <input type="text" class="form-control" value="<%= detail.domisili %>" readonly>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Asal</label>
-            <input type="text" class="form-control" value="<%= detail.asal %>" readonly>
-        </div>
-        <div class="mb-4">
-            <label class="form-label">No HP</label>
-            <input type="text" class="form-control" value="<%= detail.nomor_whatsapp %>" readonly>
-        </div>
+        <h2 class="mt-4 text-3xl font-bold text-gray-800"><%= detail.user.name %></h2>
+    </div>
 
-        <!-- 4. Pilihan Divisi dengan Gambar yang Benar -->
-        <div class="mb-4">
-            <label class="form-label">Divisi yang Dipilih</label>
-            <div class="division-wrapper">
-                 <% detail.divisi.split(',').forEach(div => { 
-                    const divisionName = div.trim().toLowerCase();
-                    let imageUrl = '/img/gambar.png'; // Gambar default
+    <div class="space-y-4">
 
-                    if (divisionName.includes('penelitian')) {
-                        imageUrl = '/img/litbang.png';
-                    } else if (divisionName.includes('pengabdian')) {
-                        imageUrl = '/img/pengmas.png';
-                    } else if (divisionName.includes('rumah tangga')) {
-                        imageUrl = '/img/rumahtangga.png';
-                    }
-                 %>
-                    <div class="division-item">
-                        <img src="<%= imageUrl %>" alt="<%= div.trim() %>">
-                        <span><%= div.trim() %></span>
-                    </div>
-                <% }); %>
-            </div>
-        </div>
-
-        <!-- 5. Dokumen (Tata Letak Sesuai Desain UI) -->
-        <div class="mb-4">
-            <label class="form-label mb-3">Dokumen Terlampir</label>
-            <div class="document-row">
-                <label class="document-label">CV</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" value="<%= detail.CV_file %>" readonly>
-                    <a href="/uploads/<%= detail.CV_file %>" target="_blank" class="btn btn-open-doc">OPEN</a>
-                </div>
-            </div>
-            <div class="document-row">
-                <label class="document-label">KRS</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" value="<%= detail.KRS_file %>" readonly>
-                    <a href="/uploads/<%= detail.KRS_file %>" target="_blank" class="btn btn-open-doc">OPEN</a>
-                </div>
-            </div>
-            <div class="document-row">
-                <label class="document-label">KHS</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" value="<%= detail.KHS_file %>" readonly>
-                    <a href="/uploads/<%= detail.KHS_file %>" target="_blank" class="btn btn-open-doc">OPEN</a>
-                </div>
-            </div>
-            <% if (detail.surat_permohonan_file) { %>
-            <div class="document-row">
-                <label class="document-label">Surat</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" value="<%= detail.surat_permohonan_file %>" readonly>
-                    <a href="/uploads/<%= detail.surat_permohonan_file %>" target="_blank" class="btn btn-open-doc">OPEN</a>
-                </div>
-            </div>
-            <% } %>
-        </div>
-
-        <!-- 6. Alasan Bergabung -->
         <div>
-            <label class="form-label">Alasan Bergabung</label>
-            <textarea class="form-control" rows="5" readonly><%= detail.alasan || 'Tidak ada alasan yang diberikan.' %></textarea>
+            <label class="text-sm font-medium text-gray-600">Email</label>
+            <input type="text" value="<%= detail.user.email %>" readonly class="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
         </div>
+
+        <div>
+            <label class="text-sm font-medium text-gray-600">NIM</label>
+            <input type="text" value="<%= detail.user.nim %>" readonly class="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+        </div>
+        
+        <div>
+            <label class="text-sm font-medium text-gray-600">Domisili</label>
+            <input type="text" value="<%= detail.domisili %>" readonly class="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+        </div>
+
+        <div>
+            <label class="text-sm font-medium text-gray-600">Asal</label>
+            <input type="text" value="<%= detail.asal %>" readonly class="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+        </div>
+
+        <div>
+            <label class="text-sm font-medium text-gray-600">No HP</label>
+            <input type="text" value="<%= detail.nomor_whatsapp %>" readonly class="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+        </div>
+
+        <div>
+            <label class="text-sm font-medium text-gray-600 mb-2 block">Divisi</label>
+            <div class="flex items-stretch justify-center gap-4">
+                <% if(detail.divisi) { %>
+                    <% detail.divisi.split(',').forEach(div => { %>
+                        <div class="flex-1 rounded-lg border border-gray-300 p-4 flex flex-col items-center justify-between gap-2">
+                            <% 
+                                const divisionName = div.trim().toLowerCase();
+                                let imageUrl = '/img/gambar.png'; // Gambar default
+                                if (divisionName.includes('penelitian')) {
+                                    imageUrl = '/img/litbang.png';
+                                } else if (divisionName.includes('pengabdian')) {
+                                    imageUrl = '/img/pengmas.png';
+                                } else if (divisionName.includes('rumah tangga')) {
+                                    imageUrl = '/img/rumahtangga.png';
+                                }
+                            %>
+                            <img src="<%= imageUrl %>" alt="<%= div.trim() %>" class="h-16 w-16 object-contain">
+                            <span class="text-sm font-medium text-gray-700 text-center"><%= div.trim() %></span>
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div>
+
+        <div>
+            <label class="text-sm font-medium text-gray-600">CV</label>
+            <div class="flex items-center mt-1">
+                <input type="text" value="<%= detail.CV_file %>" readonly class="w-full rounded-l-md border border-r-0 border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+                <a href="/uploads/<%= detail.CV_file %>" target="_blank" class="flex-shrink-0 rounded-r-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700">OPEN</a>
+            </div>
+        </div>
+        
+        <div>
+            <label class="text-sm font-medium text-gray-600">KRS</label>
+            <div class="flex items-center mt-1">
+                <input type="text" value="<%= detail.KRS_file %>" readonly class="w-full rounded-l-md border border-r-0 border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+                <a href="/uploads/<%= detail.KRS_file %>" target="_blank" class="flex-shrink-0 rounded-r-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700">OPEN</a>
+            </div>
+        </div>
+
+        <div>
+            <label class="text-sm font-medium text-gray-600">KHS</label>
+            <div class="flex items-center mt-1">
+                <input type="text" value="<%= detail.KHS_file %>" readonly class="w-full rounded-l-md border border-r-0 border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+                <a href="/uploads/<%= detail.KHS_file %>" target="_blank" class="flex-shrink-0 rounded-r-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700">OPEN</a>
+            </div>
+        </div>
+        
+        <% if (detail.surat_permohonan_file) { %>
+        <div>
+            <label class="text-sm font-medium text-gray-600">Surat</label>
+            <div class="flex items-center mt-1">
+                <input type="text" value="<%= detail.surat_permohonan_file %>" readonly class="w-full rounded-l-md border border-r-0 border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm">
+                <a href="/uploads/<%= detail.surat_permohonan_file %>" target="_blank" class="flex-shrink-0 rounded-r-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700">OPEN</a>
+            </div>
+        </div>
+        <% } %>
+
+        <div>
+            <label class="text-sm font-medium text-gray-600">Alasan Bergabung</label>
+            <textarea readonly class="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm shadow-sm" rows="5"><%= detail.alasan || 'Tidak ada alasan yang diberikan.' %></textarea>
+        </div>
+
     </div>
 </div>

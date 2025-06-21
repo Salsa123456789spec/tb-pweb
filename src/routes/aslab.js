@@ -1,5 +1,3 @@
-// src/routes/aslab.js
-
 import express from "express";
 import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
 // Import semua controller yang dibutuhkan
@@ -7,7 +5,7 @@ import { getRekapPendaftar, getDetailPendaftar, deletePendaftar } from '../contr
 
 const router = express.Router();
 
-// Rute untuk dashboard (DIPERBAIKI)
+// Rute untuk dashboard
 router.get("/dashboard", ensureAuthenticated, ensureRole('aslab'), (req, res) => {
     res.render("aslab/dashboard", {
         layout: 'aslab/layout/main', // Pastikan file /views/aslab/layout/main.ejs ada
@@ -17,13 +15,34 @@ router.get("/dashboard", ensureAuthenticated, ensureRole('aslab'), (req, res) =>
     });
 });
 
-// Rute untuk menampilkan list pendaftar (sudah ada)
+// Rute untuk halaman Absensi
+router.get("/absensi", ensureAuthenticated, ensureRole('aslab'), (req, res) => {
+    // Anda bisa menambahkan logika untuk mengambil data riwayat dari database di sini
+    const riwayatAbsensi = [
+        {
+            pertemuan: 1,
+            tanggal: '16/06/2025',
+            pembahasan: 'Pengenalan Materi Dasar Programming',
+            peserta: '18/20'
+        }
+    ];
+
+    res.render("aslab/absensi", { // Panggil file ejs yang baru dibuat
+        layout: 'aslab/layout/main',
+        title: 'Manajemen Absensi',
+        user: req.session.user,
+        activePage: 'absensi', // Untuk menyorot menu aktif
+        riwayat: riwayatAbsensi // Mengirim data contoh ke view
+    });
+});
+
+// Rute untuk menampilkan list pendaftar
 router.get("/rekap/pendaftar", ensureAuthenticated, ensureRole('aslab'), getRekapPendaftar);
 
-// (RUTE BARU) Rute untuk menampilkan halaman detail pendaftar
+// Rute untuk menampilkan halaman detail pendaftar
 router.get("/rekap/pendaftar/detail/:id", ensureAuthenticated, ensureRole('aslab'), getDetailPendaftar);
 
-// (RUTE BARU) Rute untuk menghapus data pendaftar
+// Rute untuk menghapus data pendaftar
 router.get("/rekap/pendaftar/delete/:id", ensureAuthenticated, ensureRole('aslab'), deletePendaftar);
 
 export default router;

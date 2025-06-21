@@ -1,25 +1,53 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEA's Calling - <%= title %></title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/aslab-layout.css">
+    <title><%= title %></title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-<body>
-    <div class="wrapper">
+<body class="bg-gray-100">
+
+    <div class="flex">
         <%- include('../partials/sidebar') %>
 
-        <div class="main-content-wrapper">
+        <div class="main-content-wrapper ml-[250px] w-[calc(100%-250px)] flex flex-col min-h-screen">
             <%- include('../partials/topbar') %>
-
-            <main class="content-area">
+            
+            <main class="content-area p-8 flex-grow">
                 <%- body %>
             </main>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ambil semua elemen yang berfungsi sebagai tombol dropdown
+            const toggles = document.querySelectorAll('.menu-item-toggle');
+
+            toggles.forEach(toggle => {
+                // Tambahkan event listener untuk setiap tombol
+                toggle.addEventListener('click', () => {
+                    // Cari submenu yang berada tepat setelah tombol
+                    const submenu = toggle.nextElementSibling;
+                    // Cari ikon panah di dalam tombol
+                    const icon = toggle.querySelector('.fa-chevron-down');
+
+                    // Tampilkan atau sembunyikan submenu dengan class 'hidden'
+                    if (submenu && submenu.classList.contains('submenu')) {
+                        submenu.classList.toggle('hidden');
+                    }
+                    
+                    // Putar ikon panah untuk efek visual
+                    if (icon) {
+                        icon.classList.toggle('rotate-180');
+                    }
+                });
+            });
+        });
+    </script>
+    </body>
 </html>

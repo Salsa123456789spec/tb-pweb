@@ -1,4 +1,4 @@
 <header class="bg-white shadow-md p-4 flex justify-between items-center">
   <h2 class="text-lg font-semibold text-gray-800">Dashboard Asisten Lab</h2>
-  <div class="text-sm text-gray-600">Selamat datang, <%= (typeof user !== 'undefined' && user && user.nama) ? user.nama : 'Aslab' %> 👋</div>
+  <div class="text-sm text-gray-600">Selamat datang, <%= user?.name || 'Aslab' %> 👋</div>
 </header>

@@ -49,6 +49,9 @@ model User {
   pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
   
   pengumuman    Pengumuman[]
+  pengumpulanTugas        PengumpulanTugas[]
+  feedbackKuisioner      FeedbackKuisioner?
+  kehadiran               Kehadiran[]
 }
 
 model Pendaftaran {

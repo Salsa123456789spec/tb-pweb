@@ -52,24 +52,24 @@
   <label class="block text-gray-700 mb-2">Divisi Yang Ingin Diikuti di LEA <span class="text-red-500">*</span></label>
   <div id="divisiOptions" class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <label class="divisi-card border border-gray-300 rounded-lg p-4 text-center cursor-pointer transition">
-      <input type="checkbox" name="divisi[]" value="Penelitian & Pengembangan" class="sr-only">
+      <input type="radio" name="divisi" value="Penelitian & Pengembangan" class="sr-only" required>
       <img src="/img/litbang.png" alt="Icon Penelitian dan Pengembangan" class="mx-auto mb-2">
       <p class="text-sm font-medium">Penelitian & Pengembangan</p>
     </label>
 
     <label class="divisi-card border border-gray-300 rounded-lg p-4 text-center cursor-pointer transition">
-      <input type="checkbox" name="divisi[]" value="Pengabdian Masyarakat" class="sr-only">
+      <input type="radio" name="divisi" value="Pengabdian Masyarakat" class="sr-only" required>
       <img src="/img/pengmas2.png" alt="Icon Pengabdian Masyarakat" class="mx-auto mb-2">
       <p class="text-sm font-medium">Pengabdian Masyarakat</p>
     </label>
 
     <label class="divisi-card border border-gray-300 rounded-lg p-4 text-center cursor-pointer transition">
-      <input type="checkbox" name="divisi[]" value="Rumah Tangga" class="sr-only">
+      <input type="radio" name="divisi" value="Rumah Tangga" class="sr-only" required>
       <img src="/img/rtk.png" alt="Icon Rumah Tangga" class="mx-auto mb-2">
       <p class="text-sm font-medium">Rumah Tangga</p>
     </label>
   </div>
-  <p class="text-xs text-gray-500 mt-2">*Pilih maksimal 2</p>
+  <p class="text-xs text-gray-500 mt-2">*Pilih satu divisi saja</p>
 </div>
 
 <!-- Script -->
@@ -78,23 +78,18 @@
     const labels = document.querySelectorAll('.divisi-card');
 
     labels.forEach(label => {
-      const checkbox = label.querySelector('input[type="checkbox"]');
+      const radio = label.querySelector('input[type="radio"]');
 
-      checkbox.addEventListener('change', () => {
-        const checkedBoxes = document.querySelectorAll('input[name="divisi[]"]:checked');
-
-        // Batasi pilihan maksimal 2
-        if (checkedBoxes.length > 2) {
-          checkbox.checked = false;
-          return alert("Maksimal 2 divisi yang bisa dipilih.");
-        }
-
-        // Update style
+      radio.addEventListener('change', () => {
+        // Reset semua style
         labels.forEach(lbl => {
-          const cb = lbl.querySelector('input[type="checkbox"]');
-          lbl.classList.toggle('border-green-500', cb.checked);
-          lbl.classList.toggle('bg-green-100', cb.checked);
+          lbl.classList.remove('border-green-500', 'bg-green-100');
         });
+
+        // Update style untuk yang dipilih
+        if (radio.checked) {
+          label.classList.add('border-green-500', 'bg-green-100');
+        }
       });
     });
   });

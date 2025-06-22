@@ -10,6 +10,7 @@ const router = express.Router();
 router.get('/dashboard', ensureAuthenticated, ensureRole('mahasiswa'), async (req, res) => {
   const user = req.session.user;
 
+  // Cek apakah user sudah mengisi pendaftaran
   const pendaftaran = await prisma.pendaftaran.findFirst({
     where: { user_id: user.id },
   });
@@ -34,6 +35,9 @@ router.get('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa'),
 
 router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa'), (req, res) => {
   const { nama } = req.body;
+
+  // simpan ke database atau lakukan validasi
+
   req.flash('success_msg', 'Formulir berhasil dikirim');
   res.redirect('/mahasiswa/formulirPendaftaran');
 });
@@ -94,7 +98,6 @@ router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), asy
 router.get('/pengumuman/hasil-tahap-1', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap1);
 router.get('/pengumuman/hasil-tahap-2', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap2);
 router.get('/pengumuman/hasil-tahap-3', ensureAuthenticated, ensureRole('mahasiswa'), pengumumanController.getHasilTahap3);
-
 
 router.use('/', komplainWawancaraRoutes); // This mounts the complaint routes
 router.use('/', pdfRoutes); // This mounts the PDF routes

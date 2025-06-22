@@ -27,7 +27,7 @@ router.post('/', ensureNotRegistered, upload.fields([
         domisili: req.body.domisili,
         asal: req.body.asal,
         nomor_whatsapp: req.body.nomor_whatsapp,
-        divisi: Array.isArray(req.body.divisi) ? req.body.divisi.join(',') : req.body.divisi,
+        divisi: req.body.divisi,
         CV_file: req.files['CV_file'][0].filename,
         KRS_file: req.files['KRS_file'][0].filename,
         KHS_file: req.files['KHS_file'][0].filename,

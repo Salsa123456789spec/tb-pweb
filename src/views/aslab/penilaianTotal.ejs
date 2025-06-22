@@ -1,0 +1,30 @@
+<section class="p-6">
+  <h2 class="text-2xl font-semibold mb-6">Penilaian Total Mahasiswa</h2>
+
+  <div class="bg-white rounded-lg shadow overflow-auto">
+    <table class="min-w-full table-auto">
+      <thead class="bg-gray-100 text-gray-700 text-sm uppercase">
+        <tr>
+          <th class="px-6 py-3 text-left font-semibold">No</th>
+          <th class="px-6 py-3 text-left font-semibold">Nama</th>
+          <th class="px-6 py-3 text-left font-semibold">NIM</th>
+          <th class="px-6 py-3 text-left font-semibold">Divisi</th>
+          <th class="px-6 py-3 text-left font-semibold">Progress</th>
+          <th class="px-6 py-3 text-left font-semibold">Rata-rata Nilai</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% hasil.forEach(item => { %>
+          <tr class="border-b hover:bg-gray-50">
+            <td class="px-6 py-3"><%= item.no %></td>
+            <td class="px-6 py-3"><%= item.nama %></td>
+            <td class="px-6 py-3"><%= item.nim %></td>
+            <td class="px-6 py-3"><%= item.divisi %></td>
+            <td class="px-6 py-3"><%= item.progress %></td>
+            <td class="px-6 py-3"><%= item.rataRataNilai %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>

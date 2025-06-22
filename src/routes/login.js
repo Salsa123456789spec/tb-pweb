@@ -16,13 +16,32 @@ router.get('/', (req, res) => {
     });
 });
 
+// GET logout
+router.get('/logout', (req, res) => {
+    // Store success message before destroying session
+    const successMessage = 'Berhasil logout';
+    
+    // Destroy session
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.redirect('/login');
+        }
+        
+        // Clear cookie
+        res.clearCookie('connect.sid');
+        
+        // Redirect to login with success message using query parameter
+        res.redirect('/login?logout=success');
+    });
+});
+
 router.post('/', async (req, res) => {
   const { role, identifier, password } = req.body;
 
   const { error } = validateLogin(req.body);
   if (error) {
     return res.render('login', {
-      layout: false,
       success_msg: [],
       error_msg: [],
       errors: error.details.map(err => ({ msg: err.message })),
@@ -43,7 +62,6 @@ router.post('/', async (req, res) => {
 
     if (!user) {
       return res.render('login', {
-        layout: false,
         success_msg: [],
         error_msg: [],
         errors: [{ msg: 'Akun tidak ditemukan.' }],
@@ -54,7 +72,6 @@ router.post('/', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.render('login', {
-        layout: false,
         success_msg: [],
         error_msg: [],
         errors: [{ msg: 'Password salah.' }],
@@ -83,7 +100,6 @@ router.post('/', async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.render('login', {
-      layout: false,
       success_msg: [],
       error_msg: [],
       errors: [{ msg: 'Terjadi kesalahan server.' }],

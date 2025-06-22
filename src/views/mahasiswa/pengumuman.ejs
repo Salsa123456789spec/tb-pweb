@@ -1,0 +1,27 @@
+  <div class="announcement-tabs">
+            <button class="tab-button active" onclick="switchTab('tahap1', this)">Tahap 1 - Pendaftaran</button>
+            <button class="tab-button" onclick="switchTab('tahap2', this)">Tahap 2 - Seleksi</button>
+            <button class="tab-button" onclick="switchTab('tahap3', this)">Tahap 3 - Penerimaan</button>
+        </div>
+
+         <div id="tahap1" class="tab-content active">
+            <div class="status-toggle">
+                <button class="status-btn success active" onclick="showResult('tahap1', 'success', this)">Lolos</button>
+                <button class="status-btn failed" onclick="showResult('tahap1', 'failed', this)">Tidak Lolos</button>
+            </div>
+
+             <div id="tahap1-success" class="result-section active">
+                <div class="result-card">
+                    <div class="result-icon success">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h2 class="result-title success">Selamat! Anda Lolos Tahap 1</h2>
+                    <p class="result-subtitle">Tahap Pendaftaran & Verifikasi Berkas</p>
+                    <p class="result-message success">
+                        Terima kasih telah mendaftar dalam program magang Enterprise Application Development. 
+                        Berkas Anda telah berhasil diverifikasi dan memenuhi persyaratan untuk melanjutkan ke tahap selanjutnya.
+                    </p>
+                    <a href="#" class="next-step-btn">Persiapkan Tahap Seleksi</a>
+                </div>

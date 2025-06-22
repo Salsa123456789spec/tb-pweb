@@ -16,7 +16,7 @@
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-800"><%= item.judul %></h3>
                                 <p class="text-sm text-gray-500">
-                                    <%= new Date(item.createdAt).toLocaleDateString('id-ID', { 
+                                    <%= new Date(item.tanggal_upload).toLocaleString('id-ID', { 
                                         day: 'numeric', 
                                         month: 'long', 
                                         year: 'numeric' 

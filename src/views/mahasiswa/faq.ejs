@@ -1,81 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .bg-pattern {
-            background-image: url('https://www.transparenttextures.com/patterns/hexagon-gears.png');
-            background-repeat: repeat;
-            opacity: 0.5;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .bg-pattern {
+      background-image: url('https://www.transparenttextures.com/patterns/hexagon-gears.png');
+      background-repeat: repeat;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-    <div class="bg-pattern"></div>
-    <div class="container mx-auto p-4 sm:p-8 relative">
+  <div class="bg-pattern"></div>
+  <div class="container mx-auto p-4 sm:p-8 relative">
+    <a href="/mahasiswa/dashboard" class="text-gray-600 hover:text-gray-900 transition-colors duration-300 inline-flex items-center mb-6">
+      <i class="fas fa-arrow-left mr-2"></i>
+      Kembali ke Dashboard
+    </a>
 
-        <a href="/mahasiswa/dashboard" class="text-gray-600 hover:text-gray-900 transition-colors duration-300 inline-flex items-center mb-6">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Kembali ke Dashboard
-        </a>
-
-        <div class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Frequently Asked Questions</h1>
-            <p class="text-gray-500 mt-2">Kebingungan dengan alur rekrutmen yang ada? Cari pertanyaanmu di sini.</p>
-        </div>
-
-        <div class="mb-10 max-w-2xl mx-auto">
-            <form action="/mahasiswa/faq" method="GET">
-                <div class="relative">
-                    <input 
-                        type="text" 
-                        name="q" 
-                        value="<%= searchQuery %>"
-                        placeholder="Cari pertanyaanmu..."
-                        class="w-full p-4 pl-12 text-lg border-2 border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 shadow-sm"
-                    >
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                </div>
-            </form>
-        </div>
-
-        <div class="max-w-3xl mx-auto space-y-4" x-data="{ open: null }">
-            <% if(faqs.length > 0) { %>
-                <% faqs.forEach(faq => { %>
-                    <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden transition-all duration-300">
-                        <button @click="open = open === <%= faq.id %> ? null : <%= faq.id %>" class="w-full flex justify-between items-center p-5 text-left text-xl font-semibold focus:outline-none">
-                            <span><%= faq.pertanyaan %></span>
-                            <i class="fas" :class="open === <%= faq.id %> ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-                        </button>
-                        <div x-show="open === <%= faq.id %>" x-collapse>
-                            <div class="p-5 pt-0 text-gray-600">
-                                <p><%= faq.jawaban %></p>
-                            </div>
-                        </div>
-                    </div>
-                <% }) %>
-            <% } else { %>
-                <div class="text-center p-8 bg-white rounded-lg shadow-md">
-                    <h3 class="text-2xl font-semibold">Oops!!</h3>
-                    <p class="text-gray-500 mt-2">Pertanyaan yang Anda cari tidak ditemukan.</p>
-                </div>
-            <% } %>
-        </div>
-
+    <div class="text-center mb-8">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Frequently Asked Questions</h1>
+      <p class="text-gray-500 mt-2">Kebingungan dengan alur rekrutmen yang ada? Cari pertanyaanmu di sini.</p>
     </div>
+
+    <!-- Search Bar -->
+    <div class="mb-10 max-w-2xl mx-auto">
+      <div class="relative">
+        <input 
+          type="text"
+          id="searchFaq"
+          placeholder="Cari pertanyaanmu..."
+          class="w-full p-4 pl-12 text-lg border-2 border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 shadow-sm"
+        >
+        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      </div>
+    </div>
+
+    <!-- FAQ List -->
+    <div id="faqList" class="max-w-3xl mx-auto space-y-4" x-data="{ open: null }">
+      <% if (faqs.length > 0) { %>
+        <% faqs.forEach(faq => { %>
+          <div class="faq-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden transition-all duration-300">
+            <button @click="open = open === <%= faq.id %> ? null : <%= faq.id %>" 
+                    class="w-full flex justify-between items-center p-5 text-left text-xl font-semibold focus:outline-none">
+              <span class="faq-question"><%= faq.pertanyaan %></span>
+              <i class="fas" :class="open === <%= faq.id %> ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </button>
+            <div x-show="open === <%= faq.id %>" x-collapse>
+              <div class="p-5 pt-0 text-gray-600">
+                <p class="faq-answer"><%= faq.jawaban %></p>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="text-center p-8 bg-white rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold">Oops!!</h3>
+          <p class="text-gray-500 mt-2">Pertanyaan yang Anda cari tidak ditemukan.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('searchFaq');
+      const faqItems = document.querySelectorAll('.faq-item');
+
+      searchInput.addEventListener('input', function () {
+        const keyword = this.value.toLowerCase();
+        
+        faqItems.forEach(item => {
+          const pertanyaan = item.querySelector('.faq-question').textContent.toLowerCase();
+          const jawaban = item.querySelector('.faq-answer')?.textContent.toLowerCase();
+          const cocok = pertanyaan.includes(keyword) || jawaban.includes(keyword);
+          item.style.display = cocok ? '' : 'none';
+        });
+      });
+    });
+  </script>
 </body>
 </html>

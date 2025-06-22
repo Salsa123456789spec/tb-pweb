@@ -177,7 +177,7 @@ export const showEditAbsensiForm = async (req, res) => {
             mahasiswa: mahasiswa,
             isEdit: true
         });
-    } catch (error) { // <-- Kurung kurawal yang hilang sudah ditambahkan di sini
+    } catch (error) {
         console.error("[ERROR] Gagal menampilkan form edit absensi:", error);
         req.flash('error_msg', 'Gagal memuat data untuk diedit.');
         res.redirect('/aslab/absensi');
@@ -193,52 +193,53 @@ export const showEditAbsensiForm = async (req, res) => {
  */
 export const getRekapAbsensi = async (req, res) => {
     try {
-        const semuaKehadiran = await prisma.kehadiran.findMany({
+        // 1. Ambil semua mahasiswa magang, dengan data user diambil melalui pendaftaran
+        const mahasiswaMagang = await prisma.pengumuman.findMany({
+            where: { tahapan: 'tahap2' },
             select: {
-                status: true,
-                pendaftaran: {
+                pendaftaran: { // Mengambil data melalui relasi pendaftaran yang wajib ada
                     select: {
-                        user: {
-                            select: {
-                                nim: true,
-                                name: true
-                            }
+                        id: true,
+                        user: { // Mengambil user dari pendaftaran
+                            select: { nim: true, name: true }
                         }
                     }
                 }
+            },
+            orderBy: { pendaftaran: { user: { name: 'asc' } } }
+        });
+
+        // 2. Ambil semua data jumlah kehadiran, dikelompokkan berdasarkan id pendaftaran dan status
+        const rekapCounts = await prisma.kehadiran.groupBy({
+            by: ['pendaftaran_id', 'status'],
+            _count: {
+                status: true
             }
         });
 
-        const rekapMap = new Map();
+        // 3. Proses dan gabungkan data (dengan filter pengaman)
+        const rekapData = mahasiswaMagang
+            .filter(mhs => mhs.pendaftaran && mhs.pendaftaran.user)
+            .map(mhs => {
+                const pendaftaranId = mhs.pendaftaran.id;
+                const user = mhs.pendaftaran.user;
 
-        for (const kehadiran of semuaKehadiran) {
-            if (!kehadiran.pendaftaran || !kehadiran.pendaftaran.user) {
-                continue;
-            }
+                const hadirCount = rekapCounts.find(
+                    c => c.pendaftaran_id === pendaftaranId && c.status === 'Hadir'
+                )?._count.status || 0;
 
-            const nim = kehadiran.pendaftaran.user.nim;
-            const nama = kehadiran.pendaftaran.user.name;
+                const tidakHadirCount = rekapCounts.find(
+                    c => c.pendaftaran_id === pendaftaranId && c.status === 'Tidak_Hadir'
+                )?._count.status || 0;
 
-            if (!rekapMap.has(nim)) {
-                rekapMap.set(nim, {
-                    nim: nim,
-                    nama: nama,
-                    jumlah_hadir: 0,
-                    jumlah_tidak_hadir: 0
-                });
-            }
+                return {
+                    nim: user.nim,
+                    nama: user.name,
+                    jumlah_hadir: hadirCount,
+                    jumlah_tidak_hadir: tidakHadirCount,
+                };
+            });
 
-            const dataMahasiswa = rekapMap.get(nim);
-            if (kehadiran.status === 'Hadir') {
-                dataMahasiswa.jumlah_hadir++;
-            } else if (kehadiran.status === 'Tidak_Hadir') {
-                dataMahasiswa.jumlah_tidak_hadir++;
-            }
-        }
-
-        const rekapData = Array.from(rekapMap.values());
-        rekapData.sort((a, b) => a.nama.localeCompare(b.nama));
-        
         res.render('aslab/rekap/absensi', {
             layout: 'aslab/layout/main',
             title: 'Rekap Absensi',
@@ -246,6 +247,7 @@ export const getRekapAbsensi = async (req, res) => {
             activePage: 'rekap/absensi',
             rekapData: rekapData
         });
+
     } catch (error) {
         console.error("[ERROR] Gagal mengambil rekap absensi:", error);
         req.flash('error_msg', 'Gagal memuat halaman rekap absensi.');

@@ -31,6 +31,11 @@ enum StatusKumpul {
   belum_terkumpul
 }
 
+enum KehadiranStatus {
+  Hadir
+  Tidak_Hadir
+}
+
 model User {
   id            Int            @id @default(autoincrement())
   nim           String?        @unique
@@ -66,6 +71,7 @@ model Pendaftaran {
   pengumuman              Pengumuman[]
   pengumpulanTugas        PengumpulanTugas[]
   feedbackKuisioner      FeedbackKuisioner?
+  kehadiran               Kehadiran[]
 }
 
 model JadwalWawancara {
@@ -129,6 +135,18 @@ model PengumpulanTugas {
 
   tugas            Tugas     @relation(fields: [tugas_id], references: [id])
   pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+}
+
+model Kehadiran {
+  id             Int              @id @default(autoincrement())
+  pendaftaran_id Int
+  pertemuan      Int
+  tanggal        DateTime
+  status         KehadiranStatus
+  pembahasan     String?          @db.Text
+  pendaftaran    Pendaftaran      @relation(fields: [pendaftaran_id], references: [id])
+
+  @@unique([pendaftaran_id, pertemuan])
 }
 
 model FAQ {

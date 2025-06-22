@@ -1,48 +1,74 @@
 import prisma from '../models/prisma.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // =================================================================
 // FUNGSI UNTUK FITUR ABSENSI
 // =================================================================
 
-export const showBuatAbsensiForm = (req, res) => {
-    res.render('aslab/buat-absensi', {
-        layout: 'aslab/layout/main',
-        title: 'Buat Sesi Absensi',
-        user: req.session.user,
-        activePage: 'absensi',
-        success_msg: req.flash('success_msg'),
-        error_msg: req.flash('error_msg')
-    });
+/**
+ * Menampilkan halaman utama absensi yang berisi form pembuatan
+ * dan tabel riwayat absensi yang sudah ada.
+ */
+export const showBuatAbsensiForm = async (req, res) => {
+    try {
+        const totalMahasiswaMagang = await prisma.pengumuman.count({
+            where: { tahapan: 'tahap2' }
+        });
+        const sesiUnik = await prisma.kehadiran.groupBy({
+            by: ['pertemuan', 'tanggal', 'pembahasan'],
+            orderBy: { pertemuan: 'desc' },
+        });
+        const kehadiranCounts = await prisma.kehadiran.groupBy({
+            by: ['pertemuan'],
+            _count: { _all: true },
+            where: { status: 'Hadir' }
+        });
+        const kehadiranMap = new Map(kehadiranCounts.map(item => [item.pertemuan, item._count._all]));
+        const riwayatAbsensi = sesiUnik.map(sesi => ({
+            pertemuan: sesi.pertemuan,
+            tanggal: new Date(sesi.tanggal).toLocaleDateString('id-ID', {
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            }),
+            pembahasan: sesi.pembahasan,
+            jumlahHadir: kehadiranMap.get(sesi.pertemuan) || 0,
+            totalMahasiswa: totalMahasiswaMagang
+        }));
+        res.render('aslab/buat-absensi', {
+            layout: 'aslab/layout/main',
+            title: 'Buat Sesi Absensi',
+            user: req.session.user,
+            activePage: 'absensi',
+            riwayat: riwayatAbsensi,
+            success_msg: req.flash('success_msg'),
+            error_msg: req.flash('error_msg')
+        });
+    } catch (error) {
+        console.error("[ERROR] Gagal menampilkan halaman absensi:", error);
+        req.flash('error_msg', 'Gagal memuat halaman absensi.');
+        res.redirect('/aslab/dashboard');
+    }
 };
 
+/**
+ * Menampilkan tabel absensi yang siap diisi.
+ */
 export const showTabelAbsensi = async (req, res) => {
     try {
         const { pertemuan, tanggal, pembahasan } = req.body;
         const pendaftarTahap2 = await prisma.pengumuman.findMany({
-            where: {
-                tahapan: 'tahap2'
-            },
+            where: { tahapan: 'tahap2' },
             include: {
-                user: {
-                    select: { nim: true, name: true }
-                },
-                pendaftaran: {
-                    select: { id: true }
-                }
+                user: { select: { nim: true, name: true } },
+                pendaftaran: { select: { id: true } }
             },
             orderBy: { user: { name: 'asc' } }
         });
-        const mahasiswa = pendaftarTahap2.map(p => ({
-            nim: p.user.nim,
-            nama: p.user.name,
-            pendaftaranId: p.pendaftaran.id
-        }));
+        const mahasiswa = pendaftarTahap2
+            .filter(p => p.pendaftaran && p.user)
+            .map(p => ({
+                nim: p.user.nim,
+                nama: p.user.name,
+                pendaftaranId: p.pendaftaran.id
+            }));
         res.render('aslab/tabel-absensi', {
             layout: 'aslab/layout/main',
             title: `Absensi Pertemuan ${pertemuan}`,
@@ -59,60 +85,45 @@ export const showTabelAbsensi = async (req, res) => {
 };
 
 /**
- * FUNGSI FINAL UNTUK MENYIMPAN ABSENSI
- * Menggunakan metode Hapus-lalu-Buat yang sesuai dengan skema Anda.
+ * Menyimpan data absensi ke database. Fungsi ini juga menangani update.
  */
 export const simpanAbsensi = async (req, res) => {
-    const { pertemuan, tanggal, ...statuses } = req.body;
-    console.log("Menerima data untuk disimpan:", req.body);
-
+    const { pertemuan, tanggal, pembahasan, ...statuses } = req.body;
+    if (!pertemuan || !tanggal || !pembahasan) {
+        req.flash('error_msg', 'Informasi pertemuan, tanggal, atau pembahasan tidak lengkap.');
+        return res.redirect('/aslab/absensi');
+    }
     try {
         const dataKehadiranBaru = [];
-        const pendaftarIds = [];
-
         for (const key in statuses) {
             if (key.startsWith('status-')) {
                 const pendaftaranId = parseInt(key.split('-')[1]);
                 const statusValue = statuses[key];
-
-                if (pendaftaranId && statusValue && ['Hadir', 'Tidak_Hadir'].includes(statusValue)) {
-                    pendaftarIds.push(pendaftaranId);
+                if (pendaftaranId && statusValue) {
                     dataKehadiranBaru.push({
                         pendaftaran_id: pendaftaranId,
                         pertemuan: parseInt(pertemuan),
                         tanggal: new Date(tanggal),
                         status: statusValue,
+                        pembahasan: pembahasan,
                     });
                 }
             }
         }
-
         if (dataKehadiranBaru.length === 0) {
             req.flash('error_msg', 'Tidak ada data absensi valid untuk disimpan.');
             return res.redirect('/aslab/absensi');
         }
-
-        // Jalankan operasi dalam satu transaksi untuk keamanan data
-        const transaction = await prisma.$transaction([
-            // 1. Hapus semua data absensi LAMA untuk mahasiswa ini di pertemuan ini
-            prisma.kehadiran.deleteMany({
-                where: {
-                    pertemuan: parseInt(pertemuan),
-                    pendaftaran_id: {
-                        in: pendaftarIds,
-                    },
-                },
-            }),
-            // 2. Buat semua data absensi BARU
-            prisma.kehadiran.createMany({
+        await prisma.$transaction(async (tx) => {
+            await tx.kehadiran.deleteMany({
+                where: { pertemuan: parseInt(pertemuan) },
+            });
+            await tx.kehadiran.createMany({
                 data: dataKehadiranBaru,
-            }),
-        ]);
-
-        console.log("Transaksi berhasil:", transaction);
-        req.flash('success_msg', `Absensi untuk pertemuan ${pertemuan} berhasil disimpan.`);
-        res.redirect('/aslab/dashboard');
-
+            });
+        });
+        req.flash('success_msg', `Absensi untuk pertemuan ${pertemuan} berhasil diperbarui.`);
+        res.redirect('/aslab/absensi');
     } catch (error) {
         console.error('GAGAL MENYIMPAN ABSENSI:', error);
         req.flash('error_msg', 'Terjadi kesalahan pada server saat menyimpan data.');
@@ -120,10 +131,131 @@ export const simpanAbsensi = async (req, res) => {
     }
 };
 
+/**
+ * Menampilkan form untuk mengedit absensi yang sudah ada.
+ */
+export const showEditAbsensiForm = async (req, res) => {
+    try {
+        const pertemuanToEdit = parseInt(req.params.pertemuan);
+        const existingSessionData = await prisma.kehadiran.findFirst({
+            where: { pertemuan: pertemuanToEdit }
+        });
+        if (!existingSessionData) {
+            req.flash('error_msg', 'Sesi absensi yang ingin diedit tidak ditemukan.');
+            return res.redirect('/aslab/absensi');
+        }
+        const pendaftarTahap2 = await prisma.pengumuman.findMany({
+            where: { tahapan: 'tahap2' },
+            include: {
+                user: { select: { nim: true, name: true } },
+                pendaftaran: { select: { id: true } }
+            },
+            orderBy: { user: { name: 'asc' } }
+        });
+        const savedKehadiran = await prisma.kehadiran.findMany({
+            where: { pertemuan: pertemuanToEdit }
+        });
+        const statusMap = new Map(savedKehadiran.map(k => [k.pendaftaran_id, k.status]));
+        const mahasiswa = pendaftarTahap2
+            .filter(p => p.pendaftaran && p.user)
+            .map(p => ({
+                nim: p.user.nim,
+                nama: p.user.name,
+                pendaftaranId: p.pendaftaran.id,
+                status: statusMap.get(p.pendaftaran.id) || 'Tidak_Hadir'
+            }));
+        res.render('aslab/tabel-absensi', {
+            layout: 'aslab/layout/main',
+            title: `Edit Absensi Pertemuan ${pertemuanToEdit}`,
+            user: req.session.user,
+            activePage: 'absensi',
+            sesi: {
+                pertemuan: pertemuanToEdit,
+                tanggal: existingSessionData.tanggal.toISOString().split('T')[0],
+                pembahasan: existingSessionData.pembahasan
+            },
+            mahasiswa: mahasiswa,
+            isEdit: true
+        });
+    } catch (error) { // <-- Kurung kurawal yang hilang sudah ditambahkan di sini
+        console.error("[ERROR] Gagal menampilkan form edit absensi:", error);
+        req.flash('error_msg', 'Gagal memuat data untuk diedit.');
+        res.redirect('/aslab/absensi');
+    }
+};
+
 // =================================================================
-// FUNGSI LAINNYA YANG SUDAH ADA
+// FUNGSI UNTUK FITUR REKAP
 // =================================================================
 
+/**
+ * Menampilkan halaman rekapitulasi absensi.
+ */
+export const getRekapAbsensi = async (req, res) => {
+    try {
+        const semuaKehadiran = await prisma.kehadiran.findMany({
+            select: {
+                status: true,
+                pendaftaran: {
+                    select: {
+                        user: {
+                            select: {
+                                nim: true,
+                                name: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const rekapMap = new Map();
+
+        for (const kehadiran of semuaKehadiran) {
+            if (!kehadiran.pendaftaran || !kehadiran.pendaftaran.user) {
+                continue;
+            }
+
+            const nim = kehadiran.pendaftaran.user.nim;
+            const nama = kehadiran.pendaftaran.user.name;
+
+            if (!rekapMap.has(nim)) {
+                rekapMap.set(nim, {
+                    nim: nim,
+                    nama: nama,
+                    jumlah_hadir: 0,
+                    jumlah_tidak_hadir: 0
+                });
+            }
+
+            const dataMahasiswa = rekapMap.get(nim);
+            if (kehadiran.status === 'Hadir') {
+                dataMahasiswa.jumlah_hadir++;
+            } else if (kehadiran.status === 'Tidak_Hadir') {
+                dataMahasiswa.jumlah_tidak_hadir++;
+            }
+        }
+
+        const rekapData = Array.from(rekapMap.values());
+        rekapData.sort((a, b) => a.nama.localeCompare(b.nama));
+        
+        res.render('aslab/rekap/absensi', {
+            layout: 'aslab/layout/main',
+            title: 'Rekap Absensi',
+            user: req.session.user,
+            activePage: 'rekap/absensi',
+            rekapData: rekapData
+        });
+    } catch (error) {
+        console.error("[ERROR] Gagal mengambil rekap absensi:", error);
+        req.flash('error_msg', 'Gagal memuat halaman rekap absensi.');
+        res.redirect('/aslab/dashboard');
+    }
+};
+
+/**
+ * Menampilkan halaman rekap pendaftar.
+ */
 export const getRekapPendaftar = async (req, res) => {
     try {
         const semuaPendaftar = await prisma.pendaftaran.findMany({

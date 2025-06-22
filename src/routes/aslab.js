@@ -6,7 +6,9 @@ import {
     deletePendaftar,
     showBuatAbsensiForm,
     showTabelAbsensi,
-    simpanAbsensi
+    simpanAbsensi,
+    showEditAbsensiForm,
+    getRekapAbsensi // <-- Fungsi baru untuk rekap absensi diimpor di sini
 } from '../controllers/aslabController.js';
 
 const router = express.Router();
@@ -20,20 +22,18 @@ router.get("/dashboard", ensureAuthenticated, ensureRole('asisten_lab'), (req, r
     });
 });
 
-// === RUTE FINAL UNTUK FITUR ABSENSI LENGKAP ===
-// 1. GET: Menampilkan halaman form
+// === RUTE UNTUK FITUR ABSENSI ===
 router.get("/absensi", ensureAuthenticated, ensureRole('asisten_lab'), showBuatAbsensiForm);
-
-// 2. POST: Menampilkan halaman tabel (sebelum disimpan)
 router.post("/absensi", ensureAuthenticated, ensureRole('asisten_lab'), showTabelAbsensi);
-
-// 3. POST: Menerima data dari tabel dan menyimpan ke database
 router.post("/absensi/simpan", ensureAuthenticated, ensureRole('asisten_lab'), simpanAbsensi);
+router.get("/absensi/edit/:pertemuan", ensureAuthenticated, ensureRole('asisten_lab'), showEditAbsensiForm);
 
-
-// === RUTE LAINNYA ===
+// === RUTE REKAP ===
 router.get("/rekap/pendaftar", ensureAuthenticated, ensureRole('asisten_lab'), getRekapPendaftar);
 router.get("/rekap/pendaftar/detail/:id", ensureAuthenticated, ensureRole('asisten_lab'), getDetailPendaftar);
 router.get("/rekap/pendaftar/delete/:id", ensureAuthenticated, ensureRole('asisten_lab'), deletePendaftar);
+
+// Rute baru untuk rekap absensi ditambahkan di sini
+router.get("/rekap/absensi", ensureAuthenticated, ensureRole('asisten_lab'), getRekapAbsensi);
 
 export default router;

@@ -57,6 +57,7 @@ model kehadiran {
   pertemuan      Int
   tanggal        DateTime
   status         kehadiran_status
+  pembahasan     String?   @db.Text
   pendaftaran    pendaftaran      @relation(fields: [pendaftaran_id], references: [id], map: "Kehadiran_pendaftaran_id_fkey")
 
   @@index([pendaftaran_id], map: "Kehadiran_pendaftaran_id_fkey")

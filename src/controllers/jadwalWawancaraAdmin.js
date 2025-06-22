@@ -40,7 +40,8 @@ export const getJadwalWawancaraAdminForm = async (req, res) => {
             pendaftar,
             pewawancara,
             jadwalTerkini,
-            old: req.body
+            old: req.body,
+            user: req.session.user
         });
     } catch (error) {
         console.error("Error fetching data for jadwal form:", error);
@@ -107,7 +108,8 @@ export const renderEditJadwalForm = async (req, res) => {
             activePage: 'jadwalWawancara',
             jadwal,
             pendaftar,
-            pewawancara
+            pewawancara,
+            user: req.session.user
         });
     } catch (error) {
         console.error('Error rendering edit form:', error);

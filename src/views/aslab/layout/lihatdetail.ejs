@@ -15,7 +15,7 @@
         <div class="bg-white p-6 rounded-lg shadow-md mb-8">
             <div class="flex items-center gap-6">
                 <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-green-600 text-3xl font-bold">
-                    <%= pendaftar.user.name.charAt(0).toUpperCase() %>V
+                    <%= pendaftar.user.name.charAt(0).toUpperCase() %>
                 </div>
                 <div>
                     <h2 class="text-2xl font-bold"><%= pendaftar.user.name %></h2>
@@ -38,25 +38,25 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- CV -->
-                <a href="/<%= pendaftar.CV_file %>" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
+                <a href="/aslab/verifikasi/document/<%= pendaftar.id %>/cv" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
                     <i class="fas fa-file-pdf text-5xl text-red-500 mb-4"></i>
                     <h4 class="font-bold">CV</h4>
                     <p class="text-sm text-gray-500">PDF</p>
                 </a>
                 <!-- KHS -->
-                <a href="/<%= pendaftar.KHS_file %>" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
+                <a href="/aslab/verifikasi/document/<%= pendaftar.id %>/khs" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
                     <i class="fas fa-file-pdf text-5xl text-red-500 mb-4"></i>
                     <h4 class="font-bold">KHS</h4>
                     <p class="text-sm text-gray-500">PDF</p>
                 </a>
                 <!-- KRS -->
-                <a href="/<%= pendaftar.KRS_file %>" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
+                <a href="/aslab/verifikasi/document/<%= pendaftar.id %>/krs" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
                     <i class="fas fa-file-pdf text-5xl text-red-500 mb-4"></i>
                     <h4 class="font-bold">KRS</h4>
                     <p class="text-sm text-gray-500">PDF</p>
                 </a>
                 <!-- Surat Permohonan -->
-                <a href="/<%= pendaftar.surat_permohonan_file %>" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
+                <a href="/aslab/verifikasi/document/<%= pendaftar.id %>/surat" target="_blank" class="block border rounded-lg p-4 text-center hover:shadow-lg transition-shadow">
                     <i class="fas fa-file-pdf text-5xl text-red-500 mb-4"></i>
                     <h4 class="font-bold">Surat Permohonan</h4>
                     <p class="text-sm text-gray-500">PDF</p>
@@ -85,4 +85,4 @@
             <p class="text-gray-500">Pendaftar tidak ditemukan.</p>
         </div>
     <% } %>
-</div> 
+</div>

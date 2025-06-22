@@ -9,26 +9,52 @@
       <span class="material-icons mr-2 align-middle">dashboard</span>
       Dashboard
     </a>
-    
+
+    <a href="/aslab/verifikasi"
+       class="block py-3 px-4 rounded transition
+       <%= (typeof activePage !== 'undefined' && activePage === 'verifikasi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">verified_user</span>
+      Verifikasi
+    </a>
+
+    <div class="relative">
+      <button id="wawancaraDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none
+        <%= (typeof activePage !== 'undefined' && (activePage === 'inputData' || activePage === 'jadwalWawancara' || activePage === 'evaluasiPermohonan')) ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+        <span class="material-icons mr-2 align-middle">people</span>
+        Wawancara
+        <span class="material-icons ml-auto text-sm" id="wawancaraDropdownArrow">keyboard_arrow_down</span>
+      </button>
+      <div id="wawancaraDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
+        <a href="/aslab/inputdatawawancara"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= (typeof activePage !== 'undefined' && activePage === 'inputData') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Input Data
+        </a>
+        <a href="/aslab/jadwalwawancara"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= (typeof activePage !== 'undefined' && activePage === 'jadwalWawancara') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Jadwal Wawancara
+        </a>
+        <a href="/aslab/evaluasipermohonan"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= (typeof activePage !== 'undefined' && activePage === 'evaluasiPermohonan') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Evaluasi Permohonan
+        </a>
+      </div>
+    </div>
+
+    <a href="/aslab/pengumuman"
+       class="block py-3 px-4 rounded transition
+       <%= (typeof activePage !== 'undefined' && activePage === 'pengumuman') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">campaign</span>
+      Pengumuman
+    </a>
+
     <a href="/aslab/absensi"
        class="block py-3 px-4 rounded transition
        <%= (typeof activePage !== 'undefined' && activePage === 'absensi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">description</span>
+      <span class="material-icons mr-2 align-middle">fact_check</span>
       Absensi
-    </a>
-    
-    <a href="/aslab/tugas"
-       class="block py-3 px-4 rounded transition
-       <%= (typeof activePage !== 'undefined' && activePage === 'tugas') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">assignment</span>
-      Tugas
-    </a>
-    
-    <a href="/aslab/materi"
-       class="block py-3 px-4 rounded transition
-       <%= (typeof activePage !== 'undefined' && activePage === 'materi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">book</span>
-      Materi
     </a>
 
     <div class="relative">
@@ -36,7 +62,7 @@
         <%= (typeof activePage !== 'undefined' && (activePage === 'rekapAbsensi' || activePage === 'rekapKelulusan' || activePage === 'rekapKuisioner' || activePage === 'rekapPendaftar')) ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
         <span class="material-icons mr-2 align-middle">folder</span>
         Rekap
-        <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
+        <span class="material-icons ml-auto text-sm" id="rekapDropdownArrow">keyboard_arrow_down</span>
       </button>
       <div id="rekapDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
         <a href="/aslab/rekap/pendaftar"
@@ -66,24 +92,50 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const rekapDropdownButton = document.getElementById('rekapDropdownButton');
-    const rekapDropdownMenu = document.getElementById('rekapDropdownMenu');
-
-    rekapDropdownButton.addEventListener('click', function() {
-      rekapDropdownMenu.classList.toggle('hidden');
+    // Wawancara Dropdown
+    const wawancaraDropdownButton = document.getElementById('wawancaraDropdownButton');
+    const wawancaraDropdownMenu = document.getElementById('wawancaraDropdownMenu');
+    const wawancaraDropdownArrow = document.getElementById('wawancaraDropdownArrow');
+    
+    wawancaraDropdownButton.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent event bubbling
+      wawancaraDropdownMenu.classList.toggle('hidden');
+      wawancaraDropdownArrow.textContent = wawancaraDropdownMenu.classList.contains('hidden') ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
     });
 
-    // Close the dropdown if the user clicks outside of it
-    window.addEventListener('click', function(event) {
-      if (!rekapDropdownButton.contains(event.target) && !rekapDropdownMenu.contains(event.target)) {
+    // Rekap Dropdown
+    const rekapDropdownButton = document.getElementById('rekapDropdownButton');
+    const rekapDropdownMenu = document.getElementById('rekapDropdownMenu');
+    const rekapDropdownArrow = document.getElementById('rekapDropdownArrow');
+    
+    rekapDropdownButton.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent event bubbling
+      rekapDropdownMenu.classList.toggle('hidden');
+      rekapDropdownArrow.textContent = rekapDropdownMenu.classList.contains('hidden') ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
+    });
+
+    // Close dropdowns only when clicking outside the sidebar
+    document.addEventListener('click', function(event) {
+      const sidebar = document.querySelector('aside');
+      if (!sidebar.contains(event.target)) {
+        wawancaraDropdownMenu.classList.add('hidden');
         rekapDropdownMenu.classList.add('hidden');
+        wawancaraDropdownArrow.textContent = 'keyboard_arrow_down';
+        rekapDropdownArrow.textContent = 'keyboard_arrow_down';
       }
     });
 
-    // Keep "Rekap" active if any of its sub-items are active
-    const currentPath = window.location.pathname;
-    if (currentPath.startsWith('/aslab/rekap/')) {
-        rekapDropdownMenu.classList.remove('hidden'); // Ensure dropdown is open if a sub-item is active
+    // Keep dropdowns open if their sub-items are active
+    if (window.location.pathname.startsWith('/aslab/inputdatawawancara') || 
+        window.location.pathname.startsWith('/aslab/jadwalwawancara') || 
+        window.location.pathname.startsWith('/aslab/evaluasipermohonan')) {
+      wawancaraDropdownMenu.classList.remove('hidden');
+      wawancaraDropdownArrow.textContent = 'keyboard_arrow_up';
+    }
+    
+    if (window.location.pathname.startsWith('/aslab/rekap/')) {
+      rekapDropdownMenu.classList.remove('hidden');
+      rekapDropdownArrow.textContent = 'keyboard_arrow_up';
     }
   });
 </script>

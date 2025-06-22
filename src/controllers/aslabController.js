@@ -24,6 +24,7 @@ export const getKuesionerMahasiswa = async (req, res) => {
       title: 'Data Kuesioner Mahasiswa',
       feedbackKuisioner,
       activePage: 'rekap-kuisioner',
+      user: req.session.user
     });
   } catch (error) {
     console.error('Error fetching kuesioner data:', error);
@@ -62,6 +63,7 @@ export const getKuesionerDetail = async (req, res) => {
       title: 'Detail Kuesioner Mahasiswa',
       feedback: feedbackDetail,
       activePage: 'rekap-kuisioner',
+      user: req.session.user
     });
   } catch (error) {
     console.error('Error fetching kuesioner detail:', error);

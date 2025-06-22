@@ -10,6 +10,23 @@ import {
   updateAbsensi
 } from '../controllers/aslabController.js';
 import { generatePDFKelulusan, generatePDFAbsensi, generatePDFPendaftar } from '../controllers/pdfController.js';
+import { 
+  getVerifikasiPage, updateStatusVerifikasi, exportPDF, terimaDokumen 
+} from '../controllers/verifikasiController.js';
+import { 
+  renderInputDataWawancara,
+  getAllPewawancara,
+  createPewawancara,
+  updatePewawancara,
+  deletePewawancara
+} from '../controllers/inputDataWawancaraController.js';
+import { 
+  getJadwalWawancaraAdminForm, createJadwalWawancara, renderEditJadwalForm, updateJadwalWawancara, deleteJadwalWawancara 
+} from '../controllers/jadwalWawancaraAdmin.js';
+import { 
+  getEvaluasiPage, updateStatusKomplain 
+} from '../controllers/evaluasiController.js';
+import PengumumanAslabController from '../controllers/PengumumanAslab.js';
 
 const router = express.Router();
 
@@ -50,5 +67,36 @@ router.get('/rekap/pendaftar/delete/:id', ensureAuthenticated, ensureRole('asist
 router.get('/rekap/kelulusan/pdf', ensureAuthenticated, ensureRole('asisten_lab'), generatePDFKelulusan);
 router.get('/rekap/absensi/pdf', ensureAuthenticated, ensureRole('asisten_lab'), generatePDFAbsensi);
 router.get('/rekap/pendaftar/pdf', ensureAuthenticated, ensureRole('asisten_lab'), generatePDFPendaftar);
+
+// === RUTE UNTUK VERIFIKASI ===
+router.get('/verifikasi', ensureAuthenticated, ensureRole('asisten_lab'), getVerifikasiPage);
+router.get('/verifikasi/detail/:id', ensureAuthenticated, ensureRole('asisten_lab'), getDetailPendaftar);
+router.post('/verifikasi/update/:pendaftaranId', ensureAuthenticated, ensureRole('asisten_lab'), updateStatusVerifikasi);
+router.get('/verifikasi/export-pdf', ensureAuthenticated, ensureRole('asisten_lab'), exportPDF);
+
+// === RUTE UNTUK INPUT DATA WAWANCARA ===
+router.get('/inputdatawawancara', ensureAuthenticated, ensureRole('asisten_lab'), renderInputDataWawancara);
+router.get('/api/pewawancara', ensureAuthenticated, ensureRole('asisten_lab'), getAllPewawancara);
+router.post('/api/pewawancara', ensureAuthenticated, ensureRole('asisten_lab'), createPewawancara);
+router.put('/api/pewawancara/:id', ensureAuthenticated, ensureRole('asisten_lab'), updatePewawancara);
+router.delete('/api/pewawancara/:id', ensureAuthenticated, ensureRole('asisten_lab'), deletePewawancara);
+
+// === RUTE UNTUK JADWAL WAWANCARA ===
+router.get('/jadwal-wawancara', ensureAuthenticated, ensureRole('asisten_lab'), getJadwalWawancaraAdminForm);
+router.get('/jadwalwawancara', ensureAuthenticated, ensureRole('asisten_lab'), getJadwalWawancaraAdminForm);
+router.post('/jadwal-wawancara', ensureAuthenticated, ensureRole('asisten_lab'), createJadwalWawancara);
+router.get('/jadwal-wawancara/edit/:id', ensureAuthenticated, ensureRole('asisten_lab'), renderEditJadwalForm);
+router.post('/jadwal-wawancara/update/:id', ensureAuthenticated, ensureRole('asisten_lab'), updateJadwalWawancara);
+router.delete('/jadwal-wawancara/delete/:id', ensureAuthenticated, ensureRole('asisten_lab'), deleteJadwalWawancara);
+
+// === RUTE UNTUK EVALUASI PERMOHONAN ===
+router.get('/evaluasi-permohonan', ensureAuthenticated, ensureRole('asisten_lab'), getEvaluasiPage);
+router.get('/evaluasipermohonan', ensureAuthenticated, ensureRole('asisten_lab'), getEvaluasiPage);
+router.post('/evaluasi-permohonan/:komplainId', ensureAuthenticated, ensureRole('asisten_lab'), updateStatusKomplain);
+
+// === RUTE UNTUK PENGUMUMAN ===
+router.get('/pengumuman', ensureAuthenticated, ensureRole('asisten_lab'), PengumumanAslabController.index);
+router.get('/api/pendaftar/:tahapan', ensureAuthenticated, ensureRole('asisten_lab'), PengumumanAslabController.getPendaftarByTahapan);
+router.post('/api/simpan-pengumuman', ensureAuthenticated, ensureRole('asisten_lab'), PengumumanAslabController.simpanPengumuman);
 
 export default router;

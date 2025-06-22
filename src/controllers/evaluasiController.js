@@ -33,7 +33,8 @@ export const getEvaluasiPage = async (req, res) => {
                 diterima: komplainDiterima,
                 ditolak: komplainDitolak
             },
-            semuaKomplain: semuaKomplain
+            semuaKomplain: semuaKomplain,
+            user: req.session.user
         });
 
     } catch (error) {

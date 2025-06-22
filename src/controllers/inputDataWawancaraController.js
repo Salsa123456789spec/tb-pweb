@@ -132,6 +132,7 @@ export const renderInputDataWawancara = async (req, res) => {
             title: 'Input Data Pewawancara',
             layout: 'aslab/layout/main',
             activePage: 'inputDataWawancara',
+            user: req.session.user || { name: 'Aslab' },
             success_msg: req.flash('success_msg'),
             error_msg: req.flash('error_msg')
         });
@@ -139,4 +140,4 @@ export const renderInputDataWawancara = async (req, res) => {
         console.error('Error rendering page:', error);
         res.status(500).send('Error loading page');
     }
-}; 
+};

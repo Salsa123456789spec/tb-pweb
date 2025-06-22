@@ -1,0 +1,56 @@
+<div class="p-6 bg-gray-50 min-h-screen">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Buat Sesi Absensi</h1>
+
+    <% if (locals.errors && errors.length > 0) { %>
+        <% errors.forEach(function(error) { %>
+          <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-md relative mb-4" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline"><%= error.msg || error.message || error %></span>
+          </div>
+        <% }); %>
+    <% } %>
+      
+    <% if (locals.success_msg && success_msg != '') { %>
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-md relative mb-4" role="alert">
+            <strong class="font-bold">Sukses!</strong>
+            <span class="block sm:inline"><%= success_msg %></span>
+        </div>
+    <% } %>
+      
+    <% if (locals.error_msg && error_msg != '') { %>
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-md relative mb-4" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline"><%= error_msg %></span>
+        </div>
+    <% } %>
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-4">Detail Sesi</h2>
+        
+        <form action="/aslab/absensi" method="POST" class="space-y-6 mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="pertemuan" class="block text-sm font-medium text-gray-700">Pertemuan</label>
+                    <select id="pertemuan" name="pertemuan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <option selected disabled value="">--Pilih Pertemuan--</option>
+                        <% for(let i = 1; i <= 15; i++) { %>
+                            <option value="<%= i %>">Pertemuan <%= i %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <div>
+                    <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal</label>
+                    <input type="date" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="tanggal" name="tanggal" required>
+                </div>
+            </div>
+            <div>
+                <label for="pembahasan" class="block text-sm font-medium text-gray-700">Pembahasan</label>
+                <textarea class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="pembahasan" name="pembahasan" rows="3" placeholder="Contoh: Pengenalan Materi Dasar Programming" required></textarea>
+            </div>
+            <div class="flex justify-end pt-4">
+                <button type="submit" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    Buat dan Tampilkan Tabel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

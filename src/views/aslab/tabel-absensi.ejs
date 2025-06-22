@@ -1,0 +1,110 @@
+<div class="p-6 bg-gray-50 min-h-screen">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Absensi - Pertemuan <%= sesi.pertemuan %></h1>
+            <p class="text-md text-gray-600"><%= new Date(sesi.tanggal).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+        </div>
+        <div class="relative mt-4 md:mt-0">
+            <input type="text" id="searchInput" class="pl-10 pr-4 py-2 border rounded-lg w-full md:w-64" placeholder="Cari NIM atau Nama...">
+            <div class="absolute top-0 left-0 inline-flex items-center p-2 mt-1 ml-1">
+                 <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+        </div>
+    </div>
+    
+    <form action="/aslab/absensi/simpan" method="POST">
+
+        <input type="hidden" name="pertemuan" value="<%= sesi.pertemuan %>">
+        <input type="hidden" name="tanggal" value="<%= sesi.tanggal %>">
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200" id="mahasiswaTable">
+                    <thead class="bg-green-700">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">NIM</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Nama</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <% if (mahasiswa.length > 0) { %>
+                            <% mahasiswa.forEach(mhs => { %>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center"><%= mhs.nim %></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center"><%= mhs.nama %></td>
+                                    <td class="px-6 py-4 whitespace-nowrap flex justify-center">
+                                        <select class="status-dropdown text-sm font-semibold rounded-md border-2 py-1 px-3 focus:outline-none w-full max-w-[120px]" name="status-<%= mhs.pendaftaranId %>">
+                                            <option value="" selected disabled>--Pilih--</option>
+                                            <option value="Hadir">Hadir</option>
+                                            <option value="Izin">Izin</option>
+                                            <option value="Alfa">Alfa</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="3" class="px-6 py-12 text-center text-sm text-gray-500">Tidak ada mahasiswa untuk diabsen di tahap 2.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 border-t border-gray-200 flex justify-end">
+                 <a href="/aslab/absensi" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md mr-2">Kembali ke Form</a>
+                 <button type="submit" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </form>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const colorClasses = {
+                '': 'bg-gray-100 border-gray-400 text-gray-600',
+                'Hadir': 'bg-green-100 border-green-500 text-green-700',
+                'Izin': 'bg-yellow-100 border-yellow-500 text-yellow-700',
+                'Alfa': 'bg-red-100 border-red-500 text-red-700'
+            };
+
+            function updateDropdownColor(dropdown) {
+                const selectedValue = dropdown.value;
+                Object.values(colorClasses).forEach(className => {
+                    dropdown.classList.remove(...className.split(' '));
+                });
+                if (colorClasses[selectedValue]) {
+                    dropdown.classList.add(...colorClasses[selectedValue].split(' '));
+                }
+            }
+
+            const allDropdowns = document.querySelectorAll('.status-dropdown');
+
+            allDropdowns.forEach(dropdown => {
+                updateDropdownColor(dropdown);
+                dropdown.addEventListener('change', function() {
+                    updateDropdownColor(this);
+                });
+            });
+        });
+        
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let table = document.getElementById('mahasiswaTable');
+            let rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName('td');
+                if (cells.length > 1) {
+                    let nim = cells[0].textContent.toLowerCase();
+                    let nama = cells[1].textContent.toLowerCase();
+                    if (nim.indexOf(filter) > -1 || nama.indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        });
+    </script>
+</div>

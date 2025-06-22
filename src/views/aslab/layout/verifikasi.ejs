@@ -1,0 +1,111 @@
+<div class="p-8 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Verifikasi Dokumen Pendaftar</h1>
+
+        <!-- Search and Export -->
+        <div class="flex justify-between items-center mb-6">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text" id="searchInput" 
+                       class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-80 pl-12 p-3.5 transition duration-150" 
+                       placeholder="Cari berdasarkan nama atau NIM..."
+                       value="<%= search %>">
+            </div>
+            <a href="/aslab/verifikasi/export-pdf" 
+               class="inline-flex items-center px-5 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg shadow-md transition-transform transform hover:-translate-y-1">
+                <i class="fas fa-file-pdf mr-2"></i>
+                Export PDF
+            </a>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+             <div class="overflow-x-auto">
+                <table class="min-w-full w-full">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                            <th class="py-4 px-6 text-left">No</th>
+                            <th class="py-4 px-6 text-left">Nama</th>
+                            <th class="py-4 px-6 text-left">NIM</th>
+                            <th class="py-4 px-6 text-center">Divisi</th>
+                            <th class="py-4 px-6 text-center">Status</th>
+                            <th class="py-4 px-6 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 text-sm">
+                        <% pendaftar.forEach((p, index) => { %>
+                            <tr class="border-b border-gray-200 hover:bg-gray-100 transition">
+                                <td class="py-4 px-6 text-left whitespace-nowrap"><%= (currentPage - 1) * 5 + index + 1 %></td>
+                                <td class="py-4 px-6 text-left font-medium text-gray-800"><%= p.user.name %></td>
+                                <td class="py-4 px-6 text-left"><%= p.user.nim %></td>
+                                <td class="py-4 px-6 text-center"><%= p.divisi %></td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full 
+                                        <% if (p.status === 'diterima') { %>bg-green-100 text-green-800
+                                        <% } else if (p.status === 'ditolak') { %>bg-red-100 text-red-800
+                                        <% } else { %>bg-yellow-100 text-yellow-800<% } %>">
+                                        <%= p.status.charAt(0).toUpperCase() + p.status.slice(1) %>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <a href="/aslab/verifikasi/detail/<%= p.id %>" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-150">
+                                        Lihat Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                        <% if (pendaftar.length === 0) { %>
+                            <tr>
+                                <td colspan="6" class="text-center py-6 text-gray-500">Tidak ada data ditemukan.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+            <div class="flex justify-end mt-6">
+                <nav aria-label="Page navigation">
+                    <ul class="inline-flex items-center -space-x-px">
+                        <li>
+                            <a href="?page=<%= currentPage - 1 %>&search=<%= search %>" 
+                               class="py-2 px-4 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 <%= currentPage === 1 ? 'opacity-50 cursor-not-allowed' : '' %>">
+                                Previous
+                            </a>
+                        </li>
+                        <% for(let i = 1; i <= totalPages; i++) { %>
+                            <li>
+                                <a href="?page=<%= i %>&search=<%= search %>" 
+                                   class="py-2 px-4 leading-tight border border-gray-300 <%= i === currentPage ? 'bg-green-50 text-green-600' : 'bg-white text-gray-500 hover:bg-gray-100' %>">
+                                   <%= i %>
+                                </a>
+                            </li>
+                        <% } %>
+                        <li>
+                            <a href="?page=<%= currentPage + 1 %>&search=<%= search %>" 
+                               class="py-2 px-4 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 <%= currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : '' %>">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+        // Live search on type
+        const searchValue = e.target.value;
+        // Debounce function to limit how often the search runs
+        clearTimeout(window.searchTimeout);
+        window.searchTimeout = setTimeout(() => {
+            window.location.href = `/aslab/verifikasi?search=${encodeURIComponent(searchValue)}`;
+        }, 500); // 500ms delay
+    });
+</script> 

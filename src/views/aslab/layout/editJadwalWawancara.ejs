@@ -1,0 +1,57 @@
+<div class="p-8 bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Edit Jadwal Wawancara</h1>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <form action="/aslab/jadwal-wawancara/update/<%= jadwal.id %>" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div>
+                    <label for="pendaftaran_id" class="block text-sm font-medium text-gray-700 mb-2">Peserta</label>
+                    <select id="pendaftaran_id" name="pendaftaran_id" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                        <% pendaftar.forEach(p => { %>
+                            <option value="<%= p.id %>" <%= jadwal.pendaftaran_id === p.id ? 'selected' : '' %>>
+                                <%= p.user.name %> (<%= p.user.nim %>)
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="pewawancara_id" class="block text-sm font-medium text-gray-700 mb-2">Pewawancara</label>
+                    <select id="pewawancara_id" name="pewawancara_id" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                        <% pewawancara.forEach(p => { %>
+                            <option value="<%= p.id %>" <%= jadwal.pewawancara_id === p.id ? 'selected' : '' %>>
+                                <%= p.nama %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" value="<%= new Date(jadwal.tanggal).toISOString().split('T')[0] %>" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                </div>
+
+                <div>
+                    <label for="waktu" class="block text-sm font-medium text-gray-700 mb-2">Waktu</label>
+                    <input type="time" id="waktu" name="waktu" value="<%= new Date(jadwal.waktu).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) %>" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label for="ruang" class="block text-sm font-medium text-gray-700 mb-2">Ruang / Tautan</label>
+                    <input type="text" id="ruang" name="ruang" value="<%= jadwal.ruang %>" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                </div>
+
+                <div class="md:col-span-2 text-right space-x-3">
+                    <a href="/aslab/jadwal-wawancara" class="inline-flex items-center px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg shadow-md transition">
+                        Batal
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition">
+                        <i class="fas fa-save mr-2"></i>
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

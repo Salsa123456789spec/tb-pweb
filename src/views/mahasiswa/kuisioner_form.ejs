@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuisioner Feedback Perekrutan Aslab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Optional: Add custom styles here if needed beyond Tailwind */
+        .rating-label input[type="radio"]:checked + div {
+            box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px white; /* Add a subtle ring for checked state */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div class="max-w-full mx-auto px-8 py-12">
+        <div class="relative border-b border-gray-200 px-8 py-8 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <div class="absolute inset-0 bg-black/5"></div>
+            <div class="relative">
+                <button type="button" class="flex items-center text-white/80 hover:text-white transition-all duration-300 mb-4 group" onclick="history.back()">
+                    <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Kembali
+                </button>
+                <h1 class="text-3xl font-bold text-center text-white drop-shadow-lg">
+                    <% if (typeof existingFeedback !== 'undefined') { %>
+                        Edit Kuisioner Feedback Perekrutan Aslab
+                    <% } else { %>
+                        Kuisioner Feedback Perekrutan Aslab
+                    <% } %>
+                </h1>
+                <p class="text-center text-blue-100 mt-2 text-lg">
+                    Berikan penilaian Anda untuk membantu kami meningkatkan proses perekrutan
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 animate-fade-in shadow-lg">
+            <div id="messages" class="mb-8">
+                <% if (messages.error_msg) { %>
+                    <div class="bg-red-50 border-l-4 border-red-400 text-red-700 px-6 py-4 rounded-r-lg mb-4 shadow-sm">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span><%= messages.error_msg %></span>
+                        </div>
+                    </div>
+                <% } %>
+                <% if (messages.info_msg) { %>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-700 px-6 py-4 rounded-r-lg mb-4 shadow-sm">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span><%= messages.info_msg %></span>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+            <form action="/mahasiswa/kuisioner" method="POST" class="space-y-8">
+                <input type="hidden" name="pendaftaran_id" value="<%= pendaftaranId %>">
+                <% if (typeof existingFeedback !== 'undefined') { %>
+                  <input type="hidden" name="is_edit" value="true">
+                  <input type="hidden" name="feedback_id" value="<%= existingFeedback.id %>">
+                <% } %>
+
+                <p class="text-gray-700 text-md border-b pb-4 mb-6">Mohon luangkan waktu Anda untuk mengisi kuisioner ini sebagai umpan balik untuk kegiatan perekrutan asisten lab. Skala penilaian 1-5, di mana 1 = Sangat Tidak Setuju/Sangat Buruk, dan 5 = Sangat Setuju/Sangat Baik.</p>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">1. Kejelasan Soal dan Instruksi</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kejelasan_soal" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kejelasan_soal === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kejelasan_soal" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kejelasan_soal === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kejelasan_soal" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kejelasan_soal === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kejelasan_soal" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kejelasan_soal === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kejelasan_soal" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kejelasan_soal === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">2. Alokasi Waktu Seleksi (Tes/Wawancara)</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="alokasi_waktu" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.alokasi_waktu === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="alokasi_waktu" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.alokasi_waktu === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="alokasi_waktu" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.alokasi_waktu === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="alokasi_waktu" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.alokasi_waktu === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="alokasi_waktu" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.alokasi_waktu === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">3. Kondisi Ruang Ujian</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kondisi_ruangan" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kondisi_ruangan === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kondisi_ruangan" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kondisi_ruangan === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kondisi_ruangan" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kondisi_ruangan === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kondisi_ruangan" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kondisi_ruangan === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kondisi_ruangan" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kondisi_ruangan === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">4. Profesionalisme Pewawancara</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="profesionalisme_pewawancara" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.profesionalisme_pewawancara === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="profesionalisme_pewawancara" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.profesionalisme_pewawancara === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="profesionalisme_pewawancara" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.profesionalisme_pewawancara === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="profesionalisme_pewawancara" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.profesionalisme_pewawancara === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="profesionalisme_pewawancara" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.profesionalisme_pewawancara === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">5. Bimbingan dan Arahan</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="bimbingan_arahan" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.bimbingan_arahan === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="bimbingan_arahan" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.bimbingan_arahan === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="bimbingan_arahan" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.bimbingan_arahan === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="bimbingan_arahan" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.bimbingan_arahan === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="bimbingan_arahan" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.bimbingan_arahan === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">6. Supervisi yang Diberikan</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="supervisi" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.supervisi === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="supervisi" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.supervisi === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="supervisi" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.supervisi === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="supervisi" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.supervisi === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="supervisi" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.supervisi === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">7. Kualitas Mentoring</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kualitas_mentoring" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kualitas_mentoring === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kualitas_mentoring" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kualitas_mentoring === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kualitas_mentoring" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kualitas_mentoring === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kualitas_mentoring" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kualitas_mentoring === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="kualitas_mentoring" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.kualitas_mentoring === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800">8. Proses Keseluruhan</label>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="proses_keseluruhan" value="5" class="sr-only peer" required
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.proses_keseluruhan === 5) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Sangat Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="proses_keseluruhan" value="4" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.proses_keseluruhan === 4) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Baik
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="proses_keseluruhan" value="3" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.proses_keseluruhan === 3) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Cukup
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="proses_keseluruhan" value="2" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.proses_keseluruhan === 2) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Kurang
+                      </div>
+                    </label>
+                    <label class="flex items-center rating-label">
+                      <input type="radio" name="proses_keseluruhan" value="1" class="sr-only peer"
+                        <% if (typeof existingFeedback !== 'undefined' && existingFeedback.proses_keseluruhan === 1) { %>checked<% } %>>
+                      <div class="px-5 py-2.5 text-base border-2 border-blue-300 rounded-full cursor-pointer hover:bg-blue-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition-all duration-200 ease-in-out">
+                        Buruk
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800" for="saran">Saran (Opsional)</label>
+                  <textarea id="saran" name="saran" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-500" placeholder="Berikan saran untuk perbaikan proses perekrutan..."><% if (typeof existingFeedback !== 'undefined') { %><%= existingFeedback.saran %><% } %></textarea>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-lg font-bold text-gray-800" for="kesan_pesan">Kesan dan Pesan (Opsional)</label>
+                  <textarea id="kesan_pesan" name="kesan_pesan" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-500" placeholder="Berikan kesan dan pesan Anda..."><% if (typeof existingFeedback !== 'undefined') { %><%= existingFeedback.kesan_pesan %><% } %></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-6 bg-blue-600 text-white font-semibold text-lg rounded-full hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105">
+                  <% if (typeof existingFeedback !== 'undefined') { %>
+                    Update Kuisioner
+                  <% } else { %>
+                    Submit Kuisioner
+                  <% } %>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<div class="bg-gray-50 min-h-screen p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+
+        <% if (success_msg && success_msg.length > 0) { %>
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-md" role="alert">
+            <p class="font-bold">Sukses</p>
+            <p><%= success_msg %></p>
+        </div>
+        <% } %>
+        <% if (error_msg && error_msg.length > 0) { %>
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md" role="alert">
+            <p class="font-bold">Error</p>
+            <p><%= error_msg %></p>
+        </div>
+        <% } %>
+
+        <form id="form-kumpul-tugas" action="/mahasiswa/tugas/<%= tugas.id %>/kumpul" method="POST" enctype="multipart/form-data">
+
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-3xl font-bold text-gray-800"><%= tugas.judul %></h1>
+                
+                <% if (pengumpulan) { %>
+                    <button type="button" id="main-action-btn" class="bg-yellow-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-yellow-600 transition-colors">
+                        Batalkan
+                    </button>
+                <% } else { %>
+                    <button type="submit" id="main-action-btn" class="bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors">
+                        Kumpulkan
+                    </button>
+                <% } %>
+            </div>
+
+            <div class="border-t border-gray-200 pt-4">
+                <% if (pengumpulan) { %>
+                    <% if (pengumpulan.status === 'terlambat') { %>
+                        <p class="text-sm text-red-600 font-semibold">
+                            Terkumpul Terlambat pada <%= new Date(pengumpulan.tanggal_kumpul).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }) %>
+                        </p>
+                    <% } else { %>
+                        <p class="text-sm text-green-600 font-semibold">
+                            Terkumpul pada <%= new Date(pengumpulan.tanggal_kumpul).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }) %>
+                        </p>
+                    <% } %>
+                <% } else { %>
+                    <% if (new Date() > new Date(tugas.deadline)) { %>
+                        <p class="text-sm text-red-600 font-semibold">Anda belum mengumpulkan tugas ini (Terlambat)</p>
+                    <% } else { %>
+                        <p class="text-sm text-yellow-600 font-semibold">Belum dikumpulkan</p>
+                    <% } %>
+                <% } %>
+                <p class="text-xs text-gray-500 mt-1">
+                    Jatuh tempo <%= new Date(tugas.deadline).toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }) %>
+                </p>
+            </div>
+
+            <div class="mt-8 bg-white p-6 rounded-lg shadow-sm">
+                <div class="mb-8">
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">Instruksi</h2>
+                    <p class="text-gray-600 leading-relaxed"><%= tugas.deskripsi %></p>
+                </div>
+
+                <div id="upload-area" class="<%= pengumpulan ? 'hidden' : '' %>">
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">Upload Tugas</h2>
+                    <div class="mt-2 flex items-center justify-between p-3 border-2 border-gray-300 border-dashed rounded-md">
+                        <span id="file-name-display" class="text-gray-600">Tidak ada file yang dipilih...</span>
+                        <label for="fileTugas" class="cursor-pointer bg-gray-200 text-gray-800 font-semibold py-1 px-3 rounded-md hover:bg-gray-300 transition-colors">
+                            Browse Files
+                            <input id="fileTugas" name="fileTugas" type="file" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <% if (pengumpulan) { %>
+                <div id="submitted-file-area">
+                     <h2 class="text-lg font-bold text-gray-800 mb-2">Upload Tugas</h2>
+                     <div class="mt-2 flex items-center justify-between p-3 border-2 border-gray-300 border-dashed rounded-md">
+                        <a href="/uploads/<%= pengumpulan.file %>" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-800">
+                           <%= pengumpulan.file %>
+                        </a>
+                     </div>
+                </div>
+                <% } %>
+            </div>
+        </form>
+
+        <div class="mt-8">
+            <a href="/mahasiswa/tugas" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+                &larr; Kembali ke Daftar Tugas
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mainActionButton = document.getElementById('main-action-btn');
+        const uploadArea = document.getElementById('upload-area');
+        const submittedFileArea = document.getElementById('submitted-file-area');
+        const fileInput = document.getElementById('fileTugas');
+        const fileNameDisplay = document.getElementById('file-name-display');
+
+        // Event listener untuk tombol utama
+        if (mainActionButton) {
+            mainActionButton.addEventListener('click', function (event) {
+                // Jika tombol adalah "Batalkan"
+                if (this.dataset.state === 'submitted' || this.textContent.trim() === 'Batalkan') {
+                    event.preventDefault(); // Mencegah form submit
+                    
+                    // Sembunyikan area file yang sudah terkirim (jika ada)
+                    if (submittedFileArea) {
+                        submittedFileArea.classList.add('hidden');
+                    }
+                    
+                    // Tampilkan area upload file
+                    if (uploadArea) {
+                        uploadArea.classList.remove('hidden');
+                    }
+                    
+                    // Ubah tombol menjadi "Kirim Ulang"
+                    this.textContent = 'Kirim Ulang';
+                    this.type = 'submit';
+                    this.dataset.state = 'editing'; // Ubah state
+                    this.className = 'bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors'; // Ganti warna
+                }
+            });
+        }
+        
+        // Event listener untuk menampilkan nama file yang dipilih
+        if(fileInput && fileNameDisplay) {
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = 'Tidak ada file yang dipilih...';
+                }
+            });
+        }
+    });
+</script>

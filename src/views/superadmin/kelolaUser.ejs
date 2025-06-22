@@ -1,0 +1,39 @@
+<h1 class="text-2xl font-bold mb-4">Data Mahasiswa</h1>
+
+<div class="mb-4">
+  <p>Total User: <%= total %></p>
+  <p>Aktif: <%= totalAktif %> | Tidak Aktif: <%= totalTidakAktif %></p>
+</div>
+
+<table class="w-full border">
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="p-2 border">No</th>
+      <th class="p-2 border">Nama</th>
+      <th class="p-2 border">Email</th>
+      <th class="p-2 border">Status</th>
+      <th class="p-2 border">Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% userList.forEach((u, i) => { %>
+      <tr>
+        <td class="border p-2"><%= i + 1 %></td>
+        <td class="border p-2"><%= u.name %></td>
+        <td class="border p-2"><%= u.email %></td>
+        <td class="border p-2">
+          <% if (u.pendaftaran) { %>
+            <%= u.pendaftaran.hasil_akhir %>
+          <% } else { %>
+            Belum Mendaftar
+          <% } %>
+        </td>
+        <td class="border p-2">
+          <form method="POST" action="/admin/hapus-user/<%= u.id %>" onsubmit="return confirm('Yakin ingin hapus user ini?')">
+            <button class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

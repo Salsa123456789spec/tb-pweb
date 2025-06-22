@@ -1,0 +1,19 @@
+<header class="bg-white shadow-md p-4 flex justify-between items-center">
+  <h2 class="text-lg font-semibold text-gray-800">Dashboard Asisten Lab</h2>
+  <div class="flex items-center gap-4">
+    <div class="text-sm text-gray-600">Selamat datang, <%= user?.name || 'Aslab' %> 👋</div>
+    <button onclick="confirmLogout()" 
+            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm flex items-center gap-1 transition">
+      <span class="material-icons text-sm">logout</span>
+      Logout
+    </button>
+  </div>
+</header>
+
+<script>
+function confirmLogout() {
+    if (confirm('Apakah Anda yakin ingin logout?')) {
+        window.location.href = '/login/logout';
+    }
+}
+</script>

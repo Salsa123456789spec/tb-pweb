@@ -1,0 +1,119 @@
+<div class="p-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Kelola Data Aslab</h1>
+    <a href="/superadmin/tambahAslab" 
+       class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition">
+      <span class="material-icons">add</span>
+      Tambah Aslab
+    </a>
+  </div>
+
+  <!-- Flash Messages -->
+  <% if (success && success.length > 0) { %>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
+      <span class="block sm:inline"><%= success %></span>
+    </div>
+  <% } %>
+
+  <% if (error && error.length > 0) { %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+      <span class="block sm:inline"><%= error %></span>
+    </div>
+  <% } %>
+
+  <!-- Table -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-800">Daftar Aslab</h2>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              No
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Nama
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Email
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              No. Aslab
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Status
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Aksi
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% if (aslabs && aslabs.length > 0) { %>
+            <% aslabs.forEach((aslab, index) => { %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= index + 1 %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-gray-900"><%= aslab.name %></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900"><%= aslab.email %></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900"><%= aslab.no_aslab || '-' %></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Aktif
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div class="flex space-x-2">
+                    <a href="/superadmin/editAslab/<%= aslab.id %>" 
+                       class="text-indigo-600 hover:text-indigo-900 flex items-center gap-1">
+                      <span class="material-icons text-sm">edit</span>
+                      Edit
+                    </a>
+                    <form action="/superadmin/hapusAslab/<%= aslab.id %>" method="POST" class="inline" 
+                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus aslab ini?')">
+                      <button type="submit" 
+                              class="text-red-600 hover:text-red-900 flex items-center gap-1">
+                        <span class="material-icons text-sm">delete</span>
+                        Hapus
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                Tidak ada data aslab
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+    <div class="flex items-center">
+      <span class="material-icons text-blue-600 mr-2">info</span>
+      <div>
+        <h3 class="text-sm font-medium text-blue-800">Informasi</h3>
+        <p class="text-sm text-blue-700 mt-1">
+          Total Aslab: <span class="font-semibold"><%= aslabs ? aslabs.length : 0 %></span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

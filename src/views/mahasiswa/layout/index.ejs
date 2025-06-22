@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorium of Enterprise Application - Universitas Andalas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles only for specific elements not supported by Tailwind */
+        
+        .hero {
+            background-image: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+        }
+        
+        .about {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(26, 26, 46, 0.99)), url("https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fc1cf3a1-1524-4c17-a108-78737b2ac061.png") center/cover no-repeat;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <!-- <header class="bg-gradient-to-r from-white to-green-500 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center py-4 px-5">
+            <div class="flex items-center gap-4">
+                <a href="#" class="w-12 h-12 bg-gradient-to-r from-green-600 to-teal-500 rounded-lg flex items-center justify-center text-white text-2xl font-bold">LEA</a>
+                <div class="text-lg font-semibold text-green-600">
+                    Laboratorium of Enterprise Application
+                    <span class="block text-gray-500 text-sm">Universitas Andalas</span>
+                </div>
+            </div>
+            <button class="mobile-toggle text-green-600 text-2xl" id="mobileToggle">
+                <i class="material-icons">menu</i>
+            </button>
+            <nav id="mainNav" class="hidden md:flex gap-8 text-gray-800">
+                <a href="#">Home</a>
+                <a href="#">Struktur</a>
+                <a href="#">QR</a>
+                <a href="#">Pengumuman</a>
+                <a href="#">Magang</a>
+            </nav>
+        </div>
+    </header> -->
+    <nav class="" style="background: linear-gradient(90deg, #84DA81 0%, #467445 100%);">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-between">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button-->
+                    <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset" aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="absolute -inset-0.5"></span>
+                    <span class="sr-only">Open main menu</span>
+                    <!-- Icon when menu is closed -->
+                    <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                    <!-- Icon when menu is open -->
+                    <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                </div>
+                <div class="flex flex-1 items-center justify-start sm:items-stretch sm:justify-start">
+                    <div class="flex shrink-0 items-center">
+                        <img class="h-11 w-auto" src="img/lea.png" alt="Your Company" />
+                        <p class="px-4 font-serif "> Laboratorium of <br>Enterprise Application</p>
+                    </div>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <!-- Navigation links moved here -->
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex space-x-4 font">
+                            <a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white font-size: 20px;" aria-current="page">Home</a>
+                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-#467445 hover:text-white font-size: 20px;">Struktur Organisasi</a>
+                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white font-size: 20px;">Open Reqruitment</a>
+                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white font-size: 20px;">Magang</a>
+                        </div>
+                    </div>
+                    <!-- Notification button -->
+                    <!-- <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">View notifications</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                    </svg>
+                </button> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="sm:hidden" id="mobile-menu">
+            <div class="space-y-1 px-2 pt-2 pb-3">
+                <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
+                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
+                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <section class="hero py-20 relative">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="max-w-xl" style="padding-left: 50px; text-align:justify">
+                <h1 class="text-5xl font-bold text-gray-800 mb-5 px-8  ">Open Recruitment <span class="text-green-600">Laboratorium of Enterprise Application</span></h1>
+                <p class="text-lg text-gray-600 mb-5 px-8 text-justify pt-5">Ayo menjadi bagian dari Laboratorium di Sistem Informasi, Universitas Andalas. Kembangkan kemampuanmu dan dapatkan pengalaman berharga bersama kami.</p>
+                <!-- <div class="flex gap-4">
+                    <a href="#" class="bg-gradient-to-r from-green-600 to-teal-500 text-white py-3 px-6 ">Daftar Sekarang</a>
+                    <a href="#" class="border-2 border-green-600 text-green-600 py-3 px-6 rounded-full">Masuk</a>
+                </div> -->
+            </div>
+            <div class="w-1/3 relative">
+                <img src="/img/home.png" alt="Lab assistant">
+                <!-- <div class="absolute bottom-5 right-5 bg-teal-500 text-white py-2 px-4 rounded-md shadow-lg">
+                    <p class="text-sm">Koordinator Asisten Lab</p>
+                    <h3 class="font-semibold">Thomas Nobel Asfar</h3>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <section class="about py-24 relative">
+        <div class="container mx-auto flex justify-between items-center relative z-10">
+            <div class="max-w-xl text-white pr-8">
+                <h2 class="text-4xl font-bold mb-6">Laboratory of Enterprise Application</h2>
+                <p class="text-lg mb-4">Laboratorium of Enterprise Application (LEA) adalah salah satu labor yang ada pada Jurusan Sistem Informasi Universitas Andalas (Unand) yang bergerak dalam bidang pengembangan teknologi dan layanan sistem informasi pada organisasi atau
+                    perusahaan.
+                </p>
+                <p class="text-lg mb-4">Kami berfokus pada pengembangan sistem informasi perusahaan dengan standar industri, metodologi terkini, dan teknologi inovatif yang relevan dengan kebutuhan pasar.</p>
+                <p class="text-lg mb-4">Bergabung dengan LEA berarti membuka pintu untuk meningkatkan kemampuan teknis, soft skill, dan jaringan profesional Anda.</p>
+            </div>
+            <div class="w-1/3 flex justify-center">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/eb871e99-dd17-4711-9a43-ba7d2e8bd74c.png" alt="Lab Logo" class="max-w-full rounded-lg border-4 border-white opacity-80 shadow-lg">
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-gray-100 py-24">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold text-gray-800 mb-6">Mengapa Harus Bergabung?</h2>
+            <p class="text-lg text-gray-600 mb-14">Dapatkan berbagai keuntungan dan pengalaman berharga dengan bergabung bersama kami di Laboratorium of Enterprise Application</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature Cards -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1">
+                    <div class="bg-green-100 p-4 rounded-full mb-2">
+                        <i class="material-icons text-green-600">school</i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Pengalaman Belajar</h3>
+                    <p>Akses ke pelatihan intensif dari profesional dan dosen berpengalaman dalam pengembangan sistem informasi perusahaan.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1">
+                    <div class="bg-green-100 p-4 rounded-full mb-2">
+                        <i class="material-icons text-green-600">groups</i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Networking</h3>
+                    <p>Jalin hubungan dengan sesama mahasiswa, dosen, dan profesional industri melalui proyek dan kegiatan laboratorium.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1">
+                    <div class="bg-green-100 p-4 rounded-full mb-2">
+                        <i class="material-icons text-green-600">laptop_mac</i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Proyek Nyata</h3>
+                    <p>Kesempatan untuk terlibat dalam proyek nyata dengan klien dan organisasi, membangun portofolio yang berharga.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1">
+                    <div class="bg-green-100 p-4 rounded-full mb-2">
+                        <i class="material-icons text-green-600">psychology</i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Pengembangan Soft Skills</h3>
+                    <p>Tingkatkan kemampuan komunikasi, kerja tim, dan kepemimpinan melalui berbagai kegiatan laboratorium.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1">
+                    <div class="bg-green-100 p-4 rounded-full mb-2">
+                        <i class="material-icons text-green-600">work</i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Peluang Karir</h3>
+                    <p>Akses ke informasi magang, lowongan kerja, dan rekomendasi dari jaringan alumni laboratorium.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1">
+                    <div class="bg-green-100 p-4 rounded-full mb-2">
+                        <i class="material-icons text-green-600">emoji_events</i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Sertifikasi</h3>
+                    <p>Pelatihan dan persiapan untuk sertifikasi profesional yang diakui industri IT dan sistem informasi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-gradient-to-r from-green-600 to-teal-500 text-white py-24">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Siap Untuk Bergabung?</h2>
+            <p class="text-lg mb-6">Jangan lewatkan kesempatan untuk mengembangkan potensimu dan menjadi bagian dari komunitas Laboratorium of Enterprise Application.</p>
+            <a href="/register" class="bg-white text-green-600 py-3 px-8 rounded-full font-semibold">Daftar Sekarang</a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Tentang Kami</h3>
+                <p class="text-sm mb-4">Laboratorium of Enterprise Application (LEA) adalah laboratorium Jurusan Sistem Informasi Universitas Andalas yang berfokus pada pengembangan sistem informasi perusahaan.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-white hover:text-green-600"><i class="material-icons">facebook</i></a>
+                    <a href="#" class="text-white hover:text-green-600"><i class="material-icons">public</i></a>
+                    <a href="#" class="text-white hover:text-green-600"><i class="material-icons">email</i></a>
+                    <a href="#" class="text-white hover:text-green-600"><i class="material-icons">video_library</i></a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Navigasi Cepat</h3>
+                <ul class="text-sm">
+                    <li><a href="#" class="hover:text-green-600">Home</a></li>
+                    <li><a href="#" class="hover:text-green-600">Tentang Kami</a></li>
+                    <li><a href="#" class="hover:text-green-600">Struktur Organisasi</a></li>
+                    <li><a href="#" class="hover:text-green-600">Program & Kegiatan</a></li>
+                    <li><a href="#" class="hover:text-green-600">Pengumuman</a></li>
+                    <li><a href="#" class="hover:text-green-600">Info Magang</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Program</h3>
+                <ul class="text-sm">
+                    <li><a href="#" class="hover:text-green-600">Asisten Laboratorium</a></li>
+                    <li><a href="#" class="hover:text-green-600">Pelatihan & Workshop</a></li>
+                    <li><a href="#" class="hover:text-green-600">Magang Industri</a></li>
+                    <li><a href="#" class="hover:text-green-600">Penelitian Mahasiswa</a></li>
+                    <li><a href="#" class="hover:text-green-600">Kompetisi</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Kontak Kami</h3>
+                <p class="flex items-center mb-2"><i class="material-icons">location_on</i> Laboratorium Sistem Informasi, Gedung Jurusan Sistem Informasi, Universitas Andalas, Padang</p>
+                <p class="flex items-center mb-2"><i class="material-icons">phone</i> +62 751 12345</p>
+                <p class="flex items-center mb-2"><i class="material-icons">email</i> lea@si.unand.ac.id</p>
+                <p class="flex items-center"><i class="material-icons">schedule</i> Senin - Jumat: 08.00 - 16.00 WIB</p>
+            </div>
+        </div>
+        <div class="text-center text-gray-400 mt-8">
+            <p>&copy; 2023 Laboratorium of Enterprise Application - Universitas Andalas. All rights reserved. | Developed with <span class="text-green-600">♥</span> by <a href="#" class="text-green-600">LEA Team</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mainNav = document.getElementById('mainNav');
+
+        mobileToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('hidden');
+            mobileToggle.innerHTML = mainNav.classList.contains('hidden') ? '<i class="material-icons">menu</i>' : '<i class="material-icons">close</i>';
+        });
+    </script>
+</body>
+
+</html>

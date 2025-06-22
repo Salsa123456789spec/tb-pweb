@@ -1,0 +1,79 @@
+<aside class="w-64 min-h-screen bg-gradient-to-b from-green-700 to-green-900 text-white shadow-md">
+  <div class="p-6 text-xl font-bold">LeasCalling</div>
+  <nav class="px-4 space-y-1">
+
+    <!-- Dashboard -->
+    <a href="dashboard"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">dashboard</span>
+      Dashboard
+    </a>
+
+    <!-- Verifikasi Berkas -->
+    <a href="/aslab/verifBerkas"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'verifBerkas' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">assignment_turned_in</span>
+      Verifikasi Berkas
+    </a>
+
+    <!-- Statistik -->
+    <a href="/aslab/statistik"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'statistik' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">analytics</span>
+      Statistik
+    </a>
+
+    <a href="/aslab/buatTugas"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'buatTugas' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">assignment_turned_in</span>
+      Penugasan
+    </a>
+
+    <!-- Penilaian (Dropdown Manual) -->
+    <!-- Penilaian (Dropdown Manual) -->
+<div>
+  <!-- Judul Menu Induk -->
+  <div class="flex items-center px-4 py-2 rounded text-white font-medium">
+    <span class="material-icons mr-2">fact_check</span>
+    Penilaian
+  </div>
+
+  <!-- Submenu Selalu Ditampilkan -->
+  <div class="ml-6 mt-1 space-y-1">
+    <a href="/aslab/penilaianMagang"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'penilaianMagang' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">assignment</span>
+      Penilaian Magang
+    </a>
+    <a href="/aslab/penilaianTotal"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'penilaianTotal' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">bar_chart</span>
+      Penilaian Total
+    </a>
+  </div>
+</div>
+
+
+    <!-- Ranking -->
+    <a href="/aslab/rankingMagang"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'ranking' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">leaderboard</span>
+      Ranking
+    </a>
+
+    <!-- Pengumuman -->
+    <a href="/superadmin/users"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'pengumuman' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">campaign</span>
+      Pengumuman
+    </a>
+  </nav>
+</aside>

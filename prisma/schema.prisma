@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  mahasiswa
+  admin
+  asisten_lab
+}
+
+enum Status {
+  menunggu
+  diterima
+  ditolak
+}
+
+enum StatusKumpul {
+  belum_terkumpul
+  terkumpul
+}
+
+enum KategoriTugas {
+  TUGAS_1
+  TUGAS_2
+  TUGAS_3
+  TUGAS_BESAR
+}
+
+
+model User {
+  id            Int            @id @default(autoincrement())
+  nim           String?        @unique
+  no_aslab      String?        @unique   
+  name          String
+  email         String         @unique
+  password      String
+  role          Role
+
+
+  // Relasi balik ke Pendaftaran
+  pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
+  
+  pengumuman  Pengumuman[]
+}
+
+model Pendaftaran {
+  id                    Int      @id @default(autoincrement())
+  user_id               Int
+  domisili              String   @db.VarChar(100)
+  asal                  String   @db.VarChar(100)
+  nomor_whatsapp        String   @db.VarChar(20)
+  divisi                String   @db.VarChar(100)
+  CV_file               String   @db.VarChar(255)
+  KRS_file              String   @db.VarChar(255)
+  KHS_file              String   @db.VarChar(255)
+  surat_permohonan_file String   @db.VarChar(255)
+  alasan                String?  @db.Text
+  pernyataan            Boolean
+  status                Status   @default(menunggu)
+
+  user                  User     @relation("UserToPendaftaran", fields: [user_id], references: [id])
+  pengumpulanTugas      PengumpulanTugas[]
+}
+
+model Tugas {
+  id               Int                @id @default(autoincrement())
+  judul            String
+  deskripsi        String?
+  deadline         DateTime
+  lampiran         String? 
+  kategori KategoriTugas @default(TUGAS_1)
+  pengumpulanTugas PengumpulanTugas[]
+
+}
+model PengumpulanTugas {
+  id               Int       @id @default(autoincrement())
+  tugas_id         Int
+  pendaftaran_id   Int
+  file             String
+  tanggal_kumpul   DateTime  @default(now())
+  status           StatusKumpul    @default(belum_terkumpul)
+
+ nilai            Float?
+  catatan          String?
+  tugas            Tugas     @relation(fields: [tugas_id], references: [id])
+  pendaftaran      Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+ 
+ @@unique([tugas_id, pendaftaran_id])
+}
+
+model Pengumuman {
+  id                Int      @id @default(autoincrement())
+  user_id           Int       
+  tahap1_status     String   // 'lulus' atau 'gagal'
+  tahap2_status     String
+  tahap3_status     String
+  hasil_akhir       String   // 'aktif' atau 'tidak_aktif'
+  tanggal_diumumkan DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("pengumuman") // opsional: nama tabel di database
+}

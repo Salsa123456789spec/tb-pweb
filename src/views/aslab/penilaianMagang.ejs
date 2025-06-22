@@ -1,0 +1,114 @@
+<section class="p-6">
+  <h2 class="text-2xl font-semibold mb-6">Penilaian Magang</h2>
+
+  <!-- Filter -->
+  <div class="bg-white rounded-lg shadow p-4 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-end gap-4">
+      <div>
+        <label for="jenisPenilaian" class="block text-sm font-medium text-gray-700 mb-1">Jenis Penilaian</label>
+        <select id="jenisPenilaian" class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-600 focus:border-green-600 sm:text-sm px-3 py-2">
+          <option value="">Pilih Jenis Penilaian</option>
+          <option value="TUGAS_1">Penilaian Tugas 1</option>
+          <option value="TUGAS_2">Penilaian Tugas 2</option>
+          <option value="TUGAS_3">Penilaian Tugas 3</option>
+          <option value="TUGAS_BESAR">Penilaian Tugas Akhir</option>
+        </select>
+      </div>
+      <div class="pt-6 sm:pt-0">
+        <button onclick="filterData()" class="bg-green-700 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-md">
+          Filter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabel -->
+  <div class="bg-white rounded-lg shadow overflow-auto">
+    <table class="min-w-full table-auto">
+      <thead class="bg-gray-100 text-gray-700 text-sm uppercase">
+        <tr>
+          <th class="px-6 py-3 text-left font-semibold">No</th>
+          <th class="px-6 py-3 text-left font-semibold">Nama</th>
+          <th class="px-6 py-3 text-left font-semibold">NIM</th>
+          <th class="px-6 py-3 text-left font-semibold">Divisi</th>
+          <th class="px-6 py-3 text-left font-semibold">Jenis Penilaian</th>
+          <th class="px-6 py-3 text-left font-semibold">File</th>
+          <th class="px-6 py-3 text-left font-semibold">Nilai</th>
+          <th class="px-6 py-3 text-left font-semibold">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr>
+          <td colspan="8" class="text-center py-12 text-gray-500">
+            <div class="text-4xl mb-2">📝</div>
+            <p>Pilih jenis penilaian untuk menampilkan data mahasiswa</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Script AJAX -->
+<script>
+  async function filterData() {
+    const jenis = document.getElementById('jenisPenilaian').value;
+    const tableBody = document.getElementById('tableBody');
+
+    if (!jenis) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center py-12 text-gray-500">
+            <div class="text-4xl mb-2">📝</div>
+            <p>Pilih jenis penilaian untuk menampilkan data mahasiswa</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    try {
+      const res = await fetch('/aslab/penilaianMagang/filter?jenis=' + jenis);
+      const data = await res.json();
+
+      if (!data.length) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-12 text-gray-500">
+              <div class="text-4xl mb-2">🙅‍♂️</div>
+              <p>Data tidak ditemukan untuk jenis penilaian tersebut.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tableBody.innerHTML = data.map((item, i) => `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="px-6 py-3">${item.no}</td>
+          <td class="px-6 py-3">${item.nama}</td>
+          <td class="px-6 py-3">${item.nim}</td>
+          <td class="px-6 py-3">${item.divisi}</td>
+          <td class="px-6 py-3">${item.jenis}</td>
+          <td class="px-6 py-3">
+            <a href="/uploads/${item.file}" target="_blank" class="text-blue-600 hover:underline">Lihat</a>
+          </td>
+          <td class="px-6 py-3">${item.nilai}</td>
+          <td class="px-6 py-3">
+            <a href="/aslab/penilaianMagang/${item.id}" class="text-green-700 hover:underline">Nilai</a>
+          </td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('❌ Error fetch:', err);
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center py-12 text-red-500">
+            <div class="text-4xl mb-2">⚠️</div>
+            <p>Gagal mengambil data. Silakan coba lagi.</p>
+          </td>
+        </tr>
+      `;
+    }
+  }
+</script>

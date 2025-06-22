@@ -1,0 +1,71 @@
+<h1 class="text-2xl font-bold mb-4">Verifikasi Pendaftaran Mahasiswa</h1>
+
+<table class="min-w-full border rounded">
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="px-4 py-2">No</th>
+      <th class="px-4 py-2">Nama</th>
+      <th class="px-4 py-2">NIM</th>
+      <!-- <th class="px-4 py-2">Email</th> -->
+      <!-- <th class="px-4 py-2">Domisili</th> -->
+      <th class="px-4 py-2">Divisi</th>
+      <th class="px-4 py-2">Berkas</th>
+      <th class="px-4 py-2">Status</th>
+      <th class="px-4 py-2">Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% pendaftar.forEach((p, index) => { %>
+      <tr class="border-t">
+        <td class="px-4 py-2"><%= index + 1 %></td>
+        <td class="px-4 py-2"><%= p.user.name %></td>
+        <td class="px-4 py-2"><%= p.user.nim %></td>
+        <!-- <td class="px-4 py-2"></td> -->
+        <!-- <td class="px-4 py-2"></td> -->
+        <td class="px-4 py-2"><%= p.divisi %></td>
+      <% function getMaterialIcon(filename) {
+  const ext = filename.split('.').pop().toLowerCase();
+  switch (ext) {
+    case 'pdf': return 'picture_as_pdf';
+    case 'png':
+    case 'jpg':
+    case 'jpeg': return 'image';
+    case 'doc':
+    case 'docx': return 'description';
+    default: return 'insert_drive_file';
+  }
+} %>
+
+<td class="px-4 py-2 space-y-2">
+  <div class="flex items-center gap-2">
+    <span class="material-icons text-red-600"><%= getMaterialIcon(p.CV_file) %></span>
+    <a href="/uploads/<%= p.CV_file %>" target="_blank">CV</a>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="material-icons text-green-600"><%= getMaterialIcon(p.KRS_file) %></span>
+    <a href="/uploads/<%= p.KRS_file %>" target="_blank">KRS</a>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="material-icons text-blue-600"><%= getMaterialIcon(p.KHS_file) %></span>
+    <a href="/uploads/<%= p.KHS_file %>" target="_blank">KHS</a>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="material-icons text-yellow-600"><%= getMaterialIcon(p.surat_permohonan_file) %></span>
+    <a href="/uploads/<%= p.surat_permohonan_file %>" target="_blank">Surat</a>
+  </div>
+</td>
+
+        <td class="px-4 py-2 capitalize"><%= p.status %></td>
+        <td class="px-4 py-2 space-x-2">
+       
+<a href="/penilaian/<%= p.id %>" class="text-green-600 hover:underline">Periksa</a>
+
+
+          <form action="/verifikasi/reject/<%= p.id %>" method="POST" class="inline">
+            <button class="text-red-600 hover:underline" <% if(p.status !== 'menunggu'){ %>disabled<% } %>>Reject</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

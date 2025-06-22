@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-gray-100 py-8 px-4">
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded shadow">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Daftar Penugasan</h1>
+      <a href="/aslab/formTugas" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+        <i class="fa-solid fa-plus mr-1"></i> Tambah Tugas Baru
+      </a>
+    </div>
+
+    <% if (tugas && tugas.length > 0) { %>
+      <ul class="space-y-4">
+        <% tugas.forEach(item => { %>
+          <li class="p-4 border rounded-md shadow-sm bg-gray-50">
+            <div class="flex justify-between items-center">
+              <div>
+                <h2 class="text-lg font-semibold"><%= item.judul %></h2>
+
+                <!-- Deadline with icon -->
+                <p class="text-sm text-gray-600 mt-1">
+                  <i class="fa-regular fa-clock mr-1"></i>
+                  <%= new Date(item.deadline).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) %>
+                </p>
+
+                <!-- Lampiran with icon (jika ada) -->
+                <% if (item.lampiran) { %>
+                  <p class="text-sm text-gray-600 mt-1">
+                    <i class="fa-solid fa-paperclip mr-1"></i>
+                    <a href="/uploads/<%= item.lampiran %>" target="_blank" class="text-blue-600 hover:underline">
+                      Lihat Lampiran
+                    </a>
+                  </p>
+                <% } %>
+              </div>
+
+              <div class="flex gap-4">
+                <a href="/aslab/tugas/<%= item.id %>" class="text-blue-600 hover:underline">
+                  <i class="fa-solid fa-eye mr-1"></i> Detail
+                </a>
+               <button onclick="confirmDelete('<%= item.id %>')" class="text-red-600 hover:underline">
+                  <i class="fa-solid fa-trash mr-1"></i> Hapus
+                </button>
+              </div>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <div class="text-center text-gray-500 py-10">
+        <p class="mb-4">Belum ada tugas.</p>
+        <a href="/aslab/tugas" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+          <i class="fa-solid fa-plus mr-1"></i> Buat Penugasan
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function confirmDelete(id) {
+    Swal.fire({
+      title: 'Yakin ingin menghapus tugas ini?',
+      text: "Data yang dihapus tidak bisa dikembalikan.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: 'Ya, hapus',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = `/aslab/tugas/delete/${id}`;
+      }
+    });
+  }
+</script>

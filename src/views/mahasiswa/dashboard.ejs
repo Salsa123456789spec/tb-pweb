@@ -1,0 +1,128 @@
+<h2 class="text-2xl font-bold text-gray-800 mb-6">Halo <%= user.name %> </h2>
+
+<!-- Status Pendaftaran -->
+<div class="bg-white p-6 rounded-lg shadow border border-gray-100">
+  <!-- Progress Tracker -->
+   
+                    <div class="px-5 pb-5">
+                        <div class="relative">
+                            <div class="flex mb-2">
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-green-500 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">check</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Pendaftaran</p>
+                                </div>
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-green-500 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">check</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Verifikasi Berkas</p>
+                                </div>
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-yellow-500 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">hourglass_top</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Wawancara</p>
+                                </div>
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-gray-300 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">work</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Penerimaan</p>
+                                </div>
+                            </div>
+                            <div class="absolute top-4 left-0 right-0 h-0.5 z-0">
+                                <div class="absolute left-0 top-0 bottom-0 bg-green-500" style="width: 62.5%;"></div>
+                                <div class="absolute left-0 top-0 bottom-0 bg-gray-200 ml-[62.5%]" style="width: 37.5%;"></div>
+                            </div>
+                        </div>
+                    </div>
+</div>
+
+<!-- Informasi Pribadi dan Berkas Pendaftaran -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+  <!-- Informasi Pribadi -->
+                    <!-- Informasi Pribadi -->
+<div class="bg-white rounded-lg shadow p-5 border border-gray-100">
+  <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Pribadi</h3>
+  <div class="space-y-4">
+    <div class="flex">
+      <div class="w-1/3 text-gray-500 text-sm">Nama</div>
+      <div class="w-2/3 text-sm font-medium"><%= user.name %></div>
+    </div>
+    <div class="flex">
+      <div class="w-1/3 text-gray-500 text-sm">NIM</div>
+      <div class="w-2/3 text-sm font-medium"><%= user.nim %></div>
+    </div>
+    <div class="flex">
+      <div class="w-1/3 text-gray-500 text-sm">Email</div>
+      <div class="w-2/3 text-sm font-medium"><%= user.email %></div>
+    </div>
+
+    <% if (pendaftaran) { %>
+      <div class="flex">
+        <div class="w-1/3 text-gray-500 text-sm">Nomor HP</div>
+        <div class="w-2/3 text-sm font-medium"><%= pendaftaran.nomor_whatsapp %></div>
+      </div>
+      <div class="flex">
+        <div class="w-1/3 text-gray-500 text-sm">Divisi Pilihan</div>
+        <div class="w-2/3 text-sm font-medium">
+          <% pendaftaran.divisi.split(',').forEach(div => { %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-1">
+              <%= div.trim() %>
+            </span>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+
+  <!-- Berkas Pendaftaran -->
+ <div class="bg-white p-6 rounded-lg shadow border border-gray-100">
+  <h3 class="text-lg font-semibold text-gray-800 mb-4">Berkas Pendaftaran</h3>
+
+  <% if (pendaftaran) { %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <% const files = [
+        { label: 'CV', name: 'CV_file' },
+        { label: 'KRS', name: 'KRS_file' },
+        { label: 'KHS', name: 'KHS_file' },
+        { label: 'Surat Permohonan', name: 'surat_permohonan_file' }
+      ]; %>
+
+      <% files.forEach(file => { %>
+        <% if (pendaftaran[file.name]) { %>
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-start">
+              <div class="flex-shrink-0 h-10 w-10 rounded-md bg-blue-100 flex items-center justify-center text-blue-500 mr-3">
+                <span class="material-icons">description</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-sm font-medium"><%= file.label %></p>
+                    <p class="text-xs text-gray-500"><%= pendaftaran[file.name] %></p>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <a href="/uploads/<%= pendaftaran[file.name] %>" target="_blank" class="text-xs text-blue-600 hover:underline">Lihat</a>
+                  <span class="text-gray-300 mx-1">|</span>
+                  <a href="/uploads/<%= pendaftaran[file.name] %>" download class="text-xs text-blue-600 hover:underline">Unduh</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      <% }); %>
+
+    </div>
+  <% } else { %>
+    <p class="text-sm text-gray-500">Belum ada berkas yang diunggah.</p>
+  <% } %>
+</div>
+
+</div>

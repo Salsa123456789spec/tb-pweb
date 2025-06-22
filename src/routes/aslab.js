@@ -9,6 +9,7 @@ import {
   showEditAbsensiForm,
   updateAbsensi
 } from '../controllers/aslabController.js';
+import { generatePDFKelulusan, generatePDFAbsensi, generatePDFPendaftar } from '../controllers/pdfController.js';
 
 const router = express.Router();
 
@@ -44,5 +45,10 @@ router.get('/rekap/kelulusan', ensureAuthenticated, ensureRole('asisten_lab'), g
 router.get('/rekap/pendaftar', ensureAuthenticated, ensureRole('asisten_lab'), getRekapPendaftar);
 router.get('/rekap/pendaftar/detail/:id', ensureAuthenticated, ensureRole('asisten_lab'), getDetailPendaftar);
 router.get('/rekap/pendaftar/delete/:id', ensureAuthenticated, ensureRole('asisten_lab'), deletePendaftar);
+
+// === RUTE UNTUK GENERATE PDF ===
+router.get('/rekap/kelulusan/pdf', ensureAuthenticated, ensureRole('asisten_lab'), generatePDFKelulusan);
+router.get('/rekap/absensi/pdf', ensureAuthenticated, ensureRole('asisten_lab'), generatePDFAbsensi);
+router.get('/rekap/pendaftar/pdf', ensureAuthenticated, ensureRole('asisten_lab'), generatePDFPendaftar);
 
 export default router;

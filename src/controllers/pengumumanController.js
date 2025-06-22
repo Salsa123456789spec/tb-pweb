@@ -62,6 +62,29 @@ export const getHasilTahap2 = async (req, res) => {
     try {
         const user = req.session.user;
 
+        // Fetch tahap 1 results to check if user passed
+        const pengumumanTahap1 = await prisma.pengumuman.findMany({
+            where: {
+                tahapan: 'tahap1',
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        nim: true,
+                    },
+                },
+                pendaftaran: {
+                    select: {
+                        domisili: true,
+                        asal: true,
+                        divisi: true,
+                    },
+                },
+            },
+        });
+
         const pengumumanTahap2 = await prisma.pengumuman.findMany({
             where: {
                 tahapan: 'tahap2',
@@ -90,6 +113,14 @@ export const getHasilTahap2 = async (req, res) => {
         });
 
         // Map the data to match template expectations
+        const mappedPengumumanTahap1 = pengumumanTahap1.map(item => ({
+            ...item,
+            user: {
+                ...item.user,
+                nama_lengkap: item.user.name
+            }
+        }));
+
         const mappedPengumumanTahap2 = pengumumanTahap2.map(item => ({
             ...item,
             user: {
@@ -102,6 +133,7 @@ export const getHasilTahap2 = async (req, res) => {
             layout: 'mahasiswa/layout/main',
             title: 'Hasil Tahap 2 - Wawancara',
             user: user,
+            pengumumanTahap1: mappedPengumumanTahap1,
             pengumumanTahap2: mappedPengumumanTahap2,
             activePage: 'pengumuman',
         });
@@ -116,6 +148,51 @@ export const getHasilTahap2 = async (req, res) => {
 export const getHasilTahap3 = async (req, res) => {
     try {
         const user = req.session.user;
+
+        // Fetch tahap 1 and 2 results to check if user passed previous stages
+        const pengumumanTahap1 = await prisma.pengumuman.findMany({
+            where: {
+                tahapan: 'tahap1',
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        nim: true,
+                    },
+                },
+                pendaftaran: {
+                    select: {
+                        domisili: true,
+                        asal: true,
+                        divisi: true,
+                    },
+                },
+            },
+        });
+
+        const pengumumanTahap2 = await prisma.pengumuman.findMany({
+            where: {
+                tahapan: 'tahap2',
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        nim: true,
+                    },
+                },
+                pendaftaran: {
+                    select: {
+                        domisili: true,
+                        asal: true,
+                        divisi: true,
+                    },
+                },
+            },
+        });
 
         const pengumumanTahap3 = await prisma.pengumuman.findMany({
             where: {
@@ -145,6 +222,22 @@ export const getHasilTahap3 = async (req, res) => {
         });
 
         // Map the data to match template expectations
+        const mappedPengumumanTahap1 = pengumumanTahap1.map(item => ({
+            ...item,
+            user: {
+                ...item.user,
+                nama_lengkap: item.user.name
+            }
+        }));
+
+        const mappedPengumumanTahap2 = pengumumanTahap2.map(item => ({
+            ...item,
+            user: {
+                ...item.user,
+                nama_lengkap: item.user.name
+            }
+        }));
+
         const mappedPengumumanTahap3 = pengumumanTahap3.map(item => ({
             ...item,
             user: {
@@ -157,6 +250,8 @@ export const getHasilTahap3 = async (req, res) => {
             layout: 'mahasiswa/layout/main',
             title: 'Hasil Tahap 3 - Penerimaan Magang',
             user: user,
+            pengumumanTahap1: mappedPengumumanTahap1,
+            pengumumanTahap2: mappedPengumumanTahap2,
             pengumumanTahap3: mappedPengumumanTahap3,
             activePage: 'pengumuman',
         });

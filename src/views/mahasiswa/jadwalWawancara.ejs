@@ -5,6 +5,20 @@
             <p class="text-gray-600 text-lg">Jadwal wawancara asisten lab</p>
         </div>
 
+        <% if (komplainSuccess) { %>
+        <div class="mb-8 bg-green-50 border-l-4 border-green-500 rounded-lg p-6 shadow-sm">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-xl font-bold text-green-800">Komplain Berhasil Diajukan!</h3>
+                    <p class="text-green-700 mt-2 text-lg">Komplain jadwal wawancara Anda telah berhasil diajukan dan sedang menunggu konfirmasi dari admin.</p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
         <% if (jadwalWawancara && jadwalWawancara.length > 0) { %>
         <div class="w-full space-y-6">
             <% jadwalWawancara.forEach((jadwal) => { %>
@@ -16,8 +30,8 @@
                         </h3>
                         <p class="text-gray-500 text-sm">ID Pendaftaran: <%= jadwal.pendaftaran_id || 'N/A' %></p>
                         
-                        <% if (jadwal.KomplainJadwal && jadwal.KomplainJadwal.length > 0) { %>
-                            <% const komplain = jadwal.KomplainJadwal[0]; %>
+                        <% if (jadwal.komplain && jadwal.komplain.length > 0) { %>
+                            <% const komplain = jadwal.komplain[0]; %>
                             <% let statusClass = ''; %>
                             <% let statusText = ''; %>
                             
@@ -115,34 +129,43 @@
 
         <div class="w-full mt-12 flex justify-end">
             <% const firstJadwal = jadwalWawancara[0]; %>
-            <% const hasComplaint = firstJadwal && firstJadwal.KomplainJadwal && firstJadwal.KomplainJadwal.length > 0; %>
+            <% const hasComplaint = firstJadwal && firstJadwal.komplain && firstJadwal.komplain.length > 0; %>
 
-            <% if (hasComplaint) { %>
-                <% const komplain = firstJadwal.KomplainJadwal[0]; %>
-                <% let buttonClass = ''; %>
-                <% let buttonText = ''; %>
-                <% let buttonIcon = ''; %>
-                
-                <% if (komplain.status === 'menunggu') { %>
-                    <% buttonClass = 'bg-yellow-500 hover:bg-yellow-600'; %>
-                    <% buttonText = 'Komplain Sedang Diproses'; %>
-                    <% buttonIcon = 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'; %>
-                <% } else if (komplain.status === 'diterima') { %>
-                    <% buttonClass = 'bg-green-500 hover:bg-green-600'; %>
-                    <% buttonText = 'Komplain Diterima'; %>
-                    <% buttonIcon = 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'; %>
-                <% } else if (komplain.status === 'ditolak') { %>
-                    <% buttonClass = 'bg-red-500 hover:bg-red-600'; %>
-                    <% buttonText = 'Komplain Ditolak'; %>
-                    <% buttonIcon = 'M6 18L18 6M6 6l12 12'; %>
+            <% if (hasComplaint || komplainSuccess) { %>
+                <% if (hasComplaint) { %>
+                    <% const komplain = firstJadwal.komplain[0]; %>
+                    <% let buttonClass = ''; %>
+                    <% let buttonText = ''; %>
+                    <% let buttonIcon = ''; %>
+                    
+                    <% if (komplain.status === 'menunggu') { %>
+                        <% buttonClass = 'bg-yellow-500 hover:bg-yellow-600'; %>
+                        <% buttonText = 'Menunggu Konfirmasi'; %>
+                        <% buttonIcon = 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'; %>
+                    <% } else if (komplain.status === 'diterima') { %>
+                        <% buttonClass = 'bg-green-500 hover:bg-green-600'; %>
+                        <% buttonText = 'Komplain Diterima'; %>
+                        <% buttonIcon = 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'; %>
+                    <% } else if (komplain.status === 'ditolak') { %>
+                        <% buttonClass = 'bg-red-500 hover:bg-red-600'; %>
+                        <% buttonText = 'Komplain Ditolak'; %>
+                        <% buttonIcon = 'M6 18L18 6M6 6l12 12'; %>
+                    <% } %>
+                    
+                    <span class="<%= buttonClass %> text-white font-bold py-4 px-10 rounded-2xl shadow-lg flex items-center space-x-3 opacity-75 cursor-not-allowed">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= buttonIcon %>"></path>
+                        </svg>
+                        <span><%= buttonText %></span>
+                    </span>
+                <% } else if (komplainSuccess) { %>
+                    <span class="bg-yellow-500 text-white font-bold py-4 px-10 rounded-2xl shadow-lg flex items-center space-x-3 opacity-75 cursor-not-allowed">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Menunggu Konfirmasi</span>
+                    </span>
                 <% } %>
-                
-                <span class="<%= buttonClass %> text-white font-bold py-4 px-10 rounded-2xl shadow-lg flex items-center space-x-3 opacity-75 cursor-not-allowed">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= buttonIcon %>"></path>
-                    </svg>
-                    <span><%= buttonText %></span>
-                </span>
             <% } else { %>
                 <a href="/mahasiswa/komplain-wawancara/<%= firstJadwal.id %>" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-10 rounded-2xl shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl flex items-center space-x-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

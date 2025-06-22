@@ -36,48 +36,55 @@
             <div class="p-8">
                 <!-- Status Message -->
                 <% 
+                let userPassedTahap1 = false;
                 let userPassedTahap2 = false;
+                
+                if (pengumumanTahap1 && pengumumanTahap1.length > 0) {
+                    userPassedTahap1 = pengumumanTahap1.some(p => p.user_id === user.id);
+                }
+                
                 if (pengumumanTahap2 && pengumumanTahap2.length > 0) {
                     userPassedTahap2 = pengumumanTahap2.some(p => p.user_id === user.id);
                 }
                 %>
 
-                <% if (userPassedTahap2) { %>
-                <div class="mb-8 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg p-6 shadow-sm">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-xl font-bold text-green-800">Selamat! Anda Lolos Tahap 2</h3>
-                            <p class="text-green-700 mt-2 text-lg">Anda berhasil melewati tahap wawancara dengan baik. Bersiaplah untuk tahap penerimaan magang.</p>
-                        </div>
-                    </div>
-                </div>
-                <% } else if (pengumumanTahap2 && pengumumanTahap2.length > 0) { %>
-                <div class="mb-8 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 rounded-lg p-6 shadow-sm">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-times-circle text-red-500 text-2xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-xl font-bold text-red-800">Maaf, Anda Tidak Lolos Tahap 2</h3>
-                            <p class="text-red-700 mt-2 text-lg">Terima kasih atas partisipasi Anda dalam tahap wawancara. Tetap semangat untuk kesempatan berikutnya.</p>
+                <% if (userPassedTahap1) { %>
+                    <% if (userPassedTahap2) { %>
+                    <div class="mb-8 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg p-6 shadow-sm">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-bold text-green-800">Selamat! Anda Lolos Tahap 2</h3>
+                                <p class="text-green-700 mt-2 text-lg">Anda berhasil melewati tahap wawancara dengan baik. Bersiaplah untuk tahap penerimaan magang.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <% } else { %>
-                <div class="mb-8 bg-gradient-to-r from-yellow-50 to-amber-50 border-l-4 border-yellow-500 rounded-lg p-6 shadow-sm">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-clock text-yellow-500 text-2xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-xl font-bold text-yellow-800">Pengumuman Belum Tersedia</h3>
-                            <p class="text-yellow-700 mt-2 text-lg">Hasil wawancara sedang dalam proses evaluasi. Mohon tunggu pengumuman resmi.</p>
+                    <% } else if (pengumumanTahap2 && pengumumanTahap2.length > 0) { %>
+                    <div class="mb-8 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 rounded-lg p-6 shadow-sm">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-times-circle text-red-500 text-2xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-bold text-red-800">Maaf, Anda Tidak Lolos Tahap 2</h3>
+                                <p class="text-red-700 mt-2 text-lg">Terima kasih atas partisipasi Anda dalam tahap wawancara. Tetap semangat untuk kesempatan berikutnya.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <% } else { %>
+                    <div class="mb-8 bg-gradient-to-r from-yellow-50 to-amber-50 border-l-4 border-yellow-500 rounded-lg p-6 shadow-sm">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-clock text-yellow-500 text-2xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-bold text-yellow-800">Pengumuman Belum Tersedia</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
                 <% } %>
 
                 <!-- Table -->
@@ -85,9 +92,16 @@
                 <div class="bg-gray-50 rounded-xl p-6">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-xl font-bold text-gray-800">Daftar Peserta Yang Lolos</h3>
-                        <div class="flex items-center space-x-2 text-sm text-gray-500">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Total: <%= pengumumanTahap2.length %> peserta</span>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Total: <%= pengumumanTahap2.length %> peserta</span>
+                            </div>
+                            <a href="/mahasiswa/generate-pdf-tahap-2" 
+                               class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 hover:scale-105 flex items-center space-x-2">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Download PDF</span>
+                            </a>
                         </div>
                     </div>
                     

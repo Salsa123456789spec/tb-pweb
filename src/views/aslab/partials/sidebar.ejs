@@ -3,101 +3,42 @@
     LeasCalling
   </div>
   <nav class="px-4">
-<<<<<<< HEAD
     <a href="/aslab/dashboard"
        class="block py-3 px-4 rounded transition
        <%= (typeof activePage !== 'undefined' && activePage === 'dashboard') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-=======
-    <a href="/superadmin/dashboard"
-       class="block py-3 px-4 rounded transition
-       <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
       <span class="material-icons mr-2 align-middle">dashboard</span>
       Dashboard
     </a>
-    <a href="/superadmin/verifikasi"
-       class="block py-3 px-4 rounded transition
-<<<<<<< HEAD
-       <%= (typeof activePage !== 'undefined' && activePage === 'verifikasi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-=======
-       <%= activePage === 'verifikasi' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
-      <span class="material-icons mr-2 align-middle">check_circle</span>
-      Verifikasi
-    </a>
-    <a href="/superadmin/wawancara"
-       class="block py-3 px-4 rounded transition
-<<<<<<< HEAD
-       <%= (typeof activePage !== 'undefined' && activePage === 'wawancara') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-=======
-       <%= activePage === 'wawancara' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
-      <span class="material-icons mr-2 align-middle">assignment</span>
-      Wawancara
-      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
-    </a>
-<<<<<<< HEAD
+    
     <a href="/aslab/absensi"
        class="block py-3 px-4 rounded transition
        <%= (typeof activePage !== 'undefined' && activePage === 'absensi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-=======
-    <a href="/superadmin/absensi"
-       class="block py-3 px-4 rounded transition
-       <%= activePage === 'absensi' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
       <span class="material-icons mr-2 align-middle">description</span>
       Absensi
     </a>
-    <a href="/superadmin/penilaian"
+    
+    <a href="/aslab/tugas"
        class="block py-3 px-4 rounded transition
-<<<<<<< HEAD
-       <%= (typeof activePage !== 'undefined' && activePage === 'penilaian') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-=======
-       <%= activePage === 'penilaian' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
-      <span class="material-icons mr-2 align-middle">assessment</span>
-      Penilaian
-      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
+       <%= (typeof activePage !== 'undefined' && activePage === 'tugas') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">assignment</span>
+      Tugas
     </a>
-    <a href="/superadmin/ranking"
+    
+    <a href="/aslab/materi"
        class="block py-3 px-4 rounded transition
-<<<<<<< HEAD
-       <%= (typeof activePage !== 'undefined' && activePage === 'ranking') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">emoji_events</span>
-      Ranking
-      <span class="material-icons ml-auto text-sm">keyboard_arrow-down</span>
-    </a>
-    <a href="/superadmin/pengumuman"
-       class="block py-3 px-4 rounded transition
-       <%= (typeof activePage !== 'undefined' && activePage === 'pengumuman') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-=======
-       <%= activePage === 'ranking' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">emoji_events</span>
-      Ranking
-      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
-    </a>
-    <a href="/superadmin/pengumuman"
-       class="block py-3 px-4 rounded transition
-       <%= activePage === 'pengumuman' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
-      <span class="material-icons mr-2 align-middle">campaign</span>
-      Pengumuman
-      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
+       <%= (typeof activePage !== 'undefined' && activePage === 'materi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">book</span>
+      Materi
     </a>
 
     <div class="relative">
-<<<<<<< HEAD
       <button id="rekapDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none
         <%= (typeof activePage !== 'undefined' && (activePage === 'rekapAbsensi' || activePage === 'rekapKelulusan' || activePage === 'rekapKuisioner' || activePage === 'rekapPendaftar')) ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-=======
-      <button id="rekapDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
         <span class="material-icons mr-2 align-middle">folder</span>
         Rekap
         <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
       </button>
       <div id="rekapDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
-<<<<<<< HEAD
         <a href="/aslab/rekap/pendaftar"
            class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
            <%= (typeof activePage !== 'undefined' && activePage === 'rekapPendaftar') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
@@ -116,26 +57,6 @@
         <a href="/aslab/rekap/kuisioner"
            class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
            <%= (typeof activePage !== 'undefined' && activePage === 'rekapKuisioner') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-=======
-        <a href="/superadmin/rekap/pendaftar"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= activePage === 'rekap-pendaftar' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Pendaftar
-        </a>
-        <a href="/superadmin/rekap/kelulusan"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= activePage === 'rekap-kelulusan' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Kelulusan
-        </a>
-        <a href="/superadmin/rekap/absensi"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= activePage === 'rekap-absensi' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Absensi
-        </a>
-        <a href="/aslab/rekap/kuisioner"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= activePage === 'rekap-kuisioner' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
->>>>>>> e9964c889358ccdd2e38e3e5a177f7b1ea5da7f0
           Kuisioner
         </a>
       </div>

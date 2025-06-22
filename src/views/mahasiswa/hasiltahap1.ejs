@@ -15,7 +15,7 @@
                 <i class="fas fa-clipboard-list text-white text-2xl"></i>
             </div>
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Hasil Tahap 1</h1>
-            <p class="text-xl text-gray-600">Ujian Tertulis - Program Magang Enterprise Application Development</p>
+            <p class="text-xl text-gray-600">Verifikasi Berkas - Program Magang Enterprise Application Development</p>
             <div class="w-24 h-1 bg-blue-500 rounded-full mx-auto mt-4"></div>
         </div>
 
@@ -27,8 +27,8 @@
                         <i class="fas fa-clipboard-list text-3xl"></i>
                     </div>
                     <div class="ml-4">
-                        <h2 class="text-2xl font-bold">Hasil Tahap 1 - Ujian Tertulis</h2>
-                        <p class="text-blue-100 mt-1">Daftar peserta yang lolos ujian tertulis</p>
+                        <h2 class="text-2xl font-bold">Hasil Tahap 1 - Verifikasi Berkas</h2>
+                        <p class="text-blue-100 mt-1">Daftar peserta yang lolos verifikasi berkas</p>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-xl font-bold text-green-800">Selamat! Anda Lolos Tahap 1</h3>
-                            <p class="text-green-700 mt-2 text-lg">Anda berhasil melewati ujian tertulis dan memenuhi persyaratan untuk melanjutkan ke tahap wawancara.</p>
+                            <p class="text-green-700 mt-2 text-lg">Anda berhasil melewati verifikasi berkas dan memenuhi persyaratan untuk melanjutkan ke tahap wawancara.</p>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-xl font-bold text-red-800">Maaf, Anda Tidak Lolos Tahap 1</h3>
-                            <p class="text-red-700 mt-2 text-lg">Hasil ujian tertulis Anda belum memenuhi standar yang ditetapkan. Silakan coba lagi pada periode selanjutnya.</p>
+                            <p class="text-red-700 mt-2 text-lg">Verifikasi berkas Anda belum memenuhi standar yang ditetapkan. Silakan coba lagi pada periode selanjutnya.</p>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,6 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-xl font-bold text-yellow-800">Pengumuman Belum Tersedia</h3>
-                            <p class="text-yellow-700 mt-2 text-lg">Hasil ujian tertulis sedang dalam proses koreksi. Mohon tunggu pengumuman resmi.</p>
                         </div>
                     </div>
                 </div>
@@ -85,9 +84,16 @@
                 <div class="bg-gray-50 rounded-xl p-6">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-xl font-bold text-gray-800">Daftar Peserta Yang Lolos</h3>
-                        <div class="flex items-center space-x-2 text-sm text-gray-500">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Total: <%= pengumumanTahap1.length %> peserta</span>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Total: <%= pengumumanTahap1.length %> peserta</span>
+                            </div>
+                            <a href="/mahasiswa/generate-pdf-tahap-1" 
+                               class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 hover:scale-105 flex items-center space-x-2">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Download PDF</span>
+                            </a>
                         </div>
                     </div>
                     

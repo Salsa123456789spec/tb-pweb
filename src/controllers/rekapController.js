@@ -119,10 +119,10 @@ export const getRekapAbsensi = async (req, res) => {
 // Menampilkan halaman rekap kelulusan
 export const getRekapKelulusan = async (req, res) => {
   try {
-    // Ambil semua pendaftar yang diterima
-    const pendaftar = await prisma.pendaftaran.findMany({
+    // Ambil hanya pengumuman untuk tahap 3 (yang sudah lulus)
+    const pengumumanTahap3 = await prisma.pengumuman.findMany({
       where: {
-        status: 'diterima'
+        tahapan: 'tahap3'
       },
       include: {
         user: {
@@ -131,65 +131,32 @@ export const getRekapKelulusan = async (req, res) => {
             nim: true
           }
         },
-        kehadiran: true,
-        pengumpulanTugas: {
-          include: {
-            tugas: true
+        pendaftaran: {
+          select: {
+            divisi: true
           }
-        },
-        feedbackKuisioner: true
+        }
       }
     });
 
-    // Hitung kelulusan untuk setiap mahasiswa
-    const rekapKelulusan = pendaftar.map(p => {
-      const kehadiran = p.kehadiran;
-      const tugas = p.pengumpulanTugas;
-      const feedback = p.feedbackKuisioner;
-      
-      // Hitung persentase kehadiran
-      const jumlahHadir = kehadiran.filter(k => k.status === 'Hadir').length;
-      const totalPertemuan = kehadiran.length;
-      const persentaseKehadiran = totalPertemuan > 0 ? Math.round((jumlahHadir / totalPertemuan) * 100) : 0;
-      
-      // Hitung persentase tugas
-      const tugasTerkumpul = tugas.filter(t => t.status === 'terkumpul').length;
-      const totalTugas = tugas.length;
-      const persentaseTugas = totalTugas > 0 ? Math.round((tugasTerkumpul / totalTugas) * 100) : 0;
-      
-      // Kriteria kelulusan
-      const lulusKehadiran = persentaseKehadiran >= 80; // Minimal 80% kehadiran
-      const lulusTugas = persentaseTugas >= 80; // Minimal 80% tugas terkumpul
-      const mengisiKuisioner = feedback !== null;
-      
-      const lulus = lulusKehadiran && lulusTugas && mengisiKuisioner;
-      
-      return {
-        nim: p.user.nim || 'N/A',
-        nama: p.user.name,
-        persentase_kehadiran: persentaseKehadiran,
-        persentase_tugas: persentaseTugas,
-        mengisi_kuisioner: mengisiKuisioner,
-        status_kelulusan: lulus ? 'LULUS' : 'TIDAK LULUS',
-        keterangan: lulus ? 'Lulus' : 
-          !lulusKehadiran ? 'Kehadiran < 80%' :
-          !lulusTugas ? 'Tugas < 80%' :
-          !mengisiKuisioner ? 'Belum mengisi kuisioner' : 'Tidak memenuhi kriteria'
-      };
-    });
+    // Format data untuk rekap kelulusan
+    const rekapKelulusan = pengumumanTahap3.map(p => ({
+      nim: p.user.nim || 'N/A',
+      nama: p.user.name,
+      divisi: p.pendaftaran.divisi,
+      tahapan: 'tahap3',
+      status_kelulusan: 'LULUS',
+      keterangan: 'Lulus magang'
+    }));
 
-    // Urutkan berdasarkan status kelulusan (LULUS di atas)
-    rekapKelulusan.sort((a, b) => {
-      if (a.status_kelulusan === 'LULUS' && b.status_kelulusan !== 'LULUS') return -1;
-      if (a.status_kelulusan !== 'LULUS' && b.status_kelulusan === 'LULUS') return 1;
-      return 0;
-    });
+    // Urutkan berdasarkan nama
+    rekapKelulusan.sort((a, b) => a.nama.localeCompare(b.nama));
 
     // Hitung statistik
     const totalMahasiswa = rekapKelulusan.length;
-    const totalLulus = rekapKelulusan.filter(r => r.status_kelulusan === 'LULUS').length;
-    const totalTidakLulus = totalMahasiswa - totalLulus;
-    const persentaseLulus = totalMahasiswa > 0 ? Math.round((totalLulus / totalMahasiswa) * 100) : 0;
+    const totalLulus = rekapKelulusan.length; // Semua yang ada di tahap 3 adalah lulus
+    const totalTidakLulus = 0; // Tidak ada yang tidak lulus karena hanya menampilkan tahap 3
+    const persentaseLulus = totalMahasiswa > 0 ? 100 : 0; // 100% karena hanya menampilkan yang lulus
 
     res.render('aslab/rekap/kelulusan', {
       layout: 'aslab/layout/main',

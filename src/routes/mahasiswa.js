@@ -3,6 +3,7 @@ import { ensureAuthenticated, ensureRole } from '../middleware/auth.js';
 import prisma from '../models/prisma.js'; // Ensure the path is correct
 import komplainWawancaraRoutes from './komplainWawancaraRoutes.js'; // Import the komplainWawancaraRoutes
 import pengumumanController from '../controllers/pengumumanController.js'; // Import the new pengumumanController
+import pdfRoutes from './pdfRoutes.js'; // Import PDF routes
 
 const router = express.Router();
 
@@ -39,6 +40,7 @@ router.post('/formulirPendaftaran', ensureAuthenticated, ensureRole('mahasiswa')
 
 router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), async (req, res) => {
   const user = req.session.user;
+  const { komplainSuccess } = req.query;
 
   try {
     const jadwalWawancara = await prisma.jadwalWawancara.findMany({
@@ -62,7 +64,12 @@ router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), asy
             }
           },
         },
-        pewawancara: true
+        pewawancara: true,
+        komplain: {
+          orderBy: {
+            tanggal_pengajuan: 'desc'
+          }
+        }
       },
     });
 
@@ -72,6 +79,7 @@ router.get('/jadwalWawancara', ensureAuthenticated, ensureRole('mahasiswa'), asy
       user: req.session.user,
       activePage: 'wawancara',
       jadwalWawancara: jadwalWawancara,
+      komplainSuccess: komplainSuccess === 'true'
     });
   } catch (err) {
     console.error("Error fetching jadwal wawancara:", err);
@@ -89,5 +97,6 @@ router.get('/pengumuman/hasil-tahap-3', ensureAuthenticated, ensureRole('mahasis
 
 
 router.use('/', komplainWawancaraRoutes); // This mounts the complaint routes
+router.use('/', pdfRoutes); // This mounts the PDF routes
 
 export default router;

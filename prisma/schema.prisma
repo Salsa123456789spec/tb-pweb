@@ -156,29 +156,29 @@ model pengumpulantugas {
 }
 
 model pengumuman {
-  id             Int                 @id @default(autoincrement())
-  pendaftaran_id Int                 @unique(map: "Pengumuman_pendaftaran_id_key")
+  id             Int                  @id @default(autoincrement())
+  pendaftaran_id Int                  @unique(map: "Pengumuman_pendaftaran_id_key")
   tahapan        pengumuman_tahapan?
   user_id        Int?
-  pendaftaran    pendaftaran         @relation(fields: [pendaftaran_id], references: [id], map: "Pengumuman_pendaftaran_id_fkey")
-  user           user?               @relation(fields: [user_id], references: [id], map: "Pengumuman_user_id_fkey")
+  pendaftaran    pendaftaran          @relation(fields: [pendaftaran_id], references: [id], map: "Pengumuman_pendaftaran_id_fkey")
+  user           user?                @relation(fields: [user_id], references: [id], map: "Pengumuman_user_id_fkey")
 
   @@index([user_id], map: "Pengumuman_user_id_fkey")
 }
 
 model penilaian {
-  id               Int              @id @default(autoincrement())
-  pengumpulan_id   Int              @unique(map: "Penilaian_pengumpulan_id_key")
-  nilai            Int
-  feedback         String?
+  id                Int              @id @default(autoincrement())
+  pengumpulan_id    Int              @unique(map: "Penilaian_pengumpulan_id_key")
+  nilai             Int
+  feedback          String?
   pengumpulantugas pengumpulantugas @relation(fields: [pengumpulan_id], references: [id], map: "Penilaian_pengumpulan_id_fkey")
 }
 
 model tugas {
-  id               Int                @id @default(autoincrement())
-  judul            String
-  deskripsi        String?
-  deadline         DateTime
+  id                Int                @id @default(autoincrement())
+  judul             String
+  deskripsi         String?
+  deadline          DateTime
   pengumpulantugas pengumpulantugas[]
 }
 
@@ -202,8 +202,7 @@ enum pengumuman_tahapan {
 
 enum kehadiran_status {
   Hadir
-  Izin
-  Alfa
+  Tidak_Hadir
 }
 
 enum user_role {

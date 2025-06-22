@@ -75,7 +75,7 @@ export const simpanAbsensi = async (req, res) => {
                 const pendaftaranId = parseInt(key.split('-')[1]);
                 const statusValue = statuses[key];
 
-                if (pendaftaranId && statusValue && ['Hadir', 'Izin', 'Alfa'].includes(statusValue)) {
+                if (pendaftaranId && statusValue && ['Hadir', 'Tidak_Hadir'].includes(statusValue)) {
                     pendaftarIds.push(pendaftaranId);
                     dataKehadiranBaru.push({
                         pendaftaran_id: pendaftaranId,

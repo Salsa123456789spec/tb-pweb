@@ -8,6 +8,7 @@ const router = express.Router();
 // GET login page
 router.get('/', (req, res) => {
     res.render('login', {
+        layout: false,
         success_msg: req.flash('success_msg'),
         error_msg: req.flash('error_msg'),
         errors: [],
@@ -18,9 +19,10 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
   const { role, identifier, password } = req.body;
 
-  const { error } = validateLogin(req.body); // pakai validasi sesuai field
+  const { error } = validateLogin(req.body);
   if (error) {
     return res.render('login', {
+      layout: false,
       success_msg: [],
       error_msg: [],
       errors: error.details.map(err => ({ msg: err.message })),
@@ -41,6 +43,7 @@ router.post('/', async (req, res) => {
 
     if (!user) {
       return res.render('login', {
+        layout: false,
         success_msg: [],
         error_msg: [],
         errors: [{ msg: 'Akun tidak ditemukan.' }],
@@ -51,6 +54,7 @@ router.post('/', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.render('login', {
+        layout: false,
         success_msg: [],
         error_msg: [],
         errors: [{ msg: 'Password salah.' }],
@@ -79,6 +83,7 @@ router.post('/', async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.render('login', {
+      layout: false,
       success_msg: [],
       error_msg: [],
       errors: [{ msg: 'Terjadi kesalahan server.' }],

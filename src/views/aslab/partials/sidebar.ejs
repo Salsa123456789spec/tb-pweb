@@ -9,30 +9,99 @@
       <span class="material-icons mr-2 align-middle">dashboard</span>
       Dashboard
     </a>
-    <a href="/superadmin/kelolaUser"
+    <a href="/superadmin/verifikasi"
        class="block py-3 px-4 rounded transition
-       <%= activePage === 'users' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">group</span>
+       <%= activePage === 'verifikasi' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">check_circle</span>
       Verifikasi
     </a>
-    <a href="/superadmin/users"
+    <a href="/superadmin/wawancara"
        class="block py-3 px-4 rounded transition
-       <%= activePage === 'users' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">group</span>
+       <%= activePage === 'wawancara' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">assignment</span>
       Wawancara
+      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
     </a>
-    <a href="/superadmin/users"
+    <a href="/superadmin/absensi"
        class="block py-3 px-4 rounded transition
-       <%= activePage === 'users' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">group</span>
+       <%= activePage === 'absensi' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">description</span>
+      Absensi
+    </a>
+    <a href="/superadmin/penilaian"
+       class="block py-3 px-4 rounded transition
+       <%= activePage === 'penilaian' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">assessment</span>
       Penilaian
+      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
     </a>
-    <a href="/superadmin/users"
+    <a href="/superadmin/ranking"
        class="block py-3 px-4 rounded transition
-       <%= activePage === 'users' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">group</span>
-      Pengumuman
+       <%= activePage === 'ranking' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">emoji_events</span>
+      Ranking
+      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
     </a>
-    <!-- Tambah menu lain sesuai kebutuhan -->
+    <a href="/superadmin/pengumuman"
+       class="block py-3 px-4 rounded transition
+       <%= activePage === 'pengumuman' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">campaign</span>
+      Pengumuman
+      <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
+    </a>
+
+    <div class="relative">
+      <button id="rekapDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none">
+        <span class="material-icons mr-2 align-middle">folder</span>
+        Rekap
+        <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
+      </button>
+      <div id="rekapDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
+        <a href="/superadmin/rekap/pendaftar"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'rekap-pendaftar' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Pendaftar
+        </a>
+        <a href="/superadmin/rekap/kelulusan"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'rekap-kelulusan' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Kelulusan
+        </a>
+        <a href="/superadmin/rekap/absensi"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'rekap-absensi' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Absensi
+        </a>
+        <a href="/aslab/rekap/kuisioner"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'rekap-kuisioner' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Kuisioner
+        </a>
+      </div>
+    </div>
   </nav>
 </aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const rekapDropdownButton = document.getElementById('rekapDropdownButton');
+    const rekapDropdownMenu = document.getElementById('rekapDropdownMenu');
+
+    rekapDropdownButton.addEventListener('click', function() {
+      rekapDropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', function(event) {
+      if (!rekapDropdownButton.contains(event.target) && !rekapDropdownMenu.contains(event.target)) {
+        rekapDropdownMenu.classList.add('hidden');
+      }
+    });
+
+    // Keep "Rekap" active if any of its sub-items are active
+    const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/superadmin/rekap/')) {
+        rekapDropdownMenu.classList.remove('hidden'); // Ensure dropdown is open if a sub-item is active
+    }
+  });
+</script>

@@ -20,19 +20,20 @@ import materiMagangRouter from './routes/materiMagang.js';
 import kuisionerRoutes from './routes/kuisionerRoutes.js';
 
 const app = express();
-const port = 3000;
-const __dirname = path.dirname(url.fileURLToPath(
-    import.meta.url));
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-// Setup view engine
-app.set('views', path.join(__dirname, 'views'));
+// Konfigurasi EJS dan Layouts
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(expressLayouts); // Menggunakan layout
 
-// Static files
+// Middleware untuk parsing body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
-
-app.use(express.urlencoded({ extended: true }));
 
 // Session & Flash
 app.use(session({
@@ -42,7 +43,7 @@ app.use(session({
 }));
 app.use(flash());
 
-// Global flash
+// Global flash middleware (tanpa layout)
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
@@ -51,17 +52,25 @@ app.use((req, res, next) => {
     next();
 });
 
+// Middleware untuk mengatur layout khusus /mahasiswa
+app.use('/mahasiswa', (req, res, next) => {
+    res.locals.layout = 'mahasiswa/layout/main';
+    next();
+});
+
 // Routes
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
+
+// Route dasar
 app.get('/', (req, res) => {
     res.render('mahasiswa/layout/index', {
         title: 'LEA - Home',
         activePage: 'home'
     });
 });
-app.use(expressLayouts);
-app.set('layout', 'mahasiswa/layout/main');
+
+// Gunakan routes dengan awalan yang sesuai
 app.use('/superadmin', adminRouter);
 app.use('/mahasiswa/formulirPendaftaran', formulirRoutes);
 app.use('/mahasiswa/konfirmasiPendaftaran', konfirmasiPendaftaranRoutes);
@@ -73,6 +82,8 @@ app.use('/mahasiswa/materiMagang', materiMagangRouter);
 app.use('/mahasiswa/kuisioner', kuisionerRoutes);
 app.use('/mahasiswa', mahasiswaRouter);
 
-app.listen(port, () => {
-    console.log(`Server jalan di http://localhost:${port}`);
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server berjalan di http://localhost:${PORT}`);
 });

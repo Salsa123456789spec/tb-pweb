@@ -1,0 +1,192 @@
+<!-- Page Header -->
+<div class="mb-8 text-center">
+    <h1 class="text-4xl font-bold text-gray-800 mb-3">Rekapitulasi Kuisioner</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Berikut adalah daftar semua feedback kuisioner yang telah diisi oleh mahasiswa.</p>
+</div>
+
+<!-- Enhanced Total Feedback Card -->
+<div class="mb-8 flex justify-center">
+    <div class="bg-blue-500 rounded-2xl shadow-xl p-8 text-white max-w-md w-full transform hover:scale-105 transition-all duration-300">
+        <div class="text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 rounded-full mb-6">
+                <i class="fas fa-clipboard-list text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-semibold mb-2">Total Feedback</h2>
+            <div class="text-5xl font-bold mb-2" id="totalFeedback">
+                <%= feedbackList ? feedbackList.length : 0 %>
+            </div>
+            <p class="text-blue-100 text-sm">Feedback yang terkumpul</p>
+            
+            <!-- Progress Bar -->
+            <div class="mt-6 bg-white bg-opacity-20 rounded-full h-2">
+                <div class="bg-white rounded-full h-2 transition-all duration-1000 progress-bar" 
+                     data-width="<%= feedbackList && feedbackList.length > 0 ? Math.min(100, (feedbackList.length / 50) * 100) : 0 %>"></div>
+            </div>
+            <p class="text-xs text-blue-100 mt-2">Target: 50 feedback</p>
+        </div>
+    </div>
+</div>
+
+<!-- Main Data Table -->
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-lg">
+    
+    <!-- Card Header -->
+    <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+        <h6 class="text-xl font-bold text-gray-800 flex items-center">
+            <i class="fas fa-list mr-3 text-blue-600"></i>
+            Daftar Feedback
+        </h6>
+    </div>
+    
+    <!-- Search and Controls -->
+    <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+            <div class="relative max-w-sm">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400 text-sm"></i>
+                </div>
+                <input type="text" 
+                       class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white transition-all duration-200"
+                       placeholder="Cari berdasarkan nama atau NIM..." 
+                       id="searchInput">
+            </div>
+            <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <i class="fas fa-users"></i>
+                <span>Total: <strong id="totalCount"><%= feedbackList ? feedbackList.length : 0 %></strong> mahasiswa</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Mahasiswa</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">NIM</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Divisi Pilihan</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="tableBody">
+                <% if (feedbackList && feedbackList.length > 0) { %>
+                    <% feedbackList.forEach((feedback, index) => { %>
+                        <tr class="hover:bg-blue-50 transition-colors duration-200">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                <%= index + 1 %>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-11 w-11">
+                                        <div class="h-11 w-11 rounded-full bg-blue-500 flex items-center justify-center shadow-lg">
+                                            <span class="text-sm font-bold text-white">
+                                                <%= feedback.pendaftaran.user.name.charAt(0).toUpperCase() %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            <%= feedback.pendaftaran.user.name %>
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            <%= feedback.pendaftaran.user.nim %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <%= feedback.pendaftaran.user.nim %>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-3 py-1.5 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full border border-blue-300">
+                                    <%= feedback.pendaftaran.divisi %>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="/aslab/rekap/kuisioner/<%= feedback.id %>" 
+                                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-md hover:shadow-lg">
+                                    <i class="fas fa-eye mr-2"></i>
+                                    Lihat Detail
+                                </a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-clipboard-list text-gray-400 text-2xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">Belum Ada Feedback</h3>
+                                <p class="text-gray-500 max-w-sm">Feedback kuisioner belum tersedia saat ini. Silakan periksa kembali dalam beberapa waktu.</p>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const tableRows = document.querySelectorAll('#tableBody tr');
+        let visibleCount = 0;
+        
+        tableRows.forEach(row => {
+            // Skip empty state row
+            if (row.cells.length === 1) return;
+            
+            const studentName = row.cells[1].querySelector('.text-sm.font-semibold').textContent.toLowerCase();
+            const studentNim = row.cells[2].textContent.toLowerCase();
+            
+            if (studentName.includes(searchTerm) || studentNim.includes(searchTerm)) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Update total count
+        document.getElementById('totalCount').textContent = visibleCount;
+    });
+
+    // Enhanced number animation for statistics
+    function animateNumbers() {
+        const totalFeedback = document.getElementById('totalFeedback');
+        if (totalFeedback) {
+            const finalValue = parseInt(totalFeedback.textContent);
+            if (finalValue === 0) return;
+            
+            let currentValue = 0;
+            const increment = Math.ceil(finalValue / 20);
+            
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= finalValue) {
+                    totalFeedback.textContent = finalValue;
+                    clearInterval(timer);
+                } else {
+                    totalFeedback.textContent = currentValue;
+                }
+            }, 50);
+        }
+    }
+
+    // Initialize animations when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        animateNumbers();
+        
+        // Set progress bar width
+        const progressBar = document.querySelector('.progress-bar');
+        if (progressBar) {
+            const width = progressBar.getAttribute('data-width');
+            progressBar.style.width = width + '%';
+        }
+    });
+</script>

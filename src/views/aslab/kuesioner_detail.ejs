@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Feedback Kuisioner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 font-inter min-h-screen">
+    
+    <%
+        const ratings = {
+            1: { text: 'Sangat Buruk', color: 'bg-red-500', icon: 'fas fa-frown' },
+            2: { text: 'Buruk', color: 'bg-orange-500', icon: 'fas fa-frown-open' },
+            3: { text: 'Cukup', color: 'bg-yellow-500', icon: 'fas fa-meh' },
+            4: { text: 'Baik', color: 'bg-green-500', icon: 'fas fa-smile' },
+            5: { text: 'Sangat Baik', color: 'bg-emerald-500', icon: 'fas fa-grin-stars' }
+        };
+
+        const getRatingData = (value) => ratings[value] || { text: 'N/A', color: 'bg-gray-500', icon: 'fas fa-question' };
+    %>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+        
+        <!-- Back Button -->
+        <div class="mb-8 animate-fade-in">
+            <a href="/aslab/rekap/kuisioner" 
+               class="inline-flex items-center px-6 py-3 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-gray-700 hover:text-gray-900 group">
+                <i class="fas fa-arrow-left mr-3 text-gray-500 group-hover:text-gray-700 transition-colors duration-200"></i>
+                <span class="font-medium">Kembali ke Daftar Rekap</span>
+            </a>
+        </div>
+
+        <!-- Page Header -->
+        <div class="text-center mb-12 animate-slide-up">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-6 shadow-lg">
+                <i class="fas fa-clipboard-check text-white text-2xl"></i>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Detail Feedback Kuisioner</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Analisis komprehensif dari feedback yang diberikan mahasiswa</p>
+        </div>
+
+        <!-- Student Info Card -->
+        <div class="mb-8 animate-slide-up" style="animation-delay: 0.2s;">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+                <div class="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 px-8 py-6">
+                    <div class="flex items-center space-x-6">
+                        <div class="flex-shrink-0">
+                            <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm border-2 border-white border-opacity-30">
+                                <span class="text-2xl font-bold text-white">
+                                    <%= feedback.pendaftaran.user.name.charAt(0).toUpperCase() %>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-2xl font-bold text-white mb-2">
+                                <%= feedback.pendaftaran.user.name %>
+                            </h2>
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center text-blue-100">
+                                    <i class="fas fa-id-card mr-2"></i>
+                                    <span class="font-medium"><%= feedback.pendaftaran.user.nim %></span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white bg-opacity-20 text-white border border-white border-opacity-30">
+                                        <i class="fas fa-users mr-2"></i>
+                                        <%= feedback.pendaftaran.divisi %>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rating Overview Cards -->
+        <div class="mb-12 animate-slide-up" style="animation-delay: 0.3s;">
+            <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Ringkasan Penilaian</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <%
+                    const overallRatings = [
+                        feedback.kejelasan_soal,
+                        feedback.alokasi_waktu,
+                        feedback.kondisi_ruangan,
+                        feedback.profesionalisme_pewawancara,
+                        feedback.bimbingan_arahan,
+                        feedback.supervisi,
+                        feedback.kualitas_mentoring,
+                        feedback.proses_keseluruhan
+                    ];
+                    const averageRating = overallRatings.reduce((a, b) => a + b, 0) / overallRatings.length;
+                    const excellentCount = overallRatings.filter(r => r >= 4).length;
+                    const goodCount = overallRatings.filter(r => r === 3).length;
+                    const poorCount = overallRatings.filter(r => r < 3).length;
+                %>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-star text-blue-600"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-900"><%= averageRating.toFixed(1) %></span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-1">Rata-rata Penilaian</h4>
+                    <p class="text-sm text-gray-600">Dari 8 aspek yang dinilai</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-thumbs-up text-green-600"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-900"><%= excellentCount %></span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-1">Penilaian Baik</h4>
+                    <p class="text-sm text-gray-600">Rating 4-5 bintang</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-minus-circle text-yellow-600"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-900"><%= goodCount %></span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-1">Penilaian Cukup</h4>
+                    <p class="text-sm text-gray-600">Rating 3 bintang</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-red-600"></i>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-900"><%= poorCount %></span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-1">Perlu Perbaikan</h4>
+                    <p class="text-sm text-gray-600">Rating 1-2 bintang</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Ratings -->
+        <div class="mb-12 animate-slide-up" style="animation-delay: 0.4s;">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
+                    <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                        <i class="fas fa-chart-bar mr-3 text-blue-600"></i>
+                        Penilaian Kuantitatif
+                    </h3>
+                    <p class="text-gray-600 mt-2">Evaluasi detail untuk setiap aspek penilaian</p>
+                </div>
+                
+                <div class="p-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Kejelasan Soal Ujian</h4>
+                                    <div class="flex items-center">
+                                        <% const kejelasanData = getRatingData(feedback.kejelasan_soal); %>
+                                        <div class="w-8 h-8 <%= kejelasanData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= kejelasanData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= kejelasanData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= kejelasanData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.kejelasan_soal / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Alokasi Waktu Pengerjaan</h4>
+                                    <div class="flex items-center">
+                                        <% const alokasiData = getRatingData(feedback.alokasi_waktu); %>
+                                        <div class="w-8 h-8 <%= alokasiData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= alokasiData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= alokasiData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= alokasiData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.alokasi_waktu / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Kondisi Ruangan</h4>
+                                    <div class="flex items-center">
+                                        <% const kondisiData = getRatingData(feedback.kondisi_ruangan); %>
+                                        <div class="w-8 h-8 <%= kondisiData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= kondisiData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= kondisiData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= kondisiData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.kondisi_ruangan / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Profesionalisme Pewawancara</h4>
+                                    <div class="flex items-center">
+                                        <% const profesionalismeData = getRatingData(feedback.profesionalisme_pewawancara); %>
+                                        <div class="w-8 h-8 <%= profesionalismeData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= profesionalismeData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= profesionalismeData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= profesionalismeData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.profesionalisme_pewawancara / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Bimbingan dan Arahan</h4>
+                                    <div class="flex items-center">
+                                        <% const bimbinganData = getRatingData(feedback.bimbingan_arahan); %>
+                                        <div class="w-8 h-8 <%= bimbinganData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= bimbinganData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= bimbinganData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= bimbinganData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.bimbingan_arahan / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Supervisi dan Monitoring</h4>
+                                    <div class="flex items-center">
+                                        <% const supervisiData = getRatingData(feedback.supervisi); %>
+                                        <div class="w-8 h-8 <%= supervisiData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= supervisiData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= supervisiData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= supervisiData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.supervisi / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Kualitas Mentoring</h4>
+                                    <div class="flex items-center">
+                                        <% const mentoringData = getRatingData(feedback.kualitas_mentoring); %>
+                                        <div class="w-8 h-8 <%= mentoringData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= mentoringData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= mentoringData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= mentoringData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.kualitas_mentoring / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-900">Proses Keseluruhan</h4>
+                                    <div class="flex items-center">
+                                        <% const prosesData = getRatingData(feedback.proses_keseluruhan); %>
+                                        <div class="w-8 h-8 <%= prosesData.color %> rounded-full flex items-center justify-center mr-3">
+                                            <i class="<%= prosesData.icon %> text-white text-sm"></i>
+                                        </div>
+                                        <span class="font-bold text-gray-900"><%= prosesData.text %></span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="<%= prosesData.color %> h-3 rounded-full transition-all duration-1000 progress-bar" 
+                                         data-width="<%= Math.round((feedback.proses_keseluruhan / 5) * 100) %>"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Qualitative Feedback -->
+        <div class="animate-slide-up" style="animation-delay: 0.5s;">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
+                    <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                        <i class="fas fa-comments mr-3 text-purple-600"></i>
+                        Penilaian Kualitatif
+                    </h3>
+                    <p class="text-gray-600 mt-2">Saran dan kesan yang diberikan mahasiswa</p>
+                </div>
+                
+                <div class="p-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Saran -->
+                        <div class="space-y-4">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-lightbulb text-blue-600"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900">Saran untuk Laboratorium</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-6 border border-gray-200 min-h-32">
+                                <p class="text-gray-700 leading-relaxed">
+                                    <%= feedback.saran || 'Tidak ada saran yang diberikan.' %>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Kesan dan Pesan -->
+                        <div class="space-y-4">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-heart text-purple-600"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900">Kesan dan Pesan</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-6 border border-gray-200 min-h-32">
+                                <p class="text-gray-700 leading-relaxed">
+                                    <%= feedback.kesan_pesan || 'Tidak ada kesan dan pesan yang diberikan.' %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set progress bar widths
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach((bar) => {
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width + '%';
+            });
+        });
+
+        // Add hover effects to rating items
+        document.querySelectorAll('.rating-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(4px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Parallax effect for background
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.body;
+            const speed = scrolled * 0.5;
+            parallax.style.backgroundPosition = `center ${speed}px`;
+        });
+    </script>
+</body>
+</html>

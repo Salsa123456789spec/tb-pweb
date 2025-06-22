@@ -21,6 +21,19 @@
       <span class="material-icons mr-2 align-middle">group</span>
       Wawancara
     </a>
+    <div>
+      <button id="dropdownToggle" class="flex items-center w-full justify-between py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 focus:outline-none">
+          <div class="flex items-center space-x-3">
+              <span class="material-icons">work</span>
+              <span>Magang</span>
+          </div>
+          <span class="material-icons">expand_more</span>
+      </button>
+      <div id="dropdownMenu" class="pl-10 mt-1 hidden flex-col space-y-1">
+          <a href="/aslab/tugas" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">Penugasan</a>
+          <a href="/aslab/materi" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">Materi</a>
+      </div>
+  </div>
     <a href="/superadmin/users"
        class="block py-3 px-4 rounded transition
        <%= activePage === 'users' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
@@ -33,6 +46,20 @@
       <span class="material-icons mr-2 align-middle">group</span>
       Pengumuman
     </a>
+    <a href="/aslab/faq" class="flex items-center space-x-3 py-3 px-3 text-white rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+      <span class="material-icons">quiz</span>
+      <span>Kelola FAQ</span>
+    </a>
     <!-- Tambah menu lain sesuai kebutuhan -->
   </nav>
 </aside>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const toggleBtn = document.getElementById('dropdownToggle');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+
+      toggleBtn.addEventListener('click', function () {
+          dropdownMenu.classList.toggle('hidden');
+      });
+  });
+</script>

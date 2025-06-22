@@ -340,4 +340,51 @@ export const deletePendaftar = async (req, res) => {
     req.flash('error_msg', 'Gagal menghapus data pendaftar. Pastikan semua data terkait sudah dihapus.');
     res.redirect('/aslab/rekap/pendaftar');
   }
+};
+
+// Menampilkan halaman manajemen oprec untuk superadmin
+export const getManajemenOprec = async (req, res) => {
+  try {
+    // Ambil semua pendaftar
+    const pendaftar = await prisma.pendaftaran.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+            nim: true,
+            email: true
+          }
+        }
+      },
+      orderBy: {
+        id: 'desc'
+      }
+    });
+
+    // Format data untuk ditampilkan
+    const formattedPendaftar = pendaftar.map(p => ({
+      id: p.id,
+      nim: p.user.nim || 'N/A',
+      nama: p.user.name,
+      email: p.user.email,
+      no_hp: p.nomor_whatsapp,
+      domisili: p.domisili,
+      asal: p.asal,
+      divisi: p.divisi,
+      status: p.status,
+      tanggal_daftar: p.createdAt || new Date()
+    }));
+
+    res.render('superadmin/manajemen-oprec', {
+      layout: 'superadmin/layout/main',
+      title: 'Manajemen Oprec',
+      activePage: 'manajemen-oprec',
+      pendaftar: formattedPendaftar,
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error('Error fetching manajemen oprec:', error);
+    req.flash('error_msg', 'Gagal memuat data pendaftar.');
+    res.redirect('/superadmin/dashboard');
+  }
 }; 

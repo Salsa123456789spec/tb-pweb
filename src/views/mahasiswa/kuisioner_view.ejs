@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Kuisioner Feedback Perekrutan Aslab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div class="max-w-full mx-auto px-8 py-12">
+        <div class="relative border-b border-gray-200 px-8 py-8 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <div class="absolute inset-0 bg-black/5"></div>
+            <div class="relative">
+                <button type="button" class="flex items-center text-white/80 hover:text-white transition-all duration-300 mb-4 group" onclick="history.back()">
+                    <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Kembali
+                </button>
+                <h1 class="text-3xl font-bold text-center text-white drop-shadow-lg">
+                    Detail Kuisioner Feedback Anda
+                </h1>
+                <p class="text-center text-blue-100 mt-2 text-lg">
+                    Berikut adalah umpan balik yang telah Anda berikan
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 animate-fade-in shadow-lg">
+            <div id="messages" class="mb-8">
+                <% if (messages.success_msg) { %>
+                    <div class="bg-green-50 border-l-4 border-green-400 text-green-700 px-6 py-4 rounded-r-lg mb-4 shadow-sm">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span><%= messages.success_msg %></span>
+                        </div>
+                    </div>
+                <% } %>
+                <% if (messages.error_msg) { %>
+                    <div class="bg-red-50 border-l-4 border-red-400 text-red-700 px-6 py-4 rounded-r-lg mb-4 shadow-sm">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span><%= messages.error_msg %></span>
+                        </div>
+                    </div>
+                <% } %>
+                <% if (messages.info_msg) { %>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-700 px-6 py-4 rounded-r-lg mb-4 shadow-sm">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span><%= messages.info_msg %></span>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-800 p-4 mb-6" role="alert">
+                <h5 class="font-bold text-xl">Terima kasih!</h5>
+                <p>Anda telah mengisi kuisioner ini. Berikut adalah data kuisioner yang telah Anda submit:</p>
+            </div>
+
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full lg:w-1/2 px-4 mb-6 lg:mb-0">
+                    <h6 class="text-xl font-semibold text-gray-700 mb-3">Penilaian:</h6>
+                    <ul class="divide-y divide-gray-200">
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Kejelasan Soal/Tugas Seleksi:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.kejelasan_soal %>/5</span>
+                        </li>
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Alokasi Waktu Seleksi:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.alokasi_waktu %>/5</span>
+                        </li>
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Kondisi Ruangan/Lingkungan:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.kondisi_ruangan %>/5</span>
+                        </li>
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Profesionalisme Pewawancara:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.profesionalisme_pewawancara %>/5</span>
+                        </li>
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Bimbingan/Arahan:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.bimbingan_arahan %>/5</span>
+                        </li>
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Aspek Supervisi:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.supervisi %>/5</span>
+                        </li>
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Kualitas Mentoring:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.kualitas_mentoring %>/5</span>
+                        </li>
+                        <li class="py-2 flex justify-between items-center">
+                            <span class="text-gray-800">Keseluruhan Proses:</span>
+                            <span class="bg-blue-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full"><%= kuisioner.proses_keseluruhan %>/5</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="w-full lg:w-1/2 px-4">
+                    <h6 class="text-xl font-semibold text-gray-700 mb-3">Komentar:</h6>
+                    <% if (kuisioner.saran) { %>
+                      <div class="mb-4 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                        <strong class="block text-gray-800 mb-1">Saran:</strong>
+                        <p class="text-gray-600 leading-relaxed"><%= kuisioner.saran %></p>
+                      </div>
+                    <% } else { %>
+                      <div class="mb-4 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                        <strong class="block text-gray-800 mb-1">Saran:</strong>
+                        <p class="text-gray-500 italic">Tidak ada saran yang diberikan.</p>
+                      </div>
+                    <% } %>
+
+                    <% if (kuisioner.kesan_pesan) { %>
+                      <div class="mb-4 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                        <strong class="block text-gray-800 mb-1">Kesan dan Pesan:</strong>
+                        <p class="text-gray-600 leading-relaxed"><%= kuisioner.kesan_pesan %></p>
+                      </div>
+                    <% } else { %>
+                      <div class="mb-4 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                        <strong class="block text-gray-800 mb-1">Kesan dan Pesan:</strong>
+                        <p class="text-gray-500 italic">Tidak ada kesan dan pesan yang diberikan.</p>
+                      </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-start gap-4">
+                <a href="/mahasiswa/dashboard" class="py-3 px-6 bg-blue-600 text-white font-semibold text-lg rounded-full hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105">
+                    Kembali ke Dashboard
+                </a>
+                <a href="/mahasiswa/kuisioner?edit=true" class="py-3 px-6 bg-yellow-500 text-white font-semibold text-lg rounded-full hover:bg-yellow-600 transition-all duration-300 ease-in-out transform hover:scale-105">
+                    Edit Kuisioner
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model faq {
+  id         Int    @id @default(autoincrement())
+  pertanyaan String
+  jawaban    String
+}
+
+model feedbackkuisioner {
+  id                          Int         @id @default(autoincrement())
+  pendaftaran_id              Int         @unique(map: "FeedbackKuisioner_pendaftaran_id_key")
+  kejelasan_soal              Int
+  alokasi_waktu               Int
+  kondisi_ruangan             Int
+  profesionalisme_pewawancara Int
+  bimbingan_arahan            Int
+  supervisi                   Int
+  kualitas_mentoring          Int
+  proses_keseluruhan          Int
+  saran                       String?
+  kesan_pesan                 String?
+  pendaftaran                 pendaftaran @relation(fields: [pendaftaran_id], references: [id], map: "FeedbackKuisioner_pendaftaran_id_fkey")
+}
+
+model jadwalwawancara {
+  id             Int              @id @default(autoincrement())
+  pendaftaran_id Int
+  waktu          DateTime
+  ruang          String?
+  tanggal        DateTime?
+  pewawancara_id Int?
+  pendaftaran    pendaftaran      @relation(fields: [pendaftaran_id], references: [id], map: "JadwalWawancara_pendaftaran_id_fkey")
+  pewawancara    pewawancara?     @relation(fields: [pewawancara_id], references: [id], map: "JadwalWawancara_pewawancara_id_fkey")
+  komplainjadwal komplainjadwal[]
+
+  @@index([pendaftaran_id], map: "JadwalWawancara_pendaftaran_id_fkey")
+  @@index([pewawancara_id], map: "JadwalWawancara_pewawancara_id_fkey")
+}
+
+model komplainjadwal {
+  id                Int             @id @default(autoincrement())
+  jadwal_id         Int
+  alasan            String
+  status            String          @default("menunggu")
+  tanggal_pengajuan DateTime        @default(now())
+  tanggal_diajukan  DateTime?
+  waktu_diajukan    DateTime?
+  jadwalwawancara   jadwalwawancara @relation(fields: [jadwal_id], references: [id], map: "KomplainJadwal_jadwal_id_fkey")
+
+  @@index([jadwal_id], map: "KomplainJadwal_jadwal_id_fkey")
+}
+
+model pendaftaran {
+  id                    Int                @id @default(autoincrement())
+  user_id               Int
+  domisili              String             @db.VarChar(100)
+  asal                  String             @db.VarChar(100)
+  nomor_whatsapp        String             @db.VarChar(20)
+  divisi                String             @db.VarChar(100)
+  CV_file               String             @db.VarChar(255)
+  KRS_file              String             @db.VarChar(255)
+  KHS_file              String             @db.VarChar(255)
+  surat_permohonan_file String             @db.VarChar(255)
+  alasan                String?            @db.Text
+  pernyataan            Boolean
+  status                pendaftaran_status @default(menunggu)
+  feedbackkuisioner     feedbackkuisioner?
+  jadwalwawancara       jadwalwawancara[]
+  user                  user               @relation(fields: [user_id], references: [id], map: "Pendaftaran_user_id_fkey")
+  pengumpulantugas      pengumpulantugas[]
+  pengumuman            pengumuman[]       @relation("PendaftaranToPengumuman")
+
+  @@index([user_id], map: "Pendaftaran_user_id_fkey")
+}
+
+model pengumpulantugas {
+  id             Int                     @id @default(autoincrement())
+  tugas_id       Int
+  pendaftaran_id Int
+  file           String
+  tanggal_kumpul DateTime                @default(now())
+  status         pengumpulantugas_status @default(belum_terkumpul)
+  pendaftaran    pendaftaran             @relation(fields: [pendaftaran_id], references: [id], map: "PengumpulanTugas_pendaftaran_id_fkey")
+  tugas          tugas                   @relation(fields: [tugas_id], references: [id], map: "PengumpulanTugas_tugas_id_fkey")
+
+  @@index([pendaftaran_id], map: "PengumpulanTugas_pendaftaran_id_fkey")
+  @@index([tugas_id], map: "PengumpulanTugas_tugas_id_fkey")
+}
+
+model pengumuman {
+  id             Int         @id @default(autoincrement())
+  user_id        Int
+  pendaftaran_id Int       
+  tahapan        Tahapan?
+
+  user           user        @relation("UserToPengumuman", fields: [user_id], references: [id])
+  pendaftaran    pendaftaran @relation("PendaftaranToPengumuman", fields: [pendaftaran_id], references: [id])
+}
+
+model pewawancara {
+  id              Int               @id @default(autoincrement())
+  nama            String
+  kontak          String
+  jadwalwawancara jadwalwawancara[]
+}
+
+model tugas {
+  id               Int                @id @default(autoincrement())
+  judul            String
+  deskripsi        String?
+  deadline         DateTime
+  pengumpulantugas pengumpulantugas[]
+}
+
+model user {
+  id          Int           @id @default(autoincrement())
+  nim         String?       @unique(map: "User_nim_key")
+  no_aslab    String?       @unique(map: "User_no_aslab_key")
+  name        String
+  email       String        @unique(map: "User_email_key")
+  password    String
+  role        user_role
+  pendaftaran pendaftaran[]
+  pengumuman  pengumuman[]  @relation("UserToPengumuman")
+}
+
+enum Tahapan {
+  tahap1
+  tahap2
+  tahap3
+}
+
+enum pengumpulantugas_status {
+  terkumpul
+  terlambat
+  belum_terkumpul
+}
+
+enum user_role {
+  mahasiswa
+  admin
+  asisten_lab
+}
+
+enum pendaftaran_status {
+  menunggu
+  diterima
+  ditolak
+}

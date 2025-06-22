@@ -1,0 +1,73 @@
+<div class="container mx-auto p-4">
+    <div class="mb-6">
+        <a href="/mahasiswa/materiMagang" class="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4">
+            <span class="material-icons mr-2">arrow_back</span>
+            Kembali ke Materi
+        </a>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2"><%= materi.judul %></h1>
+        <p class="text-gray-600"><%= materi.deskripsi %></p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+        <div class="p-6">
+            <div class="flex items-center mb-6">
+                <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                    <span class="material-icons text-green-600 text-2xl">description</span>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800"><%= materi.judul %></h2>
+                    <p class="text-sm text-gray-500">Materi Magang LEA</p>
+                </div>
+            </div>
+
+            <div class="prose max-w-none mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Deskripsi</h3>
+                <p class="text-gray-700 leading-relaxed"><%= materi.deskripsi %></p>
+                
+                <% if (materi.content) { %>
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Konten</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-700"><%= materi.content %></p>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="border-t pt-6">
+                <div class="flex flex-wrap gap-4">
+                    <% if (materi.file) { %>
+                        <a href="/uploads/<%= materi.file %>" 
+                           class="inline-flex items-center px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200"
+                           target="_blank">
+                            <span class="material-icons mr-2">download</span>
+                            Download Materi
+                        </a>
+                    <% } %>
+                    
+                    <a href="/mahasiswa/materiMagang" 
+                       class="inline-flex items-center px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                        <span class="material-icons mr-2">list</span>
+                        Daftar Materi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informasi Tambahan -->
+    <div class="mt-6 bg-blue-50 rounded-lg p-4">
+        <div class="flex items-start">
+            <span class="material-icons text-blue-500 mr-3 mt-1">info</span>
+            <div>
+                <h4 class="font-semibold text-blue-800 mb-2">Tips Belajar</h4>
+                <ul class="text-blue-700 text-sm space-y-1">
+                    <li>• Baca materi dengan teliti sebelum praktik</li>
+                    <li>• Catat poin-poin penting dari setiap materi</li>
+                    <li>• Praktikkan langsung setelah mempelajari teori</li>
+                    <li>• Jangan ragu untuk bertanya jika ada yang kurang jelas</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> 

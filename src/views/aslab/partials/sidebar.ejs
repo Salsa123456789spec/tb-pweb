@@ -1,0 +1,113 @@
+<aside class="w-64 min-h-screen bg-gradient-to-b from-green-700 to-green-900 text-white shadow-md">
+  <div class="p-6 text-xl font-bold">
+    LeasCalling
+  </div>
+  <nav class="px-4">
+    <a href="/aslab"
+       class="block py-3 px-4 rounded transition
+       <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">dashboard</span>
+      Dashboard
+    </a>
+    <a href="/aslab/verifikasi"
+       class="block py-3 px-4 rounded transition
+       <%= activePage === 'verifikasi' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">check_circle</span>
+      Verifikasi
+    </a>
+    
+    <!-- Wawancara Dropdown -->
+    <div class="relative">
+      <button id="wawancaraDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none">
+        <span class="material-icons mr-2 align-middle">assignment</span>
+        Wawancara
+        <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
+      </button>
+      <div id="wawancaraDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
+        <a href="/aslab/inputdatawawancara"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'inputDataWawancara' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Input Data
+        </a>
+        <a href="/aslab/jadwal-wawancara"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'jadwalWawancara' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Jadwal Wawancara
+        </a>
+        <a href="/aslab/evaluasi-permohonan"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'evaluasiPermohonan' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Evaluasi Permohonan
+        </a>
+      </div>
+    </div>
+
+    <a href="/aslab/pengumuman"
+       class="block py-3 px-4 rounded transition
+       <%= activePage === 'pengumuman' ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
+      <span class="material-icons mr-2 align-middle">campaign</span>
+      Pengumuman
+    </a>
+
+    <div class="relative">
+      <button id="rekapDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none">
+        <span class="material-icons mr-2 align-middle">folder</span>
+        Rekap
+        <span class="material-icons ml-auto text-sm">keyboard_arrow_down</span>
+      </button>
+      <div id="rekapDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
+        <a href="/aslab/rekap/kuisioner"
+           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
+           <%= activePage === 'rekap-kuisioner' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+          Kuisioner
+        </a>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <li class="mt-auto">
+  </nav>
+  <div class="mt-auto p-4 text-center">
+    <!-- Konten footer sidebar jika ada -->
+  </div>
+</aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const wawancaraDropdownButton = document.getElementById('wawancaraDropdownButton');
+    const wawancaraDropdownMenu = document.getElementById('wawancaraDropdownMenu');
+    const rekapDropdownButton = document.getElementById('rekapDropdownButton');
+    const rekapDropdownMenu = document.getElementById('rekapDropdownMenu');
+
+    // Wawancara dropdown
+    wawancaraDropdownButton.addEventListener('click', function() {
+      wawancaraDropdownMenu.classList.toggle('hidden');
+    });
+
+    // Rekap dropdown
+    rekapDropdownButton.addEventListener('click', function() {
+      rekapDropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdowns if the user clicks outside of them
+    window.addEventListener('click', function(event) {
+      if (!wawancaraDropdownButton.contains(event.target) && !wawancaraDropdownMenu.contains(event.target)) {
+        wawancaraDropdownMenu.classList.add('hidden');
+      }
+      if (!rekapDropdownButton.contains(event.target) && !rekapDropdownMenu.contains(event.target)) {
+        rekapDropdownMenu.classList.add('hidden');
+      }
+    });
+
+    // Keep dropdowns open if any of their sub-items are active
+    const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/aslab/inputdatawawancara') || 
+        currentPath.startsWith('/aslab/jadwal-wawancara') || 
+        currentPath.startsWith('/aslab/evaluasi-permohonan')) {
+        wawancaraDropdownMenu.classList.remove('hidden');
+    }
+    if (currentPath.startsWith('/aslab/rekap/')) {
+        rekapDropdownMenu.classList.remove('hidden');
+    }
+  });
+</script>

@@ -1,0 +1,242 @@
+<div class="p-8 bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Pengumuman Hasil Seleksi</h1>
+
+        <form id="pengumuman-form">
+            <!-- Tahap dan Isi Pengumuman -->
+            <div class="bg-white p-8 rounded-xl shadow-lg mb-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="tahapan" class="block text-sm font-medium text-gray-700 mb-2">Pilih Tahapan Kelulusan</label>
+                        <select id="tahapan" name="tahapan" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                            <option value="">Pilih Tahapan</option>
+                            <option value="tahap1">Lolos Tahap 1 (Administrasi)</option>
+                            <option value="tahap2">Lolos Tahap 2 (Wawancara)</option>
+                            <option value="tahap3">Lolos Tahap 3 (Final)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Peserta Lolos Seleksi -->
+            <div class="bg-white p-8 rounded-xl shadow-lg mb-10">
+                <h3 class="text-xl font-semibold mb-6 text-gray-700">Peserta Lolos Seleksi</h3>
+                
+                <!-- Loading indicator -->
+                <div id="loading-indicator" class="hidden text-center py-8">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+                    <p class="text-gray-500 mt-2">Memuat data peserta...</p>
+                </div>
+
+                <!-- Peserta checklist -->
+                <div id="peserta-checklist" class="hidden">
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="select-all" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            <span class="ml-2 text-sm font-medium text-gray-700">Pilih Semua</span>
+                        </label>
+                    </div>
+                    
+                    <div id="peserta-list" class="space-y-2 max-h-96 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                        <!-- Peserta akan ditampilkan di sini -->
+                    </div>
+                </div>
+
+                <!-- Empty state -->
+                <div id="empty-state" class="text-center py-8">
+                    <img src="/img/gambar.png" alt="Icon" class="mx-auto h-24 w-24 mb-4 opacity-50">
+                    <p class="text-gray-500">Pilih tahapan untuk melihat daftar peserta</p>
+                </div>
+            </div>
+
+            <!-- Aksi -->
+            <div class="flex justify-end gap-4">
+                <button type="submit" id="submit-btn" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Simpan Pengumuman
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tahapanSelect = document.getElementById('tahapan');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const pesertaChecklist = document.getElementById('peserta-checklist');
+    const emptyState = document.getElementById('empty-state');
+    const pesertaList = document.getElementById('peserta-list');
+    const selectAllCheckbox = document.getElementById('select-all');
+    const submitBtn = document.getElementById('submit-btn');
+    const form = document.getElementById('pengumuman-form');
+
+    let currentPeserta = [];
+
+    // Event listener untuk perubahan tahapan
+    tahapanSelect.addEventListener('change', async () => {
+        const selectedTahapan = tahapanSelect.value;
+        
+        if (!selectedTahapan) {
+            showEmptyState();
+            return;
+        }
+
+        await loadPesertaByTahapan(selectedTahapan);
+    });
+
+    // Event listener untuk select all
+    selectAllCheckbox.addEventListener('change', (e) => {
+        const checkboxes = pesertaList.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = e.target.checked;
+        });
+        updateSubmitButton();
+    });
+
+    // Event listener untuk form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await simpanPengumuman();
+    });
+
+    async function loadPesertaByTahapan(tahapan) {
+        try {
+            showLoading();
+            
+            const response = await fetch(`/aslab/api/pendaftar/${tahapan}`);
+            if (!response.ok) {
+                throw new Error('Gagal memuat data peserta');
+            }
+            
+            const data = await response.json();
+            currentPeserta = data;
+            
+            if (data.length === 0) {
+                showEmptyState(`Tidak ada peserta yang memenuhi kriteria untuk tahap ${tahapan}`);
+            } else {
+                showPesertaChecklist(data);
+            }
+        } catch (error) {
+            console.error('Error loading peserta:', error);
+            Swal.fire('Error', 'Gagal memuat data peserta', 'error');
+            showEmptyState();
+        }
+    }
+
+    function showLoading() {
+        loadingIndicator.classList.remove('hidden');
+        pesertaChecklist.classList.add('hidden');
+        emptyState.classList.add('hidden');
+    }
+
+    function showEmptyState(message = 'Pilih tahapan untuk melihat daftar peserta') {
+        loadingIndicator.classList.add('hidden');
+        pesertaChecklist.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        emptyState.innerHTML = `
+            <img src="/img/gambar.png" alt="Icon" class="mx-auto h-24 w-24 mb-4 opacity-50">
+            <p class="text-gray-500">${message}</p>
+        `;
+    }
+
+    function showPesertaChecklist(peserta) {
+        loadingIndicator.classList.add('hidden');
+        pesertaChecklist.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+
+        pesertaList.innerHTML = peserta.map(p => `
+            <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                <input type="checkbox" 
+                       value="${p.id}" 
+                       class="peserta-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500"
+                       data-pendaftar-id="${p.id}">
+                <div class="ml-3 flex-1">
+                    <div class="font-medium text-gray-800">${p.user.name}</div>
+                    <div class="text-sm text-gray-500">NIM: ${p.user.nim || 'N/A'} | Email: ${p.user.email}</div>
+                </div>
+            </div>
+        `).join('');
+
+        // Add event listeners to checkboxes
+        const checkboxes = pesertaList.querySelectorAll('.peserta-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateSelectAllState();
+                updateSubmitButton();
+            });
+        });
+
+        updateSelectAllState();
+        updateSubmitButton();
+    }
+
+    function updateSelectAllState() {
+        const checkboxes = pesertaList.querySelectorAll('.peserta-checkbox');
+        const checkedBoxes = pesertaList.querySelectorAll('.peserta-checkbox:checked');
+        
+        selectAllCheckbox.checked = checkboxes.length > 0 && checkboxes.length === checkedBoxes.length;
+        selectAllCheckbox.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < checkboxes.length;
+    }
+
+    function updateSubmitButton() {
+        const checkedBoxes = pesertaList.querySelectorAll('.peserta-checkbox:checked');
+        submitBtn.disabled = checkedBoxes.length === 0;
+    }
+
+    async function simpanPengumuman() {
+        const tahapan = tahapanSelect.value;
+        const checkedBoxes = pesertaList.querySelectorAll('.peserta-checkbox:checked');
+        const pendaftarIds = Array.from(checkedBoxes).map(cb => cb.value);
+
+        if (!tahapan || pendaftarIds.length === 0) {
+            Swal.fire('Error', 'Pilih tahapan dan minimal satu peserta', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch('/aslab/api/simpan-pengumuman', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    tahapan: tahapan,
+                    pendaftarIds: pendaftarIds
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: result.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Reset form
+                    tahapanSelect.value = '';
+                    showEmptyState();
+                    submitBtn.disabled = true;
+                });
+            } else {
+                throw new Error(result.error || 'Gagal menyimpan pengumuman');
+            }
+        } catch (error) {
+            console.error('Error saving pengumuman:', error);
+            Swal.fire('Error', error.message, 'error');
+        }
+    }
+});
+</script>
+
+<style>
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fade-in 0.3s ease-out forwards;
+    }
+</style> 

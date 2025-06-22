@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Mahasiswa - LEA Recruitment</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Custom styles to match your existing design -->
+    <style>
+        /* Match your existing gradient */
+        .lea-gradient {
+            background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+        }
+        
+        /* Submit button style to match your design */
+        .btn-submit {
+            background: linear-gradient(to right, #4ade80, #22c55e);
+        }
+        
+        /* Custom scrollbar hiding for dashboard menu */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex h-screen">
+        <!-- Left Sidebar - Matching your existing design -->
+        <div class="fixed top-0 left-0 h-full w-60 lea-gradient text-white z-20">
+            <div class="p-5 mb-6">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-teal-400 rounded-lg h-10 w-10 flex items-center justify-center">
+                        <span class="material-icons text-2xl">business</span>
+                    </div>
+                    <div class="text-xs">
+                        <div>Laboratorium of</div>
+                        <div class="font-bold">Enterprise</div>
+                        <div class="font-bold">Application</div>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="px-5">
+                <a href="#" class=" flex items-center space-x-3 py-3 px-3 rounded-lg bg-white bg-opacity-20 mb-2">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                 <a href="#" class="flex items-center space-x-3 py-3 px-3 rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">description</span>
+                    <span>Formulir Pendaftaran</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">announcement</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">people</span>
+                    <span>Wawancara</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">work</span>
+                    <span>Magang</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 py-3 px-3 rounded-lg hover:bg-white hover:bg-opacity-10 mb-2">
+                    <span class="material-icons">forum</span>
+                    <span>Forum diskusi</span>
+                </a>
+                <!-- New Dashboard Link -->
+               
+                
+            </nav>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="ml-60 flex-1">
+            <!-- Top User Profile - Match your existing design -->
+            <div class="flex justify-end p-4">
+                <div class="flex items-center space-x-2">
+                    <span class="font-medium">Aldi</span>
+                    <div class="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center overflow-hidden">
+                        <img src="https://placehold.com/40x40" alt="Foto profil pengguna Aldi" class="h-full w-full object-cover">
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <!-- Student Dashboard Content - NEW ADDITION -->
+            <div class="px-6 pb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Mahasiswa</h2>
+                
+                <!-- Status Card -->
+                <div class="bg-white rounded-lg shadow mb-6 overflow-hidden border border-gray-100">
+                    <div class="p-5">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-1">Status Pendaftaran</h3>
+                                <p class="text-gray-600">Pendaftaran Asisten LEA Tahun 2023</p>
+                            </div>
+                            <div class="mt-4 md:mt-0">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                                    <span class="material-icons text-sm mr-1">hourglass_top</span>
+                                    Dalam Proses
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Tracker -->
+                    <div class="px-5 pb-5">
+                        <div class="relative">
+                            <div class="flex mb-2">
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-green-500 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">check</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Pendaftaran</p>
+                                </div>
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-green-500 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">check</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Verifikasi Berkas</p>
+                                </div>
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-yellow-500 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">hourglass_top</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Wawancara</p>
+                                </div>
+                                <div class="w-1/4 text-center relative">
+                                    <div class="mx-auto h-8 w-8 rounded-full bg-gray-300 text-white inline-flex items-center justify-center">
+                                        <span class="material-icons text-sm">work</span>
+                                    </div>
+                                    <p class="text-xs mt-1">Penerimaan</p>
+                                </div>
+                            </div>
+                            <div class="absolute top-4 left-0 right-0 h-0.5 z-0">
+                                <div class="absolute left-0 top-0 bottom-0 bg-green-500" style="width: 62.5%;"></div>
+                                <div class="absolute left-0 top-0 bottom-0 bg-gray-200 ml-[62.5%]" style="width: 37.5%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Info & Upcoming Activities -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Informasi Pribadi -->
+                    <div class="bg-white rounded-lg shadow p-5 border border-gray-100">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Pribadi</h3>
+                        <div class="space-y-4">
+                            <div class="flex">
+                                <div class="w-1/3 text-gray-500 text-sm">Nama</div>
+                                <div class="w-2/3 text-sm font-medium">Aldi</div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-1/3 text-gray-500 text-sm">NIM</div>
+                                <div class="w-2/3 text-sm font-medium">21120117130099</div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-1/3 text-gray-500 text-sm">Email</div>
+                                <div class="w-2/3 text-sm font-medium">aldi@students.undip.ac.id</div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-1/3 text-gray-500 text-sm">Nomor HP</div>
+                                <div class="w-2/3 text-sm font-medium">08123456789</div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-1/3 text-gray-500 text-sm">Divisi Pilihan</div>
+                                <div class="w-2/3 text-sm font-medium">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-1">
+                                        Penelitian & Pengembangan
+                                    </span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                        Pengabdian Masyarakat
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="pt-2">
+                                <a href="#" class="text-sm text-green-600 hover:text-green-800 font-medium">Edit Informasi</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Jadwal Kegiatan -->
+                    <div class="bg-white rounded-lg shadow p-5 border border-gray-100">
+                        
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Berkas Pendaftaran</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-md bg-blue-100 flex items-center justify-center text-blue-500 mr-3">
+                                    <span class="material-icons">description</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="text-sm font-medium">CV</p>
+                                            <p class="text-xs text-gray-500">cv_aldi_2023.pdf</p>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="mt-2">
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Lihat</a>
+                                        <span class="text-gray-300 mx-1">|</span>
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Unduh</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-md bg-blue-100 flex items-center justify-center text-blue-500 mr-3">
+                                    <span class="material-icons">description</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="text-sm font-medium">KRS</p>
+                                            <p class="text-xs text-gray-500">krs_aldi_2023.pdf</p>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="mt-2">
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Lihat</a>
+                                        <span class="text-gray-300 mx-1">|</span>
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Unduh</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-md bg-blue-100 flex items-center justify-center text-blue-500 mr-3">
+                                    <span class="material-icons">description</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="text-sm font-medium">KHS</p>
+                                            <p class="text-xs text-gray-500">khs_aldi_2023.pdf</p>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="mt-2">
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Lihat</a>
+                                        <span class="text-gray-300 mx-1">|</span>
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Unduh</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-md bg-blue-100 flex items-center justify-center text-blue-500 mr-3">
+                                    <span class="material-icons">description</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="text-sm font-medium">Surat Permohonan</p>
+                                            <p class="text-xs text-gray-500">surat_aldi_2023.pdf</p>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="mt-2">
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Lihat</a>
+                                        <span class="text-gray-300 mx-1">|</span>
+                                        <a href="#" class="text-xs text-blue-600 hover:underline">Unduh</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+                    </div>
+                </div>
+                
+                
+                
+                
+                <!-- Button to continue to form -->
+                <div class="flex justify-end mb-8">
+                    <a href="#formPendaftaran" class="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg shadow transition duration-200">
+                        <span class="material-icons mr-2">description</span>
+                        Lihat Formulir Pendaftaran
+                    </a>
+                </div>
+            </div>
+            
+            
+    
+    <!-- JavaScript for responsive behavior -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile responsive functionality
+            const handleResize = () => {
+                const isMobile = window.innerWidth < 768;
+                // Adjust UI based on screen size
+                // For a real implementation, you might show/hide elements or change layouts
+            };
+            
+            // Initial call and event listener
+            handleResize();
+            window.addEventListener('resize', handleResize);
+            
+            // Form validation example
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Form submitted successfully!');
+                });
+            }
+            
+            // Smooth scrolling to form section
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

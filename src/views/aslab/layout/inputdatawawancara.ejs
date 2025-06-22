@@ -1,0 +1,241 @@
+<div class="p-8 bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Input Data Pewawancara</h1>
+
+        <!-- Form Tambah Pewawancara -->
+        <div class="bg-white p-8 rounded-xl shadow-lg mb-10">
+            <h3 class="text-xl font-semibold mb-6 text-gray-700">Tambah Pewawancara Baru</h3>
+            <form id="add-pewawancara-form" class="space-y-4">
+                <div>
+                    <label for="nama" class="block text-sm font-medium text-gray-700 mb-2">Nama Pewawancara</label>
+                    <input type="text" id="nama" name="nama" placeholder="Contoh: John Doe" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                </div>
+                 <div>
+                    <label for="kontak" class="block text-sm font-medium text-gray-700 mb-2">Kontak (Nomor WhatsApp)</label>
+                    <input type="text" id="kontak" name="kontak" placeholder="Contoh: 081234567890" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition transform hover:-translate-y-1">
+                        <i class="fas fa-plus mr-2"></i>
+                        Tambah
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Daftar Pewawancara -->
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Daftar Pewawancara</h2>
+        <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full w-full">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                            <th class="py-4 px-6 text-left">No</th>
+                            <th class="py-4 px-6 text-left">Nama</th>
+                            <th class="py-4 px-6 text-left">Kontak</th>
+                            <th class="py-4 px-6 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pewawancara-list" class="text-gray-700 text-sm">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="edit-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-xl bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-2xl leading-6 font-bold text-gray-900 mb-4" id="modal-title">Edit Pewawancara</h3>
+            <div class="mt-2">
+                <form id="edit-pewawancara-form">
+                    <input type="hidden" id="edit-id" name="id">
+                    <div>
+                        <label for="edit-nama" class="block text-sm font-medium text-gray-700 text-left mb-2">Nama Pewawancara</label>
+                        <input type="text" id="edit-nama" name="nama" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                    </div>
+                     <div class="mt-4">
+                        <label for="edit-kontak" class="block text-sm font-medium text-gray-700 text-left mb-2">Kontak</label>
+                        <input type="text" id="edit-kontak" name="kontak" required class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 p-3 transition">
+                    </div>
+                    <div class="flex items-center justify-end mt-6 space-x-3">
+                        <button type="button" id="cancel-edit-btn" class="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">Batal</button>
+                        <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addForm = document.getElementById('add-pewawancara-form');
+        const editForm = document.getElementById('edit-pewawancara-form');
+        const pewawancaraList = document.getElementById('pewawancara-list');
+        const editModal = document.getElementById('edit-modal');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+
+        async function fetchPewawancara() {
+            try {
+                const response = await fetch('/aslab/api/pewawancara');
+                if (!response.ok) throw new Error('Failed to fetch');
+                const pewawancara = await response.json();
+                
+                pewawancaraList.innerHTML = '';
+                if (pewawancara.length > 0) {
+                    pewawancara.forEach((p, index) => {
+                        const row = `
+                            <tr class="border-b border-gray-200 hover:bg-gray-100 transition">
+                                <td class="py-4 px-6 text-left">${index + 1}</td>
+                                <td class="py-4 px-6 text-left font-medium text-gray-800">${p.nama}</td>
+                                <td class="py-4 px-6 text-left">${p.kontak}</td>
+                                <td class="py-4 px-6 text-center">
+                                    <div class="flex item-center justify-center">
+                                        <button data-id="${p.id}" data-nama="${p.nama}" data-kontak="${p.kontak}" class="edit-btn w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500 text-white hover:bg-yellow-600 mr-2 transform hover:scale-110 transition-transform">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button data-id="${p.id}" class="delete-btn w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transform hover:scale-110 transition-transform">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        pewawancaraList.innerHTML += row;
+                    });
+                } else {
+                    pewawancaraList.innerHTML = '<tr><td colspan="4" class="text-center py-6 text-gray-500">Belum ada data pewawancara.</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                pewawancaraList.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-red-500">Gagal memuat data.</td></tr>';
+            }
+        }
+
+        addForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nama = addForm.nama.value;
+            const kontak = addForm.kontak.value;
+            
+            // Validasi client-side
+            if (!nama.trim() || !kontak.trim()) {
+                Swal.fire('Error!', 'Nama dan kontak harus diisi.', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/aslab/api/pewawancara', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, kontak })
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Failed to add');
+                }
+                
+                addForm.reset();
+                await fetchPewawancara();
+                Swal.fire('Berhasil!', result.message || 'Pewawancara baru telah ditambahkan.', 'success');
+            } catch (error) {
+                console.error('Error adding pewawancara:', error);
+                Swal.fire('Gagal!', error.message || 'Terjadi kesalahan saat menambahkan data.', 'error');
+            }
+        });
+        
+        pewawancaraList.addEventListener('click', function(e) {
+            const editBtn = e.target.closest('.edit-btn');
+            const deleteBtn = e.target.closest('.delete-btn');
+
+            if (editBtn) {
+                const id = editBtn.dataset.id;
+                const nama = editBtn.dataset.nama;
+                const kontak = editBtn.dataset.kontak;
+                document.getElementById('edit-id').value = id;
+                document.getElementById('edit-nama').value = nama;
+                document.getElementById('edit-kontak').value = kontak;
+                editModal.classList.remove('hidden');
+            }
+
+            if (deleteBtn) {
+                const id = deleteBtn.dataset.id;
+                Swal.fire({
+                    title: 'Anda yakin?',
+                    text: "Data pewawancara akan dihapus!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            const response = await fetch(`/aslab/api/pewawancara/${id}`, { method: 'DELETE' });
+                            
+                            const result = await response.json();
+                            
+                            if (!response.ok) {
+                                throw new Error(result.message || 'Failed to delete');
+                            }
+                            
+                            await fetchPewawancara();
+                            Swal.fire('Dihapus!', result.message || 'Data telah berhasil dihapus.', 'success');
+                        } catch (error) {
+                            console.error('Error deleting pewawancara:', error);
+                            Swal.fire('Gagal!', error.message || 'Terjadi kesalahan saat menghapus data.', 'error');
+                        }
+                    }
+                });
+            }
+        });
+
+        editForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const nama = document.getElementById('edit-nama').value;
+            const kontak = document.getElementById('edit-kontak').value;
+            
+            // Validasi client-side
+            if (!nama.trim() || !kontak.trim()) {
+                Swal.fire('Error!', 'Nama dan kontak harus diisi.', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/aslab/api/pewawancara/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, kontak })
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Failed to update');
+                }
+                
+                editModal.classList.add('hidden');
+                await fetchPewawancara();
+                Swal.fire('Berhasil!', result.message || 'Data pewawancara telah diperbarui.', 'success');
+            } catch (error) {
+                console.error('Error updating pewawancara:', error);
+                Swal.fire('Gagal!', error.message || 'Terjadi kesalahan saat memperbarui data.', 'error');
+            }
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+
+        fetchPewawancara();
+    });
+</script> 

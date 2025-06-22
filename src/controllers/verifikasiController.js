@@ -53,7 +53,7 @@ export const getVerifikasiPage = async (req, res) => {
 
         console.log('Total pendaftar:', totalPendaftar, 'Total pages:', totalPages);
 
-        res.render('aslab/layout/verifikasi', {
+        res.render('aslab/verifikasi', {
             title: 'Verifikasi Dokumen',
             layout: 'aslab/layout/main',
             activePage: 'verifikasi',

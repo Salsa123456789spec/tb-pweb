@@ -5,13 +5,39 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 // Halaman utama penilaian magang
-router.get('/', (req, res) => {
-  res.render('aslab/penilaianMagang', {
-    title: 'Penilaian Magang',
-    layout: 'aslab/layout/main',
-    user: req.session.user,
-    activePage: 'penilaianMagang'
-  });
+router.get('/', async (req, res) => {
+  try {
+    const pengumpulanTugas = await prisma.pengumpulanTugas.findMany({
+      where: {
+        status: 'terkumpul'
+      },
+      include: {
+        tugas: true,
+        pendaftaran: {
+          include: {
+            user: true
+          }
+        }
+      },
+      orderBy: {
+        tugas: {
+          deadline: 'asc'
+        }
+      }
+    });
+
+    res.render('aslab/penilaianMagang', {
+      title: 'Penilaian Magang',
+      layout: 'aslab/layout/main',
+      user: req.session.user,
+      activePage: 'penilaianMagang',
+      pengumpulanTugas,
+      success_msg: req.flash('success_msg')
+    });
+  } catch (err) {
+    console.error('❌ Gagal ambil data untuk penilaian:', err);
+    res.status(500).send('Gagal memuat halaman penilaian.');
+  }
 });
 
 // Filter berdasarkan jenis penilaian
@@ -79,6 +105,8 @@ router.get('/:id', async (req, res) => {
     res.render('aslab/beriNilaiMagang', {
       title: 'Form Penilaian',
       layout: 'aslab/layout/main',
+      user: req.session.user,
+      activePage: 'penilaianMagang',
       pengumpulan: data,
       success_msg: req.flash('success_msg')
     });

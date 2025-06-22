@@ -18,6 +18,11 @@ import faqRouter from './routes/faq.js';
 import tugasRouter from './routes/tugas.js';
 import materiMagangRouter from './routes/materiMagang.js';
 import kuisionerRoutes from './routes/kuisionerRoutes.js';
+import statistikRoutes from './routes/statistik.js';
+import penilaianMagangRoutes from './routes/penilaianMagang.js';
+import penilaianTotalRoutes from './routes/penilaianTotal.js';
+import rankingMagangRoutes from './routes/rankingMagang.js';
+import buatTugasRoutes from './routes/buatTugas.js';
 
 const app = express();
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -81,6 +86,11 @@ app.use('/mahasiswa/tugas', tugasRouter);
 app.use('/mahasiswa/materiMagang', materiMagangRouter);
 app.use('/mahasiswa/kuisioner', kuisionerRoutes);
 app.use('/mahasiswa', mahasiswaRouter);
+app.use('/aslab/statistik', statistikRoutes);
+app.use('/aslab/penilaianMagang', penilaianMagangRoutes);
+app.use('/aslab/penilaianTotal', penilaianTotalRoutes);
+app.use('/aslab/rankingMagang', rankingMagangRoutes);
+app.use('/aslab/tugas', buatTugasRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;

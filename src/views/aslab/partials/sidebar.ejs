@@ -1,141 +1,169 @@
 <aside class="w-64 min-h-screen bg-gradient-to-b from-green-700 to-green-900 text-white shadow-md">
-  <div class="p-6 text-xl font-bold">
-    LeasCalling
-  </div>
-  <nav class="px-4">
+  <div class="p-6 text-xl font-bold">LeasCalling</div>
+  <nav class="px-4 space-y-1">
+
+    <!-- Dashboard -->
     <a href="/aslab/dashboard"
-       class="block py-3 px-4 rounded transition
-       <%= (typeof activePage !== 'undefined' && activePage === 'dashboard') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">dashboard</span>
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">dashboard</span>
       Dashboard
     </a>
 
+    <!-- Verifikasi Berkas -->
     <a href="/aslab/verifikasi"
-       class="block py-3 px-4 rounded transition
-       <%= (typeof activePage !== 'undefined' && activePage === 'verifikasi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">verified_user</span>
-      Verifikasi
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'verifikasi' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">verified_user</span>
+      Verifikasi Berkas
     </a>
 
-    <div class="relative">
-      <button id="wawancaraDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none
-        <%= (typeof activePage !== 'undefined' && (activePage === 'inputData' || activePage === 'jadwalWawancara' || activePage === 'evaluasiPermohonan')) ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-        <span class="material-icons mr-2 align-middle">people</span>
-        Wawancara
-        <span class="material-icons ml-auto text-sm" id="wawancaraDropdownArrow">keyboard_arrow_down</span>
+     <!-- Rekapitulasi Dropdown -->
+     <div class="relative">
+      <button id="rekapDropdownToggle"
+        class="flex items-center w-full px-4 py-2 rounded hover:bg-green-800 transition text-left">
+        <span class="material-icons mr-2">summarize</span>
+        Rekapitulasi
+        <span id="rekapDropdownArrow" class="material-icons ml-auto text-sm">expand_more</span>
       </button>
-      <div id="wawancaraDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
-        <a href="/aslab/inputdatawawancara"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= (typeof activePage !== 'undefined' && activePage === 'inputData') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Input Data
-        </a>
-        <a href="/aslab/jadwalwawancara"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= (typeof activePage !== 'undefined' && activePage === 'jadwalWawancara') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Jadwal Wawancara
-        </a>
-        <a href="/aslab/evaluasipermohonan"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= (typeof activePage !== 'undefined' && activePage === 'evaluasiPermohonan') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Evaluasi Permohonan
-        </a>
+      <div id="rekapDropdownMenu" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
+        <div class="pl-6 mt-1 space-y-1">
+          <a href="/aslab/rekap/pendaftar"
+            class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition <%= activePage === 'rekapPendaftar' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+            Pendaftar
+          </a>
+          <a href="/aslab/rekap/absensi"
+            class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition <%= activePage === 'rekapAbsensi' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+            Absensi
+          </a>
+          <a href="/aslab/rekap/kuisioner"
+            class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition <%= activePage === 'rekapKuisioner' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+            Kuisioner
+          </a>
+          <a href="/aslab/rekap/kelulusan"
+            class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition <%= activePage === 'rekapKelulusan' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+            Kelulusan
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Statistik -->
+    <a href="/aslab/statistik"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'statistik' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">analytics</span>
+      Statistik
+    </a>
+
+    <a href="/aslab/tugas"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'buatTugas' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">assignment</span>
+      Penugasan
+    </a>
+
+    <!-- Penilaian Dropdown -->
+    <div class="relative">
+      <button id="penilaianDropdownToggle"
+        class="flex items-center w-full px-4 py-2 rounded hover:bg-green-800 transition text-left">
+        <span class="material-icons mr-2">fact_check</span>
+        Penilaian
+        <span id="penilaianDropdownArrow" class="material-icons ml-auto text-sm">expand_more</span>
+      </button>
+      <div id="penilaianDropdownMenu" class="overflow-hidden transition-all duration-300 ease-in-out"
+        style="max-height: 0px;">
+        <div class="pl-6 mt-1 space-y-1">
+          <a href="/aslab/penilaianMagang"
+            class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition <%= activePage === 'penilaianMagang' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+            Penilaian Magang
+          </a>
+          <a href="/aslab/penilaianTotal"
+            class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition <%= activePage === 'penilaianTotal' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+            Penilaian Total
+          </a>
+        </div>
       </div>
     </div>
 
+
+    <!-- Ranking -->
+    <a href="/aslab/rankingMagang"
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'ranking' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">leaderboard</span>
+      Ranking
+    </a>
+
+    <!-- Pengumuman -->
     <a href="/aslab/pengumuman"
-       class="block py-3 px-4 rounded transition
-       <%= (typeof activePage !== 'undefined' && activePage === 'pengumuman') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">campaign</span>
+       class="flex items-center px-4 py-2 rounded hover:bg-green-800 transition
+       <%= activePage === 'pengumuman' ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
+      <span class="material-icons mr-2">campaign</span>
       Pengumuman
     </a>
-
-    <a href="/aslab/absensi"
-       class="block py-3 px-4 rounded transition
-       <%= (typeof activePage !== 'undefined' && activePage === 'absensi') ? 'bg-white bg-opacity-20 font-semibold' : 'hover:bg-white hover:bg-opacity-10' %>">
-      <span class="material-icons mr-2 align-middle">fact_check</span>
-      Absensi
-    </a>
-
-    <div class="relative">
-      <button id="rekapDropdownButton" class="block w-full text-left py-3 px-4 rounded transition hover:bg-white hover:bg-opacity-10 focus:outline-none
-        <%= (typeof activePage !== 'undefined' && (activePage === 'rekapAbsensi' || activePage === 'rekapKelulusan' || activePage === 'rekapKuisioner' || activePage === 'rekapPendaftar')) ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-        <span class="material-icons mr-2 align-middle">folder</span>
-        Rekap
-        <span class="material-icons ml-auto text-sm" id="rekapDropdownArrow">keyboard_arrow_down</span>
-      </button>
-      <div id="rekapDropdownMenu" class="hidden absolute left-0 mt-1 w-full bg-green-800 rounded shadow-lg z-10">
-        <a href="/aslab/rekap/pendaftar"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= (typeof activePage !== 'undefined' && activePage === 'rekapPendaftar') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Pendaftar
-        </a>
-        <a href="/aslab/rekap/absensi"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= (typeof activePage !== 'undefined' && activePage === 'rekapAbsensi') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Absensi
-        </a>
-        <a href="/aslab/rekap/kelulusan"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= (typeof activePage !== 'undefined' && activePage === 'rekapKelulusan') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Kelulusan
-        </a>
-        <a href="/aslab/rekap/kuisioner"
-           class="block py-2 px-6 rounded transition hover:bg-white hover:bg-opacity-10
-           <%= (typeof activePage !== 'undefined' && activePage === 'rekapKuisioner') ? 'bg-white bg-opacity-20 font-semibold' : '' %>">
-          Kuisioner
-        </a>
-      </div>
-    </div>
   </nav>
 </aside>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Wawancara Dropdown
-    const wawancaraDropdownButton = document.getElementById('wawancaraDropdownButton');
-    const wawancaraDropdownMenu = document.getElementById('wawancaraDropdownMenu');
-    const wawancaraDropdownArrow = document.getElementById('wawancaraDropdownArrow');
-    
-    wawancaraDropdownButton.addEventListener('click', function(e) {
-      e.stopPropagation(); // Prevent event bubbling
-      wawancaraDropdownMenu.classList.toggle('hidden');
-      wawancaraDropdownArrow.textContent = wawancaraDropdownMenu.classList.contains('hidden') ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
-    });
+  document.addEventListener('DOMContentLoaded', function () {
+    const activePage = "<%= typeof activePage !== 'undefined' ? activePage : '' %>";
 
-    // Rekap Dropdown
-    const rekapDropdownButton = document.getElementById('rekapDropdownButton');
-    const rekapDropdownMenu = document.getElementById('rekapDropdownMenu');
-    const rekapDropdownArrow = document.getElementById('rekapDropdownArrow');
-    
-    rekapDropdownButton.addEventListener('click', function(e) {
-      e.stopPropagation(); // Prevent event bubbling
-      rekapDropdownMenu.classList.toggle('hidden');
-      rekapDropdownArrow.textContent = rekapDropdownMenu.classList.contains('hidden') ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
-    });
+    // Helper function to toggle dropdown
+    function toggleDropdown(menu, arrow) {
+      const isExpanded = menu.style.maxHeight !== '0px' && menu.style.maxHeight !== '';
+      menu.style.maxHeight = isExpanded ? '0px' : menu.scrollHeight + 'px';
+      if (arrow) {
+        arrow.textContent = isExpanded ? 'expand_more' : 'expand_less';
+      }
+    }
 
-    // Close dropdowns only when clicking outside the sidebar
-    document.addEventListener('click', function(event) {
-      const sidebar = document.querySelector('aside');
-      if (!sidebar.contains(event.target)) {
-        wawancaraDropdownMenu.classList.add('hidden');
-        rekapDropdownMenu.classList.add('hidden');
-        wawancaraDropdownArrow.textContent = 'keyboard_arrow_down';
-        rekapDropdownArrow.textContent = 'keyboard_arrow_down';
+    // --- Rekapitulasi Dropdown ---
+    const rekapToggle = document.getElementById('rekapDropdownToggle');
+    const rekapMenu = document.getElementById('rekapDropdownMenu');
+    const rekapArrow = document.getElementById('rekapDropdownArrow');
+    const rekapPages = ['rekapPendaftar', 'rekapAbsensi', 'rekapKuisioner', 'rekapKelulusan'];
+
+    if (rekapToggle) {
+      rekapToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleDropdown(rekapMenu, rekapArrow);
+      });
+      if (rekapPages.includes(activePage)) {
+        toggleDropdown(rekapMenu, rekapArrow);
+      }
+    }
+    
+    // --- Penilaian Dropdown ---
+    const penilaianToggle = document.getElementById('penilaianDropdownToggle');
+    const penilaianMenu = document.getElementById('penilaianDropdownMenu');
+    const penilaianArrow = document.getElementById('penilaianDropdownArrow');
+    const penilaianPages = ['penilaianMagang', 'penilaianTotal'];
+
+    if (penilaianToggle) {
+      penilaianToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleDropdown(penilaianMenu, penilaianArrow);
+      });
+      if (penilaianPages.includes(activePage)) {
+        toggleDropdown(penilaianMenu, penilaianArrow);
+      }
+    }
+
+    // --- Close dropdowns when clicking outside ---
+    document.addEventListener('click', function (event) {
+      if (rekapToggle && !rekapToggle.contains(event.target) && !rekapMenu.contains(event.target)) {
+        if (rekapMenu.style.maxHeight !== '0px') {
+            rekapMenu.style.maxHeight = '0px';
+            rekapArrow.textContent = 'expand_more';
+        }
+      }
+      if (penilaianToggle && !penilaianToggle.contains(event.target) && !penilaianMenu.contains(event.target)) {
+        if (penilaianMenu.style.maxHeight !== '0px') {
+            penilaianMenu.style.maxHeight = '0px';
+            penilaianArrow.textContent = 'expand_more';
+        }
       }
     });
-
-    // Keep dropdowns open if their sub-items are active
-    if (window.location.pathname.startsWith('/aslab/inputdatawawancara') || 
-        window.location.pathname.startsWith('/aslab/jadwalwawancara') || 
-        window.location.pathname.startsWith('/aslab/evaluasipermohonan')) {
-      wawancaraDropdownMenu.classList.remove('hidden');
-      wawancaraDropdownArrow.textContent = 'keyboard_arrow_up';
-    }
-    
-    if (window.location.pathname.startsWith('/aslab/rekap/')) {
-      rekapDropdownMenu.classList.remove('hidden');
-      rekapDropdownArrow.textContent = 'keyboard_arrow_up';
-    }
   });
 </script>

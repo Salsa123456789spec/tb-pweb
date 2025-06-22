@@ -4,7 +4,9 @@ import prisma from '../models/prisma.js';
 
 const router = express.Router();
 
-router.get('/statistik', ensureAuthenticated, ensureRole('asisten_lab'), async (req, res) => {
+router.get('/', ensureAuthenticated, ensureRole('asisten_lab'), async (req, res) => {
+  console.log('Session user:', req.session.user);
+  console.log('User role:', req.session.user?.role);
   try {
     // Get statistics by division
     const statistikDivisi = await prisma.pendaftaran.groupBy({
@@ -70,6 +72,13 @@ router.get('/statistik', ensureAuthenticated, ensureRole('asisten_lab'), async (
       data: statistikStatus.map(item => item._count.id)
     };
 
+    console.log('Rendering statistik page with data:', {
+      totalPendaftar,
+      diterima,
+      ditolak,
+      chartData
+    });
+
     res.render('aslab/statistik', {
       layout: 'aslab/layout/main',
       title: 'Statistik Pendaftaran',
@@ -89,7 +98,8 @@ router.get('/statistik', ensureAuthenticated, ensureRole('asisten_lab'), async (
   } catch (error) {
     console.error('Error fetching statistics:', error);
     res.status(500).render('error', {
-      message: 'Terjadi kesalahan saat mengambil data statistik'
+      message: 'Terjadi kesalahan saat mengambil data statistik',
+      error: error.message
     });
   }
 });

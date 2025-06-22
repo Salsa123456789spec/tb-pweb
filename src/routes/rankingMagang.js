@@ -77,6 +77,8 @@ router.get('/', async (req, res) => {
     res.render('aslab/rankingMagang', {
       title: 'Ranking Penilaian',
       layout: 'aslab/layout/main',
+      user: req.session.user,
+      activePage: 'ranking',
       hasil
     });
 

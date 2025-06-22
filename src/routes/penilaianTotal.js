@@ -65,7 +65,9 @@ router.get('/', ensureAuthenticated, ensureRole('asisten_lab'), async (req, res)
     res.render('aslab/penilaianTotal', {
       title: 'Penilaian Total',
       layout: 'aslab/layout/main',
-      hasil
+      activePage: 'penilaianTotal',
+      hasil,
+      user: req.session.user
     });
   } catch (err) {
     console.error('❌ Gagal ambil penilaian total:', err);

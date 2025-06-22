@@ -1,0 +1,83 @@
+<div class="container mx-auto">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Selamat Datang di Dashboard</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Quick Stats -->
+            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-white bg-opacity-20">
+                        <i class="material-icons text-2xl">school</i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm opacity-75">Total Pendaftar</p>
+                        <p class="text-2xl font-bold">150</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-white bg-opacity-20">
+                        <i class="material-icons text-2xl">schedule</i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm opacity-75">Wawancara Hari Ini</p>
+                        <p class="text-2xl font-bold">12</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-white bg-opacity-20">
+                        <i class="material-icons text-2xl">check_circle</i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm opacity-75">Diterima</p>
+                        <p class="text-2xl font-bold">45</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activities -->
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Aktivitas Terbaru</h2>
+            <div class="bg-gray-50 rounded-lg p-4">
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span class="text-sm text-gray-600">Pendaftaran baru dari Ahmad Fadillah</span>
+                        <span class="text-xs text-gray-400">2 jam yang lalu</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span class="text-sm text-gray-600">Wawancara dengan Sarah Putri selesai</span>
+                        <span class="text-xs text-gray-400">4 jam yang lalu</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span class="text-sm text-gray-600">Dokumen pendaftaran diperbarui</span>
+                        <span class="text-xs text-gray-400">6 jam yang lalu</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Aksi Cepat</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="/mahasiswa/formulirPendaftaran" class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg text-center transition-colors">
+                    <i class="material-icons text-2xl mb-2">edit</i>
+                    <p class="font-semibold">Formulir Pendaftaran</p>
+                </a>
+                <a href="/mahasiswa/jadwalWawancara" class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg text-center transition-colors">
+                    <i class="material-icons text-2xl mb-2">schedule</i>
+                    <p class="font-semibold">Jadwal Wawancara</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div> 

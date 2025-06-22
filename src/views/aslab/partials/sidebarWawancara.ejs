@@ -1,0 +1,82 @@
+<aside class="flex flex-col bg-green-600 text-white w-56">
+    <div class="flex items-center gap-2 px-5 py-4 border-b border-green-700">
+        <img alt="LEA's Calling logo" class="w-6 h-6" height="24"
+            src="https://storage.googleapis.com/a1aa/image/bbbefc48-6c6a-40a1-1435-5f99393651d0.jpg"
+            width="24" />
+        <span class="font-semibold text-sm select-none">
+            LEA's Calling
+        </span>
+    </div>
+    <nav class="flex flex-col mt-4 space-y-1 text-sm font-semibold">
+        <!-- Dashboard -->
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md 
+            <%= activePage === 'dashboard' ? 'bg-white text-black font-bold' : 'text-white' %>" 
+            href="/aslab">
+            <i class="fas fa-home text-lg 
+                <%= activePage === 'dashboard' ? 'text-black' : 'text-white' %>">
+            </i>
+            <span class="<%= activePage === 'dashboard' ? 'text-black' : 'text-white' %>">
+                Dashboard
+            </span>
+        </a>
+
+        <!-- Verifikasi -->
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md 
+            <%= activePage === 'verifikasi' ? 'bg-white text-black font-bold' : 'text-white' %>" 
+            href="/aslab/verifikasi">
+            <i class="fas fa-check-circle text-lg <%= activePage === 'verifikasi' ? 'text-black' : 'text-white' %>"></i>
+            <span class="<%= activePage === 'verifikasi' ? 'text-black' : 'text-white' %>">
+                Verifikasi
+            </span>
+        </a>
+
+        <!-- Wawancara Dropdown -->
+        <li>
+            <button type="button" class="flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group hover:bg-green-700" 
+                    aria-controls="dropdown-wawancara" data-collapse-toggle="dropdown-wawancara">
+                <i class="fas fa-comments text-lg text-white"></i>
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Wawancara</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <ul id="dropdown-wawancara" class="hidden py-2 space-y-2">
+                  <li>
+                     <a href="/aslab/inputdatawawancara" class="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-green-700">Input Data</a>
+                  </li>
+                  <li>
+                     <a href="/aslab/jadwal-wawancara" class="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-green-700">Jadwal Wawancara</a>
+                  </li>
+                  <li>
+                     <a href="/aslab/evaluasi-permohonan" class="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-green-700">Evaluasi Permohonan</a>
+                  </li>
+            </ul>
+        </li>
+
+        <!-- Penilaian -->
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-50 cursor-not-allowed" href="#">
+            <i class="fas fa-clipboard-list text-white text-lg"></i>
+            <span class="select-none">Penilaian</span>
+        </a>
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-50 cursor-not-allowed" href="#">
+            <i class="fas fa-chart-line text-white text-lg"></i>
+            <span class="text-white">Ranking</span>
+        </a>
+
+        <!-- Pengumuman -->
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md 
+            <%= activePage === 'pengumuman' ? 'bg-white text-black font-bold' : 'text-white' %>" 
+            href="/aslab/pengumuman">
+            <i class="fas fa-bullhorn text-lg 
+                <%= activePage === 'pengumuman' ? 'text-black' : 'text-white' %>">
+            </i>
+            <span class="<%= activePage === 'pengumuman' ? 'text-black' : 'text-white' %>">
+                Pengumuman
+            </span>
+        </a>
+
+        <!-- Rekap -->
+        <a class="flex items-center gap-3 px-5 py-3 hover:bg-white/20 rounded-md opacity-50 cursor-not-allowed" href="#">
+            <i class="fas fa-file-alt text-white text-lg"></i>
+            <span class="select-none">Rekap</span>
+        </a>
+    </nav>
+</aside>

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `tugas` ADD COLUMN `kategori` ENUM('TUGAS_1', 'TUGAS_2', 'TUGAS_3', 'TUGAS_BESAR') NOT NULL DEFAULT 'TUGAS_1',
+    ADD COLUMN `lampiran` VARCHAR(191) NULL;

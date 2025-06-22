@@ -39,12 +39,14 @@ model User {
   email         String         @unique
   password      String
   role          Role
+  tahapan          Tahapan?
 
   // Relasi balik ke Pendaftaran
   pendaftarans  Pendaftaran[]  @relation("UserToPendaftaran")
   
   pengumuman    Pengumuman[]
   materi          Materi[]
+  kelompok      Kelompok[]
 }
 
 model Pendaftaran {
@@ -66,6 +68,7 @@ model Pendaftaran {
   jadwalWawancara         JadwalWawancara[]
   pengumuman              Pengumuman[]
   pengumpulanTugas        PengumpulanTugas[]
+  magang                  Magang[]
 }
 
 model JadwalWawancara {
@@ -146,4 +149,22 @@ model Materi {
   tanggal_upload DateTime @default(now())
 
   user           User     @relation(fields: [user_id], references: [id])
+}
+model Magang {
+  id              Int      @id @default(autoincrement())
+  pendaftaran_id  Int      @unique
+  kelompok_id     Int
+
+  pendaftaran     Pendaftaran @relation(fields: [pendaftaran_id], references: [id])
+  kelompok        Kelompok    @relation(fields: [kelompok_id], references: [id])
+}
+
+model Kelompok {
+  id        Int       @id @default(autoincrement())
+  nama      String
+  deskripsi String?
+  user_id        Int
+
+  magang    Magang[]
+  user      User     @relation(fields: [user_id], references: [id])
 }

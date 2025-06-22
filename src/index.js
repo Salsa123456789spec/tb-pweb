@@ -19,6 +19,8 @@ import tugasRouter from './routes/tugas.js';
 import materiMagangRouter from './routes/materiMagang.js';
 import aslabMateriRoutes from './routes/aslabMateri.js';
 import aslabFaqRouter from './routes/aslabFaq.js';
+import kelompokRoutes from './routes/kelompokRoutes.js';
+import mhsKelompokRouter from './routes/mhsKelompok.js';
 
 const app = express();
 const port = 3000;
@@ -74,6 +76,8 @@ app.use('/mahasiswa/materiMagang', materiMagangRouter);
 app.use('/mahasiswa', mahasiswaRouter);
 app.use('/aslab/materi', aslabMateriRoutes);
 app.use('/aslab/faq', aslabFaqRouter);
+app.use('/aslab/kelompok', kelompokRoutes);
+app.use('/mahasiswa/kelompok', mhsKelompokRouter);
 
 app.listen(port, () => {
     console.log(`Server jalan di http://localhost:${port}`);

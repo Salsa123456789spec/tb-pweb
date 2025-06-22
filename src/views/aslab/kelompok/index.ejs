@@ -1,0 +1,59 @@
+<div class="container mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Manajemen Kelompok</h1>
+      <a href="/aslab/kelompok/create"
+         class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition">
+        + Buat Kelompok
+      </a>
+    </div>
+  
+    <% if (kelompok.length > 0) { %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% kelompok.forEach(k => { %>
+          <div class="bg-white border border-gray-200 rounded-lg shadow-md p-6 flex flex-col justify-between">
+            <div class="mb-4">
+              <h2 class="text-xl font-bold text-gray-800 mb-1"><%= k.nama %></h2>
+              <p class="text-sm text-gray-500 mb-2"><strong>Mentor:</strong> <%= k.user.name %></p>
+              <% if (k.deskripsi) { %>
+                <p class="text-gray-600 text-sm mb-3"><%= k.deskripsi %></p>
+              <% } %>
+            </div>
+  
+            <div class="mb-4">
+              <h3 class="text-sm font-semibold text-gray-700 mb-2">Anggota:</h3>
+              <% if (k.magang.length > 0) { %>
+                <ul class="flex flex-wrap gap-2">
+                  <% k.magang.forEach(m => { %>
+                    <li class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                      <%= m.pendaftaran.user.name %>
+                    </li>
+                  <% }) %>
+                </ul>
+              <% } else { %>
+                <p class="text-sm text-gray-400">Belum ada anggota.</p>
+              <% } %>
+            </div>
+  
+            <div class="mt-auto flex gap-2">
+              <a href="/aslab/kelompok/edit/<%= k.id %>"
+                 class="flex-1 text-center bg-yellow-400 hover:bg-yellow-500 text-white text-sm px-4 py-2 rounded transition">
+                Edit
+              </a>
+              <form action="/aslab/kelompok/delete/<%= k.id %>" method="POST" class="flex-1"
+                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus kelompok ini?')">
+                <button type="submit"
+                        class="w-full bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded transition">
+                  Hapus
+                </button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="text-center mt-12">
+        <p class="text-gray-600">Belum ada kelompok yang dibentuk.</p>
+      </div>
+    <% } %>
+  </div>
+  
